@@ -10,7 +10,7 @@ public class MainMenu extends Menu {
 
     public MainMenu() {
         super("Main Menu", null);
-        HashMap<Integer, Menu> submenus = new HashMap<Integer, Menu>();
+        submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new Profile(this));
         submenus.put(2, new ProductsPage(this));
         submenus.put(3, new AuctionsPage(this));
@@ -24,5 +24,10 @@ public class MainMenu extends Menu {
     }
 
     private void products() {
+    }
+
+    @Override
+    public Menu getCommand() throws Exception {
+        return null;
     }
 }

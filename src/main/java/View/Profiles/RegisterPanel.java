@@ -7,19 +7,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterPanel extends Menu {
+    private String username = null;
+    private String profileType = null;
+
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<Integer, Menu>();
-        // login page
-        // register page
-        //logout
-
-
-        //create account type username
-        //login username
+        submenus = new HashMap<Integer, Menu>();
+        submenus.put(1, getRegisterMenu());
+        submenus.put(2, getLoginMenu());
+        setCommands();
     }
 
-    private Menu getRegisterMenu(String type, String username) {
+    public void setCommands(){
+        commands.add("create account (manager|seller|customer) (\\S+)");
+        commands.add("login (\\S+)");
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getProfileType() {
+        return profileType;
+    }
+
+    public Menu getGrandFatherMenu() {
+        return this.parentMenu;
+    }
+
+    private Menu getRegisterMenu() {
         return new Menu("Register Page", this) {
             @Override
             public void show() {
@@ -32,23 +48,77 @@ public class RegisterPanel extends Menu {
                 String firstName = getField("first name");
                 String lastName = getField("last name");
                 String emailAddress = getField("email address");
+                if (!emailAddress.matches("(\\S+)@(\\w+)\\.(\\w+)")) {
+                    System.err.println("invalid email pattern");
+                    emailAddress = getField("email address");
+                }
                 String phoneNumber = getField("phone number");
+                if (phoneNumber.length() != 13 || !phoneNumber.matches("\\d+")) {
+                    System.err.println("invalid phone number pattern");
+                    phoneNumber = getField("phone number");
+                }
+                //calling register method in controller with these inputs : role username password ...
+                return getGrandFatherMenu();
             }
 
             @Override
             public void run() {
-                super.run();
+                try {
+                    this.getCommand();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    this.show();
+                    this.run();
+                }
             }
         };
     }
 
-    private Matcher getMatcher (String regex, String input){
+    private Menu getLoginMenu() {
+        return new Menu("Login Page", this) {
+            @Override
+            public void show() {
+                System.out.println(this.getName());
+            }
+
+            @Override
+            public Menu getCommand() throws Exception {
+                String password = getField("password");
+                //calling login method in controller with these inputs : role username password ...
+                return getGrandFatherMenu();
+            }
+
+            @Override
+            public void run() {
+                try {
+                    this.getCommand();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    this.show();
+                    this.run();
+                }
+            }
+        };
+    }
+
+    private Matcher getMatcher(String regex, String input) {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }
 
     @Override
     public Menu getCommand() throws Exception {
-        return null;
+        String command = scanner.nextLine();
+        if (command.matches(this.commands.get(0))){
+            String[] commandDetails = command.split("\\s");
+            //we have to try catch checkUsername method in controller : commandDetails[4]
+            return submenus.get(1);
+        }
+        else if (command.matches(this.commands.get(1))){
+            String[] commandDetails = command.split("\\s");
+            //we have to try catch checkUsername method in controller : commandDetails[2]
+            return submenus.get(2);
+        }
+        throw new Exception("invalid command");
     }
 }
