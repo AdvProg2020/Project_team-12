@@ -15,6 +15,11 @@ public class AuctionsPage extends Menu {
     }
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
     public Menu getCommand() throws Exception {
         return null;
     }

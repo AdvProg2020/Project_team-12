@@ -1,5 +1,6 @@
 package View;
 
+import View.Exceptions.InvalidCommandException;
 import View.Profiles.Profile;
 import View.Profiles.RegisterPanel;
 
@@ -23,11 +24,24 @@ public class MainMenu extends Menu {
         return null;
     }
 
-    private void products() {
+
+    @Override
+    public void show() {
+        for (Integer index : submenus.keySet()) {
+            System.out.println(index + ". " + "go to " + submenus.get(index).getName());
+        }
+        System.out.println("6. exit");
     }
 
     @Override
     public Menu getCommand() throws Exception {
-        return null;
+        String command = scanner.nextLine();
+        for (Integer index : submenus.keySet()) {
+            if (command.equals("go to " + submenus.get(index).getName()))
+                return submenus.get(index);
+        }
+        if (command.equals("exit"))
+            return null;
+        throw new InvalidCommandException("invalid command");
     }
 }
