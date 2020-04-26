@@ -15,6 +15,11 @@ public class PurchasePage extends Menu{
     }
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
     public Menu getCommand() throws Exception {
         return null;
     }

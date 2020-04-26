@@ -7,9 +7,14 @@ import java.util.regex.Matcher;
 
 public class Profile extends Menu {
     public Profile(Menu parentMenu) {
-        super("profile", parentMenu);
+        super("Profile", parentMenu);
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1,new RegisterPanel(this));
+    }
+
+    @Override
+    public void show() {
+
     }
 
     @Override
