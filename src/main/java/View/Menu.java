@@ -24,17 +24,7 @@ public abstract class Menu {
         return parentMenu;
     }
 
-    public void show() {
-        for (Integer index : submenus.keySet()) {
-            System.out.println(index + ". " + submenus.get(index).getName());
-        }
-        if (this.name.equals("Main Menu"))
-            System.out.println(submenus.size() + 1 + ". " + "exit");
-        else if (this.name.equals("Register Panel"))
-            System.out.println(submenus.size() + 1 + ". " + "logout");
-        else
-            System.out.println(submenus.size() + 1 + ". " + "back");
-    }
+    public abstract void show();
 
     public void setSubmenus(HashMap<Integer, Menu> submenus) {
         this.submenus = submenus;
@@ -45,7 +35,7 @@ public abstract class Menu {
     public String getField(String fieldName) {
         System.out.println("Enter "+fieldName);
         String fieldValue = scanner.nextLine();
-        if (fieldValue == null){
+        if (fieldValue == null || fieldValue.equals("\n")){
             System.err.println("fields can't be empty");
             getField(fieldName);
         }
@@ -67,16 +57,5 @@ public abstract class Menu {
             show();
             run();
         }
-    }
-}
-
-class InvalidCommandException extends Exception {
-    public InvalidCommandException(String message) {
-        super(message);
-    }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
     }
 }
