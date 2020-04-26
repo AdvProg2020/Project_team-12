@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 public class ProductsPage extends Menu{
     public ProductsPage(Menu parentMenu) {
         super("Product Page", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<Integer, Menu>();
+        submenus = new HashMap<Integer, Menu>();
         // add submenus
         //view categories
         //filtering -> show available filters || filter || current filters || disable filter

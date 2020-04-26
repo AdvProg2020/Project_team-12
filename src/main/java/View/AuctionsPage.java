@@ -7,7 +7,7 @@ public class AuctionsPage extends Menu {
 
     public AuctionsPage(Menu parentMenu) {
         super("Auction Page", parentMenu);
-        HashMap<Integer, Menu> submenus = new HashMap<Integer, Menu>();
+        submenus = new HashMap<Integer, Menu>();
         // add submenus
         //show product
         //filtering -> show available filters || filter || current filters || disable filter
