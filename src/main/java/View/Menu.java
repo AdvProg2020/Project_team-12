@@ -1,12 +1,14 @@
 package View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public abstract class Menu {
     private String name;
-    private Menu parentMenu;
-    private HashMap<Integer, Menu> submenus;
+    protected Menu parentMenu;
+    protected HashMap<Integer, Menu> submenus;
+    protected ArrayList<String> commands;
     protected Scanner scanner = InputUtility.getInstance();
 
     public Menu(String name, Menu parentMenu) {
@@ -14,8 +16,12 @@ public abstract class Menu {
         this.parentMenu = parentMenu;
     }
 
-    public String getName() {
+    protected String getName() {
         return name;
+    }
+
+    public Menu getParentMenu() {
+        return parentMenu;
     }
 
     public void show() {
@@ -38,7 +44,12 @@ public abstract class Menu {
 
     public String getField(String fieldName) {
         System.out.println("Enter "+fieldName);
-        return scanner.nextLine();
+        String fieldValue = scanner.nextLine();
+        if (fieldValue == null){
+            System.err.println("fields can't be empty");
+            getField(fieldName);
+        }
+        return fieldValue;
     }
 
     public void run() {
