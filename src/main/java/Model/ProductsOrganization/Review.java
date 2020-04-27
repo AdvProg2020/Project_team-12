@@ -1,18 +1,15 @@
 package Model.ProductsOrganization;
 
-import Model.Account.Account;
+import com.google.gson.annotations.Expose;
 
 public class Review {
-    private Account account;
-    private Product product;
+    @Expose(serialize = true)
     private String description;
-    private enum Status {TO_BE_CONFIRMED, CONFIRMED, UNCONFIRMED}
+    @Expose(serialize = true)
     private Status status;
+    @Expose(serialize = true)
     private boolean isBuyer;
-
-    public Review(Account account, Product product, String description, Status status, boolean isBuyer) {
-        this.account = account;
-        this.product = product;
+    public Review(String description, Status status, boolean isBuyer) {
         this.description = description;
         this.status = status;
         this.isBuyer = isBuyer;
@@ -22,4 +19,6 @@ public class Review {
     public String toString() {
         return "";
     }
+
+    private enum Status {TO_BE_CONFIRMED, CONFIRMED, UNCONFIRMED}
 }

@@ -1,9 +1,13 @@
 package Model.Log;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 
 public abstract class Log {
+    @Expose(serialize = true)
     private int id;
+    @Expose(serialize = true)
     private Date date;
 
     public Log(int id, Date date) {

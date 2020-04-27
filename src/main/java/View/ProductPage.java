@@ -14,6 +14,11 @@ public class ProductPage extends Menu{
         //comments -> add comment
     }
 
+    @Override
+    public Menu getCommand() throws Exception {
+        return null;
+    }
+
     public void run(){}
     private Matcher getMatcher (String regex){
         return null;

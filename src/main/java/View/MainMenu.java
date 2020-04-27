@@ -25,4 +25,9 @@ public class MainMenu extends Menu {
 
     private void products() {
     }
+
+    @Override
+    public Menu getCommand() throws Exception {
+        return null;
+    }
 }

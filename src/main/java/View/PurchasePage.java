@@ -14,6 +14,11 @@ public class PurchasePage extends Menu{
         //payment page ***
     }
 
+    @Override
+    public Menu getCommand() throws Exception {
+        return null;
+    }
+
     public void run(){}
     private Matcher getMatcher (String regex){
         return null;

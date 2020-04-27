@@ -14,6 +14,11 @@ public class AuctionsPage extends Menu {
         //sorting -> show available sorts || sort || current sort || disable sort
     }
 
+    @Override
+    public Menu getCommand() throws Exception {
+        return null;
+    }
+
     public void run() {
     }
 

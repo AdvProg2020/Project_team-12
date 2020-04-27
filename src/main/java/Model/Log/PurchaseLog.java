@@ -1,26 +1,27 @@
 package Model.Log;
 
 import Model.ProductsOrganization.Product;
+import Model.ProductsOrganization.ProductOnLog;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class PurchaseLog extends Log {
+    @Expose(serialize = true)
     private int payedCredit;
-    private int decreasedPriceByDiscount;
-    private ArrayList<Product> allPurchasedProducts;
-    private String sellerName;
+    @Expose(serialize = true)
+    private int finalPrice;
+    @Expose(serialize = true)
+    private ArrayList<ProductOnLog> allPurchasedProducts;
+
+    public PurchaseLog(int id, Date date) {
+        super(id, date);
+    }
+
     private enum Status {DELIVERED, TO_BE_DELIVERED}
     private Status status;
 
-    public PurchaseLog(int id, Date date, int payedCredit, int decreasedPriceByDiscount, ArrayList<Product> allPurchasedProducts, String sellerName, Status status) {
-        super(id, date);
-        this.payedCredit = payedCredit;
-        this.decreasedPriceByDiscount = decreasedPriceByDiscount;
-        this.allPurchasedProducts = allPurchasedProducts;
-        this.sellerName = sellerName;
-        this.status = status;
-    }
 
     public boolean hasBoughtProduct(int productId){return true;}
 

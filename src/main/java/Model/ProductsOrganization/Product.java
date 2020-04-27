@@ -2,22 +2,35 @@ package Model.ProductsOrganization;
 
 import Model.Account.Seller;
 import Model.Status;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Product {
-    private int id;
-    private Status status;
+public class Product{
+    @Expose(serialize = true)
     private String name;
+    @Expose(serialize = true)
     private String brand;
+    @Expose(serialize = true)
     private int price;
-    private int remainingItems;
-    private HashMap<String,Seller> allSellers;
+    @Expose(serialize = true)
     private HashMap<String, String> specifications;
+    @Expose(serialize = true)
     private String Description;
+    @Expose(serialize = true)
+    private int id;
+    @Expose(serialize = true)
+    private Status status;
+    @Expose(serialize = true)
+    private int remainingItems;
+    @Expose(serialize = true)
+    private ArrayList<String> allSellers;
+    @Expose(serialize = true)
     private Category parent;
+    @Expose(serialize = true)
     private ArrayList<Score> allSubmittedScores;
+    @Expose(serialize = true)
     private ArrayList<Review> allReviews;
 
     public Product(int id, Status status, String name, String brand, int price, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {

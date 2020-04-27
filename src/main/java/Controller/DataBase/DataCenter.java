@@ -2,6 +2,7 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Model.Account.Account;
+import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 public class DataCenter {
     private HashMap<String, Account> accountsByUsername = new HashMap();
     private HashMap<String, Product> productsByName = new HashMap();
+    private HashMap<String, Category> categoriesByName = new HashMap<>();
 
     private void initAccounts(JsonFileReader reader) {
     }
@@ -17,14 +19,6 @@ public class DataCenter {
 
     }
 
-    private void initCategories(JsonFileReader reader) {
-    }
-
-    private void initReviews(JsonFileReader reader) {
-    }
-
-    private void initScores(JsonFileReader reader) {
-    }
 
     public void registerAccount(Account account) {
         if (this.accountsByUsername.containsKey(account.getUsername())) {

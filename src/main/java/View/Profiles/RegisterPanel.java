@@ -33,6 +33,7 @@ public class RegisterPanel extends Menu {
                 String lastName = getField("last name");
                 String emailAddress = getField("email address");
                 String phoneNumber = getField("phone number");
+                return null;
             }
 
             @Override
