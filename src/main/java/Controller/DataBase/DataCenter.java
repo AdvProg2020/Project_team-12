@@ -1,6 +1,6 @@
-package Controller;
+package Controller.DataBase;
 
-import Controller.Json.JsonFileReader;
+import Controller.DataBase.Json.JsonFileReader;
 import Model.Account.Account;
 import Model.ProductsOrganization.Product;
 

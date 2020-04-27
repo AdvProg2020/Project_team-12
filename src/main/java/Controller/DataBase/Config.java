@@ -1,6 +1,6 @@
-package Model;
+package Controller.DataBase;
 
-import Controller.Json.JsonFileReader;
+import Controller.DataBase.Json.JsonFileReader;
 
 import java.io.FileNotFoundException;
 
