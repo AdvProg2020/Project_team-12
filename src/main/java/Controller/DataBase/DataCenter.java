@@ -1,5 +1,6 @@
 package Controller.DataBase;
 
+
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
 import Model.Account.Account;
@@ -108,7 +109,7 @@ public class DataCenter {
         if (discountsFileArr != null) {
             Arrays.stream(discountsFileArr).map((file) -> {
                 try {
-                    if (file.getPath().contains("discountcode.accounts.json") ||file.getPath().contains("auction.products.json") )
+                    if (file.getPath().contains("discountcode.accounts.json") || file.getPath().contains("auction.products.json"))
                         return null;
                     return reader.read(file, Discount.class);
                 } catch (FileNotFoundException var4) {
@@ -143,7 +144,7 @@ public class DataCenter {
             ArrayList<Double> strings = reader.read(file, ArrayList.class);
             ArrayList<Product> products = new ArrayList<>();
             for (double id : strings) {
-                products.add(getProductById((int)id));
+                products.add(getProductById((int) id));
             }
             ((Auction) auction).setAllIncludedProducts(products);
             discounts.add(auction);
@@ -274,9 +275,9 @@ public class DataCenter {
         return accountsByUsername.get(name);
     }
 
-    public boolean doesUsernameExist(String username){
+    public boolean doesUsernameExist(String username) {
         for (String accountUsername : accountsByUsername.keySet()) {
-            if(username.equals(accountUsername))
+            if (username.equals(accountUsername))
                 return true;
         }
         return false;
