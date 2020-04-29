@@ -7,13 +7,11 @@ import java.io.FileNotFoundException;
 public class Config {
     private static final String configPath = "configurations.json";
     private static Config Instance;
-    private String accountsPath;
-    private String productsPath;
+    private final String[] accountsPath = {"Resources/Accounts/Customers","Resources/Accounts/Sellers","Resources/Accounts/Managers"};
+    private final String productsPath = "Resources/Products";
+    private final String discountCodePath = "Resources/Discounts/CodedDiscounts";
+    private final String auctionsPath= "Resources/Discounts/Auctions";
 
-    private Config() {
-        this.accountsPath = "Resources/Accounts";
-        this.productsPath = "Resources/Products";
-    }
 
     public static Config getInstance() {
         if (Instance == null) {
@@ -27,19 +25,19 @@ public class Config {
         return Instance;
     }
 
-    public String getAccountsPath() {
+    public String[] getAccountsPath() {
         return accountsPath;
-    }
-
-    public void setAccountsPath(String usersPath) {
-        this.accountsPath = usersPath;
     }
 
     public String getProductsPath() {
         return productsPath;
     }
 
-    public void setProductsPath(String channelsPath) {
-        this.productsPath = channelsPath;
+    public String getDiscountCodePath() {
+        return discountCodePath;
+    }
+
+    public String getAuctionsPath() {
+        return auctionsPath;
     }
 }

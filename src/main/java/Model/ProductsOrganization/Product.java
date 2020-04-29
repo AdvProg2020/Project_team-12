@@ -26,7 +26,7 @@ public class Product{
     private int remainingItems;
     @Expose(serialize = true)
     private ArrayList<String> allSellers;
-    @Expose(serialize = true)
+    @Expose(serialize = false)
     private Category parent;
     @Expose(serialize = true)
     private ArrayList<Score> allSubmittedScores;
