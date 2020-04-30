@@ -3,11 +3,11 @@ package Model.ProductsOrganization;
 import com.google.gson.annotations.Expose;
 
 public class Review {
-    @Expose(serialize = true)
+    @Expose
     private String description;
-    @Expose(serialize = true)
+    @Expose
     private Status status;
-    @Expose(serialize = true)
+    @Expose
     private boolean isBuyer;
     public Review(String description, Status status, boolean isBuyer) {
         this.description = description;

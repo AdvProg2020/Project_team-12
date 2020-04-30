@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SellLog extends Log {
-    @Expose(serialize = true)
+    @Expose
     private int receivedCredit;
-    @Expose(serialize = true)
+    @Expose
     private int decreasedPriceAtAuction;
-    @Expose(serialize = true)
+    @Expose
     private ArrayList<ProductOnLog> allSoldProducts;
     /*@Expose(serialize = true)
     private Status status;*///I dont know what you want this for but if its necessary, uncomment it.

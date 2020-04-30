@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Customer extends Account {
     @Expose(serialize = false,deserialize = false)
     private Cart cart;
-    @Expose(serialize = true)
+    @Expose
     private ArrayList<PurchaseLog> buyLogs = new ArrayList<>();
 
     public Customer(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password) {

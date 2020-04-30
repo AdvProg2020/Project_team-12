@@ -5,9 +5,9 @@ import com.google.gson.annotations.Expose;
 import java.util.Date;
 
 public abstract class Log {
-    @Expose(serialize = true)
+    @Expose
     private int id;
-    @Expose(serialize = true)
+    @Expose
     private Date date;
 
     public Log(int id, Date date) {

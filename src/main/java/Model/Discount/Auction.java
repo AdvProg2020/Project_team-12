@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Auction extends Discount {
-    @Expose(serialize = true)
+    @Expose
     private int id;
     @Expose(serialize = false,deserialize = false)
     private ArrayList<Product> allIncludedProducts;
-    @Expose(serialize = true)
+    @Expose
     private Status status;
 
     public Auction(int id, ArrayList<Product> allIncludedProducts, Status status,Date start, Date end, double percent) {

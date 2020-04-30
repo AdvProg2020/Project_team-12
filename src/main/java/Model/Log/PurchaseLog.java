@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class PurchaseLog extends Log {
-    @Expose(serialize = true)
+    @Expose
     private int payedCredit;
-    @Expose(serialize = true)
+    @Expose
     private int finalPrice;
-    @Expose(serialize = true)
+    @Expose
     private ArrayList<ProductOnLog> allPurchasedProducts;
 
     public PurchaseLog(int id, Date date) {

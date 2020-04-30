@@ -6,19 +6,19 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 
 public abstract class Account {
-    @Expose(serialize = true)
+    @Expose
     private String username;
-    @Expose(serialize = true)
+    @Expose
     private String firstName;
-    @Expose(serialize = true)
+    @Expose
     private String lastName;
-    @Expose(serialize = true)
+    @Expose
     private String emailAddress;
-    @Expose(serialize = true)
+    @Expose
     private String phoneNumber;
-    @Expose(serialize = true)
+    @Expose
     private String password;
-    @Expose(serialize = true)
+    @Expose
     private double credit;
     @Expose(serialize = false, deserialize = false)
     private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();

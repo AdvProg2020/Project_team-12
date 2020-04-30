@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class DiscountCode extends Discount {
-    @Expose(serialize = true)
+    @Expose
     private String code;
-    @Expose(serialize = true)
+    @Expose
     private int maximumDiscountAmount;
-    @Expose(serialize = true)
+    @Expose
     private int maximumNumberOfUsages;
     @Expose(serialize = false, deserialize = false)
     private ArrayList<Account> allAllowedAccounts = new ArrayList<>();

@@ -9,9 +9,7 @@ public class Config {
     private static Config Instance;
     private final String[] accountsPath = {"Resources/Accounts/Customers","Resources/Accounts/Sellers","Resources/Accounts/Managers"};
     private final String productsPath = "Resources/Products";
-    private final String discountCodePath = "Resources/Discounts/CodedDiscounts";
-    private final String auctionsPath= "Resources/Discounts/Auctions";
-
+    private final String[] discountsPath ={ "Resources/Discounts/CodedDiscounts","Resources/Discounts/Auctions"};
 
     public static Config getInstance() {
         if (Instance == null) {
@@ -33,11 +31,7 @@ public class Config {
         return productsPath;
     }
 
-    public String getDiscountCodePath() {
-        return discountCodePath;
-    }
-
-    public String getAuctionsPath() {
-        return auctionsPath;
+    public String[] getDiscountsPath() {
+        return discountsPath;
     }
 }

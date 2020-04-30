@@ -1,19 +1,21 @@
 package Model.Account;
 
+import Controller.DataBase.DataCenter;
 import Model.Log.SellLog;
 import Model.ProductsOrganization.Product;
+import Model.ProductsOrganization.ProductInfo;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Seller extends Account {
-    @Expose(serialize = true)
+    @Expose
     private String companyInformation;
-    @Expose(serialize = true)
+    @Expose
     private ArrayList<SellLog> sellLogs = new ArrayList<>();
-    @Expose(serialize = false,deserialize = false)
-    private HashMap<Product, ProductInfo> allProducts = new HashMap();
+    @Expose
+    private ArrayList<ProductInfo> allProducts = new ArrayList<>();
     public Seller(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String  password, String companyInformation) {
         super(username, firstName, lastName, emailAddress, phoneNumber, password);
         this.companyInformation = companyInformation;
@@ -24,17 +26,13 @@ public class Seller extends Account {
 
     }
 
+    public ArrayList<ProductInfo> getAllProducts() {
+        return allProducts;
+    }
+
     @Override
     public String toString() {
         return null;
     }
 }
-class ProductInfo {
-    int quantity;
-    double price;
 
-    public ProductInfo(int quantity, double price) {
-        this.quantity = quantity;
-        this.price = price;
-    }
-}

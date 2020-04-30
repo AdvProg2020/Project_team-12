@@ -3,11 +3,11 @@ package Model.ProductsOrganization;
 import com.google.gson.annotations.Expose;
 
 public class ProductOnLog {
-    @Expose(serialize = true)
+    @Expose
     private final String name;
-    @Expose(serialize = true)
+    @Expose
     private final int price;
-    @Expose(serialize = true)
+    @Expose
     private final String sellerOrBuyer;
 
     public ProductOnLog(String name, int price, String seller) {
