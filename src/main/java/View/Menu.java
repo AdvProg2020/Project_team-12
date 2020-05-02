@@ -14,14 +14,11 @@ public abstract class Menu {
     public Menu(String name, Menu parentMenu) {
         this.name = name;
         this.parentMenu = parentMenu;
+        commands = new ArrayList<String>();
     }
 
     protected String getName() {
         return name;
-    }
-
-    public Menu getParentMenu() {
-        return parentMenu;
     }
 
     public abstract void show();
@@ -32,12 +29,12 @@ public abstract class Menu {
 
     public abstract Menu getCommand() throws Exception;
 
-    public String getField(String fieldName) {
+    public String getField(String fieldName,String regex) {
         System.out.println("Enter "+fieldName);
         String fieldValue = scanner.nextLine();
-        if (fieldValue == null || fieldValue.equals("\n")){
-            System.err.println("fields can't be empty");
-            getField(fieldName);
+        if (!fieldName.matches(regex)){
+            System.err.println("wrong patten");
+            getField(fieldName, regex);
         }
         return fieldValue;
     }

@@ -15,7 +15,7 @@ public class MainMenu extends Menu {
         submenus.put(1, new Profile(this));
         submenus.put(2, new ProductsPage(this));
         submenus.put(3, new AuctionsPage(this));
-        submenus.put(4, new PurchasePage(this));
+        submenus.put(4, PurchasePage.getInstance(this));
         submenus.put(5, new RegisterPanel(this));
         this.setSubmenus(submenus);
     }
@@ -35,6 +35,7 @@ public class MainMenu extends Menu {
 
     @Override
     public Menu getCommand() throws Exception {
+        System.out.println("what do you want to do?\n");
         String command = scanner.nextLine();
         for (Integer index : submenus.keySet()) {
             if (command.equals("go to " + submenus.get(index).getName()))
