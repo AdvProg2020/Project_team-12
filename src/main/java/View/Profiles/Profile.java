@@ -1,40 +1,60 @@
 package View.Profiles;
 
+import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
+import View.ProductsPage;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
 
 public class Profile extends Menu {
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new RegisterPanel(this));
+        submenus.put(2, new ProductsPage(this));
+        submenus.put(3, new AuctionsPage(this));
+        setCommands();
+    }
+
+    private void setCommands() {
+        commands.add("products");
+        commands.add("offs");
+        commands.add("go to register panel");
+        commands.add("back");
+        commands.add("help");
     }
 
     @Override
     public void show() {
-
+        System.out.println(this.getName() + "\ncommands\n");
+        for (int i = 1; i <= commands.size(); i++) {
+            System.out.println(i + ". " + commands.get(i - 1));
+        }
     }
 
     @Override
     public Menu getCommand() throws Exception {
-        return null;
-    }
-
-    public void run() {
-    }
-
-    private Matcher getMatcher(String regex) {
-        return null;
+        String command = scanner.nextLine();
+        if (command.equals(commands.get(0))) {
+            return submenus.get(2);
+        } else if (command.equals(commands.get(1))) {
+            return submenus.get(3);
+        } else if (command.equals(commands.get(2))) {
+            return submenus.get(1);
+        } else if (command.equals(commands.get(3))) {
+            return this.parentMenu;
+        } else if (command.equals(commands.get(4))) {
+            return this;
+        }
+        throw new InvalidCommandException("invalid command");
     }
 
     public Menu getGrandFatherMenu() {
         return this.parentMenu;
     }
 
-    protected  Menu getPersonalInfoMenu() {
+    protected Menu getPersonalInfoMenu() {
         return new Menu("Personal Info", this) {
             public void setCommands() {
                 commands.add("edit (password|first name|last name|email address|phone number)$");
