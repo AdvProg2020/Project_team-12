@@ -16,6 +16,7 @@ public class RegisterPanel extends Menu {
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, getRegisterMenu());
         submenus.put(2, getLoginMenu());
+        this.setSubmenus(submenus);
         setCommands();
     }
 

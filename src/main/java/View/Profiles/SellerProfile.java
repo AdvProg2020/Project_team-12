@@ -3,19 +3,23 @@ package View.Profiles;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
+import java.util.ArrayList;
+
 public class SellerProfile extends Profile {
     Profile profile;
 
     public SellerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
         this.profile = profile;
-        submenus.put(2, getPersonalInfoMenu());
-        submenus.put(3, getCompanyHistoryMenu());
-        submenus.put(4, getSalesHistoryMenu());
-        submenus.put(5, getProductsMenu());
-        submenus.put(6, getAddProductMenu());
-        submenus.put(7, getCategoriesMenu());
-        submenus.put(8, getOffsMenu());
+        submenus.put(4, getPersonalInfoMenu());
+        submenus.put(5, getCompanyHistoryMenu());
+        submenus.put(6, getSalesHistoryMenu());
+        submenus.put(7, getProductsMenu());
+        submenus.put(8, getAddProductMenu());
+        submenus.put(9, getCategoriesMenu());
+        submenus.put(10, getOffsMenu());
+        this.setSubmenus(submenus);
+        this.commands = new ArrayList<String>();
         setCommands();
     }
 
@@ -32,6 +36,8 @@ public class SellerProfile extends Profile {
         commands.add("back");
         commands.add("help");
         commands.add("go to register panel");
+        commands.add("products");
+        commands.add("offs");
     }
 
     private Menu getCompanyHistoryMenu() {
@@ -225,6 +231,7 @@ public class SellerProfile extends Profile {
 
     @Override
     public void show() {
+        System.out.println(this.getName()+"\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             if (i == 6)
                 System.out.println("6. remove product [productId]");
@@ -237,23 +244,23 @@ public class SellerProfile extends Profile {
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            return submenus.get(2);
-        } else if (command.equals(commands.get(1))) {
-            return submenus.get(3);
-        } else if (command.equals(commands.get(2))) {
             return submenus.get(4);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(1))) {
             return submenus.get(5);
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(2))) {
             return submenus.get(6);
+        } else if (command.equals(commands.get(3))) {
+            return submenus.get(7);
+        } else if (command.equals(commands.get(4))) {
+            return submenus.get(8);
         } else if (command.matches(commands.get(5))) {
             String[] commandDetails = command.split("\\s");
             //remove product with id commandDetails[2]
             return this;
         } else if (command.equals(commands.get(6))) {
-            return submenus.get(7);
+            return submenus.get(9);
         } else if (command.equals(commands.get(7))) {
-            return submenus.get(8);
+            return submenus.get(10);
         } else if (command.equals(commands.get(8))) {
             //show balance
             return this;
@@ -263,6 +270,10 @@ public class SellerProfile extends Profile {
             return this;
         } else if (command.equals(commands.get(11))) {
             return submenus.get(1);
+        } else if (command.equals(commands.get(12))) {
+            return submenus.get(2);
+        } else if (command.equals(commands.get(13))) {
+            return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");
     }
