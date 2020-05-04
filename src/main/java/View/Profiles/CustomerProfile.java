@@ -4,15 +4,19 @@ import View.Exceptions.InvalidCommandException;
 import View.Menu;
 import View.PurchasePage;
 
+import java.util.ArrayList;
+
 public class CustomerProfile extends Profile {
     Profile profile;
 
     public CustomerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
         this.profile = profile;
-        submenus.put(2, getPersonalInfoMenu());
-        submenus.put(3, PurchasePage.getInstance(this));
-        submenus.put(4, getOrdersMenu());
+        submenus.put(4, getPersonalInfoMenu());
+        submenus.put(5, PurchasePage.getInstance(this));
+        submenus.put(6, getOrdersMenu());
+        this.setSubmenus(submenus);
+        this.commands = new ArrayList<String>();
         setCommands();
     }
 
@@ -25,6 +29,8 @@ public class CustomerProfile extends Profile {
         commands.add("back");
         commands.add("help");
         commands.add("go to register panel");
+        commands.add("products");
+        commands.add("offs");
     }
 
     private Menu getOrdersMenu() {
@@ -73,6 +79,7 @@ public class CustomerProfile extends Profile {
 
     @Override
     public void show() {
+        System.out.println(this.getName()+"\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
         }
@@ -82,11 +89,11 @@ public class CustomerProfile extends Profile {
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            return submenus.get(2);
-        } else if (command.equals(commands.get(1))) {
-            return submenus.get(3);
-        } else if (command.equals(commands.get(2))) {
             return submenus.get(4);
+        } else if (command.equals(commands.get(1))) {
+            return submenus.get(5);
+        } else if (command.equals(commands.get(2))) {
+            return submenus.get(6);
         } else if (command.equals(commands.get(3))) {
             //show balance
             return this;
@@ -99,6 +106,10 @@ public class CustomerProfile extends Profile {
             return this;
         } else if (command.equals(commands.get(7))) {
             return submenus.get(1);
+        } else if (command.equals(commands.get(8))) {
+            return submenus.get(2);
+        } else if (command.equals(commands.get(9))) {
+            return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");
     }
