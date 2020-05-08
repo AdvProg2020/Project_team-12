@@ -6,9 +6,7 @@ public class Manager extends Account{
         super(username, firstName, lastName, emailAddress, phoneNumber, password);
     }
 
-    public String toString() {
-        return null;
-    }
+
 
     public void writeInfoInFile() {
 

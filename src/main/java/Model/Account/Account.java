@@ -21,7 +21,7 @@ public abstract class Account {
     @Expose
     private double credit;
     @Expose(serialize = false, deserialize = false)
-    private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+    private ArrayList<DiscountCode> allDiscountCodes;
 
 
 
@@ -32,17 +32,34 @@ public abstract class Account {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        allDiscountCodes = new ArrayList<DiscountCode>();
     }
 
     public String getUsername() {
         return username;
     }
 
-    public abstract String toString();
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", credit=" + credit +
+                ", allDiscountCodes=" + allDiscountCodes +
+                '}';
+    }
 
     public abstract void writeInfoInFile();
 
     public void addDiscountCode(DiscountCode discountCode){
         allDiscountCodes.add(discountCode);
+    }
+
+    public void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
+        this.allDiscountCodes = allDiscountCodes;
     }
 }

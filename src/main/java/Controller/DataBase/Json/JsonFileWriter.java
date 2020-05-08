@@ -8,6 +8,12 @@ import com.google.gson.TypeAdapterFactory;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * This class has been created for saving files in json form and/or with a TypeAdaptorFactory which can help you save your inherited classes with more compatibility
+ * see more information at {@link com.google.gson.typeadapters.RuntimeTypeAdapterFactory}
+ *
+ */
+
 public class JsonFileWriter {
     private final Gson gson;
 

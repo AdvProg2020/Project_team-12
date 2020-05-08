@@ -26,6 +26,9 @@ public class Customer extends Account {
 
     @Override
     public String toString() {
-        return null;
+        return super.toString()+"Customer{" +
+                "cart=" + cart +
+                ", buyLogs=" + buyLogs +
+                '}';
     }
 }

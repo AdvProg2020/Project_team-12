@@ -154,6 +154,7 @@ public class DataCenter {
     }
 
     private void addAccount(Account account) {
+        account.setAllDiscountCodes(new ArrayList<>());
         if (account instanceof Seller)
             for (ProductInfo productInfo : ((Seller) account).getAllProducts()) {
                 productInfo.setProduct(productsByName.get(productInfo.getPName()));
@@ -175,23 +176,23 @@ public class DataCenter {
 
     public void saveAccount(Customer customer) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
-        writer.write(customer, generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"),Account.class);
+        writer.write(customer, generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"), Account.class);
 
     }
 
     public void saveAccount(Seller seller) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
-        writer.write(seller, generateUserFilePath(seller.getUsername(), Config.AccountsPath.SELLER.getNum(), "seller"),Account.class);
+        writer.write(seller, generateUserFilePath(seller.getUsername(), Config.AccountsPath.SELLER.getNum(), "seller"), Account.class);
     }
 
     public void saveAccount(Manager manager) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
-        writer.write(manager, generateUserFilePath(manager.getUsername(), Config.AccountsPath.MANAGER.getNum(), "manager"),Account.class);
+        writer.write(manager, generateUserFilePath(manager.getUsername(), Config.AccountsPath.MANAGER.getNum(), "manager"), Account.class);
     }
 
-    private void addSavedAccount(Account account){
-        if(!accountsByUsername.containsValue(account))
-            accountsByUsername.put(account.getUsername(),account);
+    private void addSavedAccount(Account account) {
+        if (!accountsByUsername.containsValue(account))
+            accountsByUsername.put(account.getUsername(), account);
     }
 
     public void saveProduct(Product product) throws IOException {
@@ -199,33 +200,33 @@ public class DataCenter {
         //TODO:a method which updates field categoryPath should be called on product
         writer.write(product, generateProductFilePath(product.getId()));
         if (!productsByName.containsValue(product))
-            productsByName.put(product.getName(),product);
+            productsByName.put(product.getName(), product);
     }
 
 
     public void saveDiscount(Auction auction) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
         Discount tmp = auction;
-        writer.write(tmp, generateAuctionFilePath(auction.getId()),Discount.class);
+        writer.write(tmp, generateAuctionFilePath(auction.getId()), Discount.class);
         ArrayList<Integer> products = new ArrayList<>();
         for (Product product : auction.getAllIncludedProducts()) {
             products.add(product.getId());
         }
-         writer.write(products, generateAuctionProductsFilePath(auction.getId()));
-        if(!discounts.contains(auction))
+        writer.write(products, generateAuctionProductsFilePath(auction.getId()));
+        if (!discounts.contains(auction))
             discounts.add(auction);
     }
 
     public void saveDiscount(DiscountCode discountCode) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
         Discount tmp = discountCode;
-        writer.write(tmp, generateDiscountCodeFilePath(discountCode.getId()),Discount.class);
+        writer.write(tmp, generateDiscountCodeFilePath(discountCode.getId()), Discount.class);
         ArrayList<String> accounts = new ArrayList<>();
         for (Account product : discountCode.getAllAllowedAccounts()) {
             accounts.add(product.getUsername());
         }
         new JsonFileWriter().write(accounts, generateDiscountCodeAccountsFilePath(discountCode.getId()));
-        if(!discounts.contains(discountCode))
+        if (!discounts.contains(discountCode))
             discounts.add(discountCode);
     }
 
@@ -264,10 +265,11 @@ public class DataCenter {
     }
 
     public Product getProductById(int id) {
-        AtomicReference<Product> temp = null;
+        AtomicReference<Product> temp = new AtomicReference<>();
         productsByName.forEach((k, v) -> {
-            if (v.getId() == id)
-                temp.set(v);
+            if (v != null)
+                if (v.getId() == id)
+                    temp.set(v);
         });
         return temp.get();
     }
