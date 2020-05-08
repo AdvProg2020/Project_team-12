@@ -11,10 +11,29 @@ public abstract class Discount {
     protected Date end;
     @Expose
     protected double percent;
+    @Expose
+    protected int id;
 
-    public Discount(Date start, Date end, double percent) {
+    public Discount(Date start, Date end, double percent, int id) {
         this.start = start;
         this.end = end;
         this.percent = percent;
+        this.id = id;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public double getPercent() {
+        return percent;
+    }
+
+    public int getId() {
+        return id;
     }
 }

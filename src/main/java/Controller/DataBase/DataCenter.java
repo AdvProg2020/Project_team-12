@@ -1,7 +1,11 @@
 package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
-import Model.Account.*;
+import Controller.DataBase.Json.JsonFileWriter;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
@@ -11,8 +15,11 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
     private final RuntimeTypeAdapterFactory<Account> accountRuntimeTypeAdapter = RuntimeTypeAdapterFactory.of(Account.class, "type")
@@ -24,13 +31,13 @@ public class DataCenter {
             .registerSubtype(DiscountCode.class, DiscountCode.class.getName());
     private HashMap<String, Account> accountsByUsername = new HashMap();
     private HashMap<String, Product> productsByName = new HashMap();
-    //private HashMap<String, Category> categoriesByName = new HashMap<>();
+    private ArrayList<Discount> discounts = new ArrayList<>();
 
 
     public DataCenter() {
         initProducts();
         initAccounts();
-        
+        initDiscounts();
     }
 
     private void initAccounts() {
@@ -72,6 +79,7 @@ public class DataCenter {
                     String categoryString = reader.read(categoryFileAddr, String.class);*/
                     /*temp.setParent(Category.categoryCreatorByTreeAddress(temp.getCategoryPath()));
                     temp.setCategoryPath(null);*/
+                    //TODO: a method which creates the categories from its field should be called
                     return temp;
                 } catch (FileNotFoundException var4) {
                     return null;
@@ -80,29 +88,74 @@ public class DataCenter {
         }
     }
 
-   /* private void initDiscounts() {
+    private void initDiscounts() {
         JsonFileReader jsonFileReader = new JsonFileReader(discountsRuntimeTypeAdaptor);
         for (String s : Config.getInstance().getDiscountsPath()) {
-            File accountsDirectory = new File(s);
-            if (!accountsDirectory.exists()) {
-                accountsDirectory.mkdirs();
+            File directory = new File(s);
+            if (!directory.exists()) {
+                directory.mkdirs();
             }
-            initDiscountsEach(accountsDirectory, jsonFileReader);
+            initDiscountsEach(directory, jsonFileReader);
         }
-    }*/
+    }
 
-    /*private void initDiscountsEach(File discountsDir, JsonFileReader reader) {
+    private void initDiscountsEach(File discountsDir, JsonFileReader reader) {
         File[] discountsFileArr = discountsDir.listFiles();
         if (discountsFileArr != null) {
             Arrays.stream(discountsFileArr).map((file) -> {
                 try {
-                    return (Discount) reader.read(file, Discount.class);
+                    return  reader.read(file, Discount.class);
                 } catch (FileNotFoundException var4) {
                     return null;
                 }
-            }).forEach(this::addAccount);
+            }).forEach(this::addDiscount);
         }
-    }*/
+    }
+
+    private void addDiscount(Discount discount) {
+        try {
+            if (discount instanceof Auction) {
+                initDiscount((Auction) discount);
+            } else
+                initDiscount((DiscountCode) discount);
+        } catch (Exception exception) {
+            return;
+            //Logger.log(exception.getMessage())
+        }
+    }
+
+    private void initDiscount(DiscountCode discount) throws Exception {
+        JsonFileReader reader = new JsonFileReader();
+        try {
+            File file = new File(Config.getInstance().getDiscountsPath()[Config.DiscountsPath.DISCOUNTCODE.getNum()] + "DiscountCode" + discount.getId() + "Accounts");
+            ArrayList<String> strings = reader.read(file, ArrayList.class);
+            ArrayList<Account> accounts = new ArrayList<>();
+            for (String s : strings) {
+                accounts.add(accountsByUsername.get(s));
+                accountsByUsername.get(s).addDiscountCode(discount);
+            }
+            discount.setAllAllowedAccounts(accounts);
+            discounts.add(discount);
+        } catch (FileNotFoundException var1) {
+            throw new Exception("not enough info for auction with id" + discount.getId());
+        }
+    }
+
+    private void initDiscount(Auction discount) throws Exception {
+        JsonFileReader reader = new JsonFileReader();
+        try {
+            File file = new File(Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "Auction" + discount.getId() + "Products");
+            ArrayList<Integer> strings = reader.read(file, ArrayList.class);
+            ArrayList<Product> products = new ArrayList<>();
+            for (int id : strings) {
+                products.add(getProductById(id));
+            }
+            ((Auction) discount).setAllIncludedProducts(products);
+            discounts.add(discount);
+        } catch (FileNotFoundException var1) {
+            throw new Exception("not enough info for auction with id:" +  discount.getId());
+        }
+    }
 
     private void addProduct(Product product) {
         productsByName.put(product.getName(), product);
@@ -116,31 +169,59 @@ public class DataCenter {
         accountsByUsername.put(account.getUsername(), account);
     }
 
-
-
-
-    public void registerAccount(Account account) {
-        if (this.accountsByUsername.containsKey(account.getUsername())) {
-            throw new RuntimeException("this username is not available.");
-        } else {
-            this.accountsByUsername.put(account.getUsername(), account);
-        }
+    public void saveAccount(Customer customer) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
+        writer.write(customer, Config.getInstance().getAccountsPath()[Config.AccountsPath.CUSTOMER.getNum()] + customer.getUsername());
     }
 
-    public void registerProduct(Product product) {
-        if (this.productsByName.containsKey(product.getName())) {
-            throw new RuntimeException("this username is not available.");
-        } else {
-            this.productsByName.put(product.getName(), product);
+    public void saveAccount(Seller seller) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
+        writer.write(seller, Config.getInstance().getAccountsPath()[Config.AccountsPath.SELLER.getNum()] + seller.getUsername());
+    }
+
+    public void saveAccount(Manager manager) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
+        writer.write(manager, Config.getInstance().getAccountsPath()[Config.AccountsPath.MANAGER.getNum()] + manager.getUsername());
+    }
+
+    public void saveProduct(Product product) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter();
+        //TODO:a method which updates field categoryPath should be called on product
+        writer.write(product, Config.getInstance().getProductsPath() + product.getId());
+    }
+
+    public void saveDiscount(Auction auction) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
+        writer.write(auction, Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "Auction" + auction.getId());
+        ArrayList<Integer> products = new ArrayList<>();
+        for (Product product : auction.getAllIncludedProducts()) {
+            products.add(product.getId());
         }
+        new JsonFileWriter().write(products, Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "Auction" + auction.getId() + "Products");
+    }
+
+    public void saveDiscount(DiscountCode discountCode) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
+        writer.write(discountCode, Config.getInstance().getDiscountsPath()[Config.DiscountsPath.DISCOUNTCODE.getNum()] + "DiscountCode" + discountCode.getId());
+        ArrayList<String> accounts = new ArrayList<>();
+        for (Account product : discountCode.getAllAllowedAccounts()) {
+            accounts.add(product.getUsername());
+        }
+        new JsonFileWriter().write(accounts, Config.getInstance().getDiscountsPath()[Config.DiscountsPath.DISCOUNTCODE.getNum()] + "DiscountCode" + discountCode.getId() + "Accounts");
+
     }
 
     public Account getAccountByName(String name) {
-        return null;
+        return accountsByUsername.get(name);
     }
 
     public Product getProductById(int id) {
-        return null;
+        AtomicReference<Product> temp = null;
+        productsByName.forEach((k, v) -> {
+            if (v.getId() == id)
+                temp.set(v);
+        });
+        return temp.get();
     }
 
     public Product getProductByName(String name) {

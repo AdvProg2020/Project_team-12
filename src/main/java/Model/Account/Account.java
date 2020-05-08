@@ -41,4 +41,8 @@ public abstract class Account {
     public abstract String toString();
 
     public abstract void writeInfoInFile();
+
+    public void addDiscountCode(DiscountCode discountCode){
+        allDiscountCodes.add(discountCode);
+    }
 }

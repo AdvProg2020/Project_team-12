@@ -10,7 +10,24 @@ public class Config {
     private final String[] accountsPath = {"Resources/Accounts/Customers","Resources/Accounts/Sellers","Resources/Accounts/Managers"};
     private final String productsPath = "Resources/Products";
     private final String[] discountsPath ={ "Resources/Discounts/CodedDiscounts","Resources/Discounts/Auctions"};
-
+    public enum AccountsPath{CUSTOMER (0),SELLER(1),MANAGER(2);
+        private int num;
+        AccountsPath(int i) {
+            num = i;
+        }
+        int getNum(){
+            return num;
+        }
+    }
+    public enum DiscountsPath{DISCOUNTCODE (0),AUCTION(1);
+        private int num;
+        DiscountsPath(int i) {
+            num = i;
+        }
+        int getNum(){
+            return num;
+        }
+    }
     public static Config getInstance() {
         if (Instance == null) {
             try {
