@@ -150,13 +150,18 @@ public class Product {
                 remainingItems == product.remainingItems &&
                 name.equals(product.name) &&
                 brand.equals(product.brand) &&
-                specifications.equals(product.specifications) &&
-                Description.equals(product.Description) &&
+                Objects.equals(specifications, product.specifications) &&
+                Objects.equals(Description, product.Description) &&
                 status == product.status &&
                 Objects.equals(allSellers, product.allSellers) &&
-                allSubmittedScores.equals(product.allSubmittedScores) &&
-                allReviews.equals(product.allReviews) &&
+                Objects.equals(parent, product.parent) &&
+                Objects.equals(allSubmittedScores, product.allSubmittedScores) &&
+                Objects.equals(allReviews, product.allReviews) &&
                 Objects.equals(categoryPath, product.categoryPath);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, brand, specifications, Description, id, status, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
+    }
 }
