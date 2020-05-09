@@ -5,14 +5,13 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Product {
     @Expose
     private String name;
     @Expose
     private String brand;
-    @Expose
-    private int price;
     @Expose
     private HashMap<String, String> specifications;
     @Expose
@@ -33,12 +32,11 @@ public class Product {
     private ArrayList<Review> allReviews;
     @Expose
     private String categoryPath;
-    public Product(int id, Status status, String name, String brand, int price, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
+    public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
         this.status = status;
         this.name = name;
         this.brand = brand;
-        this.price = price;
         this.remainingItems = remainingItems;
         this.specifications = specifications;
         Description = description;
@@ -75,14 +73,6 @@ public class Product {
 
     public void setBrand(String brand) {
         this.brand = brand;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getRemainingItems() {
@@ -131,5 +121,47 @@ public class Product {
 
     public void setCategoryPath(String categoryPath) {
         this.categoryPath = categoryPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
+                ", specifications=" + specifications +
+                ", Description='" + Description + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", remainingItems=" + remainingItems +
+                ", allSellers=" + allSellers +
+                ", parent=" + parent +
+                ", allSubmittedScores=" + allSubmittedScores +
+                ", allReviews=" + allReviews +
+                ", categoryPath='" + categoryPath + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id &&
+                remainingItems == product.remainingItems &&
+                name.equals(product.name) &&
+                brand.equals(product.brand) &&
+                Objects.equals(specifications, product.specifications) &&
+                Objects.equals(Description, product.Description) &&
+                status == product.status &&
+                Objects.equals(allSellers, product.allSellers) &&
+                Objects.equals(parent, product.parent) &&
+                Objects.equals(allSubmittedScores, product.allSubmittedScores) &&
+                Objects.equals(allReviews, product.allReviews) &&
+                Objects.equals(categoryPath, product.categoryPath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, brand, specifications, Description, id, status, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
     }
 }

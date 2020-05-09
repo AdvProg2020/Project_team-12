@@ -2,6 +2,8 @@ package Model.ProductsOrganization;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.Objects;
+
 public class ProductInfo {
     @Expose
     private int quantity;
@@ -33,5 +35,21 @@ public class ProductInfo {
 
     public String getPName() {
         return PName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductInfo that = (ProductInfo) o;
+        return quantity == that.quantity &&
+                Double.compare(that.price, price) == 0 &&
+                PName.equals(that.PName) &&
+                Objects.equals(product, that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(quantity, price, PName, product);
     }
 }

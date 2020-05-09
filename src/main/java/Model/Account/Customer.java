@@ -6,6 +6,7 @@ import Model.ProductsOrganization.Cart;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Customer extends Account {
     @Expose(serialize = false,deserialize = false)
@@ -24,8 +25,5 @@ public class Customer extends Account {
 
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
+
 }

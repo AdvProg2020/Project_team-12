@@ -4,6 +4,7 @@ import Model.Discount.DiscountCode;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class Account {
     @Expose
@@ -21,7 +22,7 @@ public abstract class Account {
     @Expose
     private double credit;
     @Expose(serialize = false, deserialize = false)
-    private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+    private ArrayList<DiscountCode> allDiscountCodes;
 
 
 
@@ -32,13 +33,50 @@ public abstract class Account {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        allDiscountCodes = new ArrayList<DiscountCode>();
     }
 
     public String getUsername() {
         return username;
     }
 
-    public abstract String toString();
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", credit=" + credit +
+                ", allDiscountCodes=" + allDiscountCodes +
+                '}';
+    }
 
     public abstract void writeInfoInFile();
+
+    public void addDiscountCode(DiscountCode discountCode){
+        allDiscountCodes.add(discountCode);
+    }
+
+    public void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
+        this.allDiscountCodes = allDiscountCodes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Double.compare(account.credit, credit) == 0 &&
+                username.equals(account.username) &&
+                firstName.equals(account.firstName) &&
+                lastName.equals(account.lastName) &&
+                emailAddress.equals(account.emailAddress) &&
+                phoneNumber.equals(account.phoneNumber) &&
+                password.equals(account.password) &&
+                Objects.equals(allDiscountCodes, account.allDiscountCodes);
+    }
+
 }

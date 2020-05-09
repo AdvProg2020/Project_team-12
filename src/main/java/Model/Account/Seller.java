@@ -32,6 +32,11 @@ public class Seller extends Account {
 
     @Override
     public String toString() {
-        return null;
+        return super.toString() +"Seller{" +
+                "companyInformation='" + companyInformation + '\'' +
+                ", sellLogs=" + sellLogs +
+                ", allProducts=" + allProducts +
+                '}';
     }
 }
+

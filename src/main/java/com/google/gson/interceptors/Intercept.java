@@ -55,10 +55,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Intercept {
 
-    /**
-     * Specify the class that provides the methods that should be invoked after an instance
-     * has been deserialized.
-     */
-    @SuppressWarnings("rawtypes")
-    public Class<? extends JsonPostDeserializer> postDeserialize();
+  /**
+   * Specify the class that provides the methods that should be invoked after an instance
+   * has been deserialized.
+   */
+  @SuppressWarnings("rawtypes")
+  public Class<? extends JsonPostDeserializer> postDeserialize();
 }
