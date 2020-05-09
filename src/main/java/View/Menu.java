@@ -1,5 +1,7 @@
 package View;
 
+import Controller.DataBase.DataCenter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -10,6 +12,7 @@ public abstract class Menu {
     protected HashMap<Integer, Menu> submenus;
     protected ArrayList<String> commands;
     protected Scanner scanner = InputUtility.getInstance();
+    protected DataCenter dataCenter = new DataCenter();
 
     public Menu(String name, Menu parentMenu) {
         this.name = name;

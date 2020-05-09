@@ -1,14 +1,17 @@
 package Controller.CommandProcessors;
 
+import Controller.DataBase.DataCenter;
 import Model.Account.*;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 
 public class TestCommandProcessor {
-    Account loggedInAccount;
+    private Account loggedInAccount;
+    private DataCenter dataCenter;
 
     public TestCommandProcessor() {
         this.loggedInAccount = null;
+        this.dataCenter = new DataCenter();
     }
 
     public String getProfileType() {
@@ -27,54 +30,56 @@ public class TestCommandProcessor {
     }
 
     public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress)throws Exception{
-
-        //write account info in data base
-        //create new account
-        //set loggedInAccount
-
+        Account newAccount;
+        if (role.equals("customer")) {
+            newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
+            dataCenter.saveAccount((Customer) newAccount);
+        }else if (role.equals("seller")){
+            //send a request to manager
+        }
     }
 
     public void login(String username, String password) throws Exception{
-        if (!checkPassword(password));
+        setLoggedInAccount(dataCenter.getAccountByName(username));
+        if (!checkPassword(password)) {
+            setLoggedInAccount(null);
             throw new RegisterPanelException("incorrect password");
-
-        //read files
-        //get account object with username
-        //set loggedInAccount by username
-
+        }
     }
 
-
     public boolean doesUsernameExists(String username){
-        //check if username exists
+        //check if username Exists
         return true;
     }
 
+
     public boolean checkPassword(String password){
-        //check if password is true
+
+        //check this.loggedInAccount.Password
+
         return true;
     }
 
     public String getPersonalInfo(){
         String personalInfo = "";
 
-        //read files and get personal info og loggedInAccount
+        //this.loggedInAccount.getPersonalInfo
 
         return personalInfo;
     }
 
     public void editPersonalInfo(String field, String newValue) throws Exception{
-        /*String password = getField("password", "\\S+");
-                String firstName = getField("first name", "\\w+");
-                String lastName = getField("last name", "\\w+");
-                String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
-                String phoneNumber = getField("phone number", "(\\d+)$");*/
         if ((field.equals("first name") || field.equals("last name")) && !newValue.matches("\\w+")) {
-            throw new InvalidCommandException("invalid field input");
+            throw new InvalidCommandException("illegal field input");
         } else if (field.equals("phone number") && !newValue.matches("(\\d+)$")) {
+            throw new InvalidCommandException("invalid field input");
+        } else if (field.equals("email address") && !newValue.matches("(\\w+)@(\\w+)\\.(\\w+)$")) {
+            throw new InvalidCommandException("invalid field input");
+        } else if (field.equals("password") && !newValue.matches("\\S+")) {
             throw new InvalidCommandException("invalid field input");
         }
         //change the field in loggedInAccount
         //write new object in file
+        //or create new object -> delete previous version and save new object
     }
 }
