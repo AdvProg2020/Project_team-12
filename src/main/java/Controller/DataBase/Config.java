@@ -1,19 +1,15 @@
-package Model;
+package Controller.DataBase;
 
-import Controller.Json.JsonFileReader;
+import Controller.DataBase.Json.JsonFileReader;
 
 import java.io.FileNotFoundException;
 
 public class Config {
     private static final String configPath = "configurations.json";
     private static Config Instance;
-    private String usersPath;
-    private String channelsPath;
-
-    private Config() {
-        this.usersPath = "Resources/Accounts";
-        this.channelsPath = "Resources/Products";
-    }
+    private final String[] accountsPath = {"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
+    private final String productsPath = "Resources/Products";
+    private final String[] discountsPath = {"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
 
     public static Config getInstance() {
         if (Instance == null) {
@@ -24,23 +20,18 @@ public class Config {
                 Instance = new Config();
             }
         }
-
         return Instance;
     }
 
-    public String getAccountsPath() {
-        return usersPath;
-    }
-
-    public void setAccountsPath(String usersPath) {
-        this.usersPath = usersPath;
+    public String[] getAccountsPath() {
+        return accountsPath;
     }
 
     public String getProductsPath() {
-        return channelsPath;
+        return productsPath;
     }
 
-    public void setProductsPath(String channelsPath) {
-        this.channelsPath = channelsPath;
+    public String[] getDiscountsPath() {
+        return discountsPath;
     }
 }

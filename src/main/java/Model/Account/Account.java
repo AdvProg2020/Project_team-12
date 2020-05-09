@@ -1,18 +1,28 @@
 package Model.Account;
 
 import Model.Discount.DiscountCode;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 
 public abstract class Account {
+    @Expose
     private String username;
+    @Expose
     private String firstName;
+    @Expose
     private String lastName;
+    @Expose
     private String emailAddress;
+    @Expose
     private String phoneNumber;
+    @Expose
     private String password;
-    private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+    @Expose
     private double credit;
+    @Expose(serialize = false, deserialize = false)
+    private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+
 
 
     public Account(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password) {

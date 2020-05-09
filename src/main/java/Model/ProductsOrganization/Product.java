@@ -1,25 +1,38 @@
 package Model.ProductsOrganization;
 
-import Model.Account.Seller;
 import Model.Status;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Product {
-    private int id;
-    private Status status;
+    @Expose
     private String name;
+    @Expose
     private String brand;
+    @Expose
     private int price;
-    private int remainingItems;
-    private HashMap<String,Seller> allSellers;
+    @Expose
     private HashMap<String, String> specifications;
+    @Expose
     private String Description;
+    @Expose
+    private int id;
+    @Expose
+    private Status status;
+    @Expose
+    private int remainingItems;
+    @Expose
+    private ArrayList<String> allSellers;
+    @Expose(serialize = false, deserialize = false)
     private Category parent;
+    @Expose
     private ArrayList<Score> allSubmittedScores;
+    @Expose
     private ArrayList<Review> allReviews;
-
+    @Expose
+    private String categoryPath;
     public Product(int id, Status status, String name, String brand, int price, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
         this.status = status;
@@ -112,4 +125,11 @@ public class Product {
         this.allReviews = allReviews;
     }
 
+    public String getCategoryPath() {
+        return categoryPath;
+    }
+
+    public void setCategoryPath(String categoryPath) {
+        this.categoryPath = categoryPath;
+    }
 }

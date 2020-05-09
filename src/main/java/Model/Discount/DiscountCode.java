@@ -1,22 +1,29 @@
 package Model.Discount;
 
 import Model.Account.Account;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class DiscountCode extends Discount {
+    @Expose
     private String code;
+    @Expose
     private int maximumDiscountAmount;
+    @Expose
     private int maximumNumberOfUsages;
-    private ArrayList<Account> allAllowedAccounts;
+    @Expose(serialize = false, deserialize = false)
+    private ArrayList<Account> allAllowedAccounts = new ArrayList<>();
 
-    public DiscountCode(Date start, Date end, double percent, String code, int maximumDiscountAmount, int maximumNumberOfUsages, ArrayList<Account> allAllowedAccounts) {
+    public DiscountCode(Date start, Date end, double percent, String code, int maximumDiscountAmount, int maximumNumberOfUsages) {
         super(start, end, percent);
         this.code = code;
         this.maximumDiscountAmount = maximumDiscountAmount;
         this.maximumNumberOfUsages = maximumNumberOfUsages;
-        this.allAllowedAccounts = allAllowedAccounts;
     }
 
+    public void addAllowedAccount(Account account){
+        allAllowedAccounts.add(account);
+    }
 }
