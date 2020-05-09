@@ -98,11 +98,6 @@ public class RegisterPanel extends Menu {
         };
     }
 
-    private Matcher getMatcher(String regex, String input) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(input);
-    }
-
     @Override
     public Menu getCommand() throws Exception {
         System.out.println("what do you want to do?\n");

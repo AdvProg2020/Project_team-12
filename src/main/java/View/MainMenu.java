@@ -78,9 +78,4 @@ public class MainMenu extends Menu {
         }
         throw new InvalidCommandException("invalid command");
     }
-
-    @Override
-    public Menu getCommand() throws Exception {
-        return null;
-    }
 }
