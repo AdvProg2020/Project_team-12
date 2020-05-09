@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class DiscountCode extends Discount {
     @Expose
@@ -34,5 +35,21 @@ public class DiscountCode extends Discount {
 
     public ArrayList<Account> getAllAllowedAccounts() {
         return allAllowedAccounts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DiscountCode that = (DiscountCode) o;
+        return maximumDiscountAmount == that.maximumDiscountAmount &&
+                maximumNumberOfUsages == that.maximumNumberOfUsages &&
+                code.equals(that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), code, maximumDiscountAmount, maximumNumberOfUsages, allAllowedAccounts);
     }
 }

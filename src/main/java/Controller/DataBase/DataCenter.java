@@ -104,9 +104,12 @@ public class DataCenter {
 
     private void initDiscountsEach(File discountsDir, JsonFileReader reader) {
         File[] discountsFileArr = discountsDir.listFiles();
+
         if (discountsFileArr != null) {
             Arrays.stream(discountsFileArr).map((file) -> {
                 try {
+                    if (file.getPath().contains("discountcode.accounts.json") ||file.getPath().contains("auction.products.json") )
+                        return null;
                     return reader.read(file, Discount.class);
                 } catch (FileNotFoundException var4) {
                     return null;
@@ -137,10 +140,10 @@ public class DataCenter {
         JsonFileReader reader = new JsonFileReader();
         try {
             File file = new File(generateAuctionProductsFilePath(auction.getId()));
-            ArrayList<Integer> strings = reader.read(file, ArrayList.class);
+            ArrayList<Double> strings = reader.read(file, ArrayList.class);
             ArrayList<Product> products = new ArrayList<>();
-            for (int id : strings) {
-                products.add(getProductById(id));
+            for (double id : strings) {
+                products.add(getProductById((int)id));
             }
             ((Auction) auction).setAllIncludedProducts(products);
             discounts.add(auction);
@@ -203,6 +206,13 @@ public class DataCenter {
             productsByName.put(product.getName(), product);
     }
 
+    public void saveDiscount(Discount discount) throws IOException {
+        if (discount instanceof Auction) {
+            saveDiscount((Auction) discount);
+        } else {
+            saveDiscount((DiscountCode) discount);
+        }
+    }
 
     public void saveDiscount(Auction auction) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
@@ -276,5 +286,21 @@ public class DataCenter {
 
     public Product getProductByName(String name) {
         return productsByName.get(name);
+    }
+
+    public DiscountCode getDiscountcodeWithId(int id) throws Exception {
+        for (Discount discount : discounts) {
+            if (discount instanceof DiscountCode && discount.getId() == id)
+                return (DiscountCode) discount;
+        }
+        throw new Exception("discount not found");
+    }
+
+    public Auction getAuctionWithId(int id) throws Exception {
+        for (Discount discount : discounts) {
+            if (discount instanceof Auction && discount.getId() == id)
+                return (Auction) discount;
+        }
+        throw new Exception("discount not found");
     }
 }

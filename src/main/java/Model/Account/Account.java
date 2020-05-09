@@ -4,6 +4,7 @@ import Model.Discount.DiscountCode;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class Account {
     @Expose
@@ -62,4 +63,20 @@ public abstract class Account {
     public void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
         this.allDiscountCodes = allDiscountCodes;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Double.compare(account.credit, credit) == 0 &&
+                username.equals(account.username) &&
+                firstName.equals(account.firstName) &&
+                lastName.equals(account.lastName) &&
+                emailAddress.equals(account.emailAddress) &&
+                phoneNumber.equals(account.phoneNumber) &&
+                password.equals(account.password) &&
+                Objects.equals(allDiscountCodes, account.allDiscountCodes);
+    }
+
 }

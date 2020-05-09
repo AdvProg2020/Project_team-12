@@ -3,6 +3,7 @@ package Model.Discount;
 import com.google.gson.annotations.Expose;
 
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Discount {
     @Expose
@@ -35,5 +36,21 @@ public abstract class Discount {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Discount discount = (Discount) o;
+        return Double.compare(discount.percent, percent) == 0 &&
+                id == discount.id &&
+                start.equals(discount.start) &&
+                end.equals(discount.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end, percent, id);
     }
 }

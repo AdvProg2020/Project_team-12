@@ -28,7 +28,7 @@ public class Review {
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
         return isBuyer == review.isBuyer &&
-                description.equals(review.description) &&
+                Objects.equals(description, review.description) &&
                 status == review.status;
     }
 

@@ -30,4 +30,5 @@ public class Score {
     public String toString() {
         return "Score{}";
     }
+
 }
