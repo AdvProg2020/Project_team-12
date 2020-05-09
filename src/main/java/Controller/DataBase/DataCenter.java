@@ -274,6 +274,14 @@ public class DataCenter {
         return accountsByUsername.get(name);
     }
 
+    public boolean doesUsernameExist(String username){
+        for (String accountUsername : accountsByUsername.keySet()) {
+            if(username.equals(accountUsername))
+                return true;
+        }
+        return false;
+    }
+
     public Product getProductById(int id) {
         AtomicReference<Product> temp = new AtomicReference<>();
         productsByName.forEach((k, v) -> {

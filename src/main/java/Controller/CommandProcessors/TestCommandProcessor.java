@@ -48,8 +48,7 @@ public class TestCommandProcessor {
     }
 
     public boolean doesUsernameExists(String username){
-        //check if username Exists
-        return true;
+        return dataCenter.doesUsernameExist(username);
     }
 
 
