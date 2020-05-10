@@ -1,18 +1,17 @@
 package Model.ProductsOrganization;
 
-import Model.Account.Account;
+import com.google.gson.annotations.Expose;
+
+import java.util.Objects;
 
 public class Review {
-    private Account account;
-    private Product product;
+    @Expose
     private String description;
-    private enum Status {TO_BE_CONFIRMED, CONFIRMED, UNCONFIRMED}
+    @Expose
     private Status status;
+    @Expose
     private boolean isBuyer;
-
-    public Review(Account account, Product product, String description, Status status, boolean isBuyer) {
-        this.account = account;
-        this.product = product;
+    public Review(String description, Status status, boolean isBuyer) {
         this.description = description;
         this.status = status;
         this.isBuyer = isBuyer;
@@ -22,4 +21,21 @@ public class Review {
     public String toString() {
         return "";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return isBuyer == review.isBuyer &&
+                Objects.equals(description, review.description) &&
+                status == review.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, status, isBuyer);
+    }
+
+    public enum Status {TO_BE_CONFIRMED, CONFIRMED, UNCONFIRMED}
 }
