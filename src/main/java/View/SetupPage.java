@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CommandProcessors.TestCommandProcessor;
 import Controller.DataBase.Json.JsonFileWriter;
 import Model.Account.Customer;
 import Model.Discount.DiscountCode;
@@ -14,20 +15,17 @@ import java.util.Scanner;
 
 public class SetupPage {
     public static void main(String[] args) {
-        MainMenu mainMenu = new MainMenu();
         System.out.println("welcome");
         System.out.println("press enter to continue");
         Scanner scanner = InputUtility.getInstance();
         scanner.nextLine();
-        if (Files.exists(Paths.get("D:\\Codes(java)\\Project\\src\\main\\resources\\accounts"))) {
-            mainMenu.show();
-            mainMenu.run();
-        } else {
+        if (!TestCommandProcessor.managerExists()) {
             System.out.println("no administrator is set yet\npress enter to setup");
             SetupPage.run();
-            mainMenu.show();
-            mainMenu.run();
         }
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.show();
+        mainMenu.run();
     }
 
     public static void run() {
@@ -36,12 +34,13 @@ public class SetupPage {
             Scanner scanner = InputUtility.getInstance();
             String command = scanner.nextLine();
             if (command.equals("1") | command.equals("setup")) {
-                File file = new File("D:\\Codes(java)\\Project\\src\\main\\resources\\accounts");
+                //TODO:Register first manager, it need a method which has not been created yet
+                /*File file = new File("D:\\Codes(java)\\Project\\src\\main\\resources\\accounts");
                 if (file.mkdir()) {
                     //register first manager
                 } else {
                     System.out.println("something went wrong please try later");
-                }
+                }*/
             } else if (command.equals("2") | command.equals("exit")) {
                 return;
             } else {

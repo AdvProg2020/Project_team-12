@@ -1,9 +1,12 @@
 package Controller.CommandProcessors;
 
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.*;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
+
+import java.io.File;
 
 public class TestCommandProcessor {
     private Account loggedInAccount;
@@ -12,6 +15,13 @@ public class TestCommandProcessor {
     public TestCommandProcessor() {
         this.loggedInAccount = null;
         this.dataCenter = new DataCenter();
+    }
+
+    public static boolean managerExists() {
+        File file = new File(Config.getInstance().getAccountsPath()[Config.AccountsPath.MANAGER.getNum()]);
+        if (!file.exists() || file.listFiles().length == 0)
+            return false;
+        return true;
     }
 
     public String getProfileType() {
@@ -48,7 +58,7 @@ public class TestCommandProcessor {
     }
 
     public boolean doesUsernameExists(String username){
-        return dataCenter.doesUsernameExist(username);
+        return dataCenter.userExistWithUsername(username);
     }
 
 

@@ -132,7 +132,6 @@ public class DataCenter {
             discount.setAllAllowedAccounts(accounts);
             discounts.add(discount);
         } catch (FileNotFoundException var1) {
-            throw new Exception("not enough info for auction with id" + discount.getId());
         }
     }
 
@@ -148,7 +147,6 @@ public class DataCenter {
             ((Auction) auction).setAllIncludedProducts(products);
             discounts.add(auction);
         } catch (FileNotFoundException var1) {
-            throw new Exception("not enough info for auction with id:" + auction.getId());
         }
     }
 
@@ -274,7 +272,7 @@ public class DataCenter {
         return accountsByUsername.get(name);
     }
 
-    public boolean doesUsernameExist(String username){
+    public boolean userExistWithUsername(String username){
         for (String accountUsername : accountsByUsername.keySet()) {
             if(username.equals(accountUsername))
                 return true;
@@ -296,19 +294,60 @@ public class DataCenter {
         return productsByName.get(name);
     }
 
-    public DiscountCode getDiscountcodeWithId(int id) throws Exception {
+    public DiscountCode getDiscountcodeWithId(int id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount instanceof DiscountCode && discount.getId() == id)
+            if (discount != null && discount instanceof DiscountCode && discount.getId() == id)
                 return (DiscountCode) discount;
         }
-        throw new Exception("discount not found");
+        throw new BadRequestException("discount not found");
     }
 
-    public Auction getAuctionWithId(int id) throws Exception {
+    public Auction getAuctionWithId(int id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount instanceof Auction && discount.getId() == id)
+            if ( discount != null && discount instanceof Auction && discount.getId() == id)
                 return (Auction) discount;
         }
-        throw new Exception("discount not found");
+        throw new BadRequestException("Auction not found");
     }
+
+    public Product getProductWithId(int id) throws BadRequestException {
+        for (Product product : productsByName.values()) {
+            if (product!= null && product.getId() == id)
+                return product;
+        }
+        throw new BadRequestException("product with this id hasn't found");
+    }
+
+    public boolean productExistWithId(int id){
+        for (Product product : productsByName.values()) {
+            if (product!= null && product.getId() == id)
+                return true;
+        }
+        return false;
+    }
+    public boolean auctionExistsWithId(int id){
+        for (Discount discount : discounts) {
+            if ( discount != null && discount instanceof Auction && discount.getId() == id)
+                return true;
+        }
+        return false;
+    }
+    public boolean discountcodeExistsWithId(int id){
+        for (Discount discount : discounts) {
+            if ( discount != null && discount instanceof DiscountCode && discount.getId() == id)
+                return true;
+        }
+        return false;
+    }
+
+}
+class BadRequestException extends Exception{
+    public BadRequestException() {
+        super();
+    }
+
+    public BadRequestException(String message) {
+        super(message);
+    }
+
 }
