@@ -15,7 +15,7 @@ public class Config {
         AccountsPath(int i) {
             num = i;
         }
-        int getNum(){
+        public int getNum(){
             return num;
         }
     }
@@ -24,7 +24,7 @@ public class Config {
         DiscountsPath(int i) {
             num = i;
         }
-        int getNum(){
+        public int getNum(){
             return num;
         }
     }

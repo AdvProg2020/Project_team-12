@@ -19,8 +19,6 @@ public class Product {
     @Expose
     private int id;
     @Expose
-    private Status status;
-    @Expose
     private int remainingItems;
     @Expose
     private ArrayList<String> allSellers;
@@ -34,7 +32,6 @@ public class Product {
     private String categoryPath;
     public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
-        this.status = status;
         this.name = name;
         this.brand = brand;
         this.remainingItems = remainingItems;
@@ -49,14 +46,6 @@ public class Product {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public String getName() {
@@ -131,7 +120,6 @@ public class Product {
                 ", specifications=" + specifications +
                 ", Description='" + Description + '\'' +
                 ", id=" + id +
-                ", status=" + status +
                 ", remainingItems=" + remainingItems +
                 ", allSellers=" + allSellers +
                 ", parent=" + parent +
@@ -152,7 +140,6 @@ public class Product {
                 brand.equals(product.brand) &&
                 Objects.equals(specifications, product.specifications) &&
                 Objects.equals(Description, product.Description) &&
-                status == product.status &&
                 Objects.equals(allSellers, product.allSellers) &&
                 Objects.equals(parent, product.parent) &&
                 Objects.equals(allSubmittedScores, product.allSubmittedScores) &&
@@ -162,6 +149,6 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, brand, specifications, Description, id, status, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
+        return Objects.hash(name, brand, specifications, Description, id, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
     }
 }

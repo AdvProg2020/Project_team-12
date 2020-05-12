@@ -1,5 +1,6 @@
 package Controller.CommandProcessors;
 
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.*;
 import View.Exceptions.InvalidCommandException;
@@ -8,6 +9,8 @@ import View.Exceptions.RegisterPanelException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import java.io.File;
+
 public class TestCommandProcessor {
     private Account loggedInAccount;
     private DataCenter dataCenter;
@@ -15,6 +18,13 @@ public class TestCommandProcessor {
     public TestCommandProcessor() {
         this.loggedInAccount = null;
         this.dataCenter = new DataCenter();
+    }
+
+    public static boolean managerExists() {
+        File file = new File(Config.getInstance().getAccountsPath()[Config.AccountsPath.MANAGER.getNum()]);
+        if (!file.exists() || file.listFiles().length == 0)
+            return false;
+        return true;
     }
 
     public String getProfileType() {
@@ -51,7 +61,7 @@ public class TestCommandProcessor {
     }
 
     public boolean doesUsernameExists(String username){
-        return dataCenter.doesUsernameExist(username);
+        return dataCenter.userExistWithUsername(username);
     }
 
 
@@ -93,7 +103,7 @@ public class TestCommandProcessor {
         //write new object in file
         //or create new object -> delete previous version and save new object
     }
-    
+
     public Set<String> getAllAccountsInfo(){
         //this method is only used for manager
         return dataCenter.getAllAccountsInfo();

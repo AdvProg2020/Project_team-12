@@ -1,5 +1,6 @@
 package Model.ProductsOrganization;
 
+import Model.Status;
 import com.google.gson.annotations.Expose;
 
 import java.util.Objects;
@@ -11,6 +12,8 @@ public class ProductInfo {
     private double price;
     @Expose
     private String PName;
+    @Expose
+    private Status status;
     @Expose(serialize = false,deserialize = false)
     private Product product;
 
