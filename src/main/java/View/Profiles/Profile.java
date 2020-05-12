@@ -9,7 +9,7 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
-    private TestCommandProcessor testCommandProcessor;
+    protected TestCommandProcessor testCommandProcessor;
 
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);

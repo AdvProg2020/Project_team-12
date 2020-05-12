@@ -5,6 +5,9 @@ import Model.Account.*;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 public class TestCommandProcessor {
     private Account loggedInAccount;
     private DataCenter dataCenter;
@@ -67,6 +70,15 @@ public class TestCommandProcessor {
         return personalInfo;
     }
 
+    public String getPersonalInfo(String username){
+        String personalInfo = "";
+        Account account = dataCenter.getAccountByName(username);
+
+        //account.getPersonalInfo
+
+        return personalInfo;
+    }
+
     public void editPersonalInfo(String field, String newValue) throws Exception{
         if ((field.equals("first name") || field.equals("last name")) && !newValue.matches("\\w+")) {
             throw new InvalidCommandException("illegal field input");
@@ -80,5 +92,16 @@ public class TestCommandProcessor {
         //change the field in loggedInAccount
         //write new object in file
         //or create new object -> delete previous version and save new object
+    }
+    
+    public Set<String> getAllAccountsInfo(){
+        //this method is only used for manager
+        return dataCenter.getAllAccountsInfo();
+    }
+
+    public void deleteAccount(String username) throws Exception{
+        if (!dataCenter.doesUsernameExist(username))
+            throw new RegisterPanelException("username doesn't exist");
+        //call delete Account in data center
     }
 }

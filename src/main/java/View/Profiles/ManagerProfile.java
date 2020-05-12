@@ -52,7 +52,11 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get accounts info and show
+                String[] allAccountsInfo = (String[]) testCommandProcessor.getAllAccountsInfo().toArray();
+                for (int i = 1; i <= allAccountsInfo.length; i++) {
+                    System.out.println(i + ". " + allAccountsInfo[i - 1]);
+                }
+                System.out.println("\n");
                 showCommands();
             }
 
@@ -66,11 +70,11 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view account method by commandDetails[1]
+                    System.out.println(testCommandProcessor.getPersonalInfo(commandDetails[1]));
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling delete account method by commandDetails[2]
+                    testCommandProcessor.deleteAccount(commandDetails[2]);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     String password = getField("password", "\\S+");
@@ -308,7 +312,7 @@ public class ManagerProfile extends Profile {
 
     @Override
     public void show() {
-        System.out.println(this.getName()+"\ncommands\n");
+        System.out.println(this.getName() + "\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
         }

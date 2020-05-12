@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
@@ -275,6 +276,7 @@ public class DataCenter {
     }
 
     public boolean doesUsernameExist(String username){
+        //new
         for (String accountUsername : accountsByUsername.keySet()) {
             if(username.equals(accountUsername))
                 return true;
@@ -310,5 +312,13 @@ public class DataCenter {
                 return (Auction) discount;
         }
         throw new Exception("discount not found");
+    }
+
+    public Set<String> getAllAccountsInfo(){
+        return this.accountsByUsername.keySet();
+    }
+
+    public Set<String> getAllProductsInfo(){
+        return this.productsByName.keySet();
     }
 }
