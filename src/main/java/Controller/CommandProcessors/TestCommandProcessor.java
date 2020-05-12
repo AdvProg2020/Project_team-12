@@ -14,7 +14,7 @@ public class TestCommandProcessor {
 
     public TestCommandProcessor() {
         this.loggedInAccount = null;
-        this.dataCenter = new DataCenter();
+        this.dataCenter = DataCenter.getInstance();
     }
 
     public static boolean managerExists() {
@@ -91,4 +91,6 @@ public class TestCommandProcessor {
         //write new object in file
         //or create new object -> delete previous version and save new object
     }
+
+
 }

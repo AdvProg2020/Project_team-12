@@ -13,7 +13,6 @@ public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
     private TestCommandProcessor testCommandProcessor;
-
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
         this.testCommandProcessor = new TestCommandProcessor();
@@ -25,7 +24,9 @@ public class RegisterPanel extends Menu {
     }
 
     public void setCommands() {
-        commands.add("create account (manager|seller|customer) (\\S+)$");
+        //I have deleted the manager option in create account bcz only a manager can create manager account
+
+        commands.add("create account (seller|customer) (\\S+)$");
         commands.add("login (\\S+)$");
         commands.add("logout");
         commands.add("back");
