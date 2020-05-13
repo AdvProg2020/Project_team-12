@@ -42,17 +42,17 @@ public class TestCommandProcessor {
         this.loggedInAccount = loggedInAccount;
     }
 
-    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress)throws Exception{
+    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
         Account newAccount;
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
             dataCenter.saveAccount((Customer) newAccount);
-        }else if (role.equals("seller")){
+        } else if (role.equals("seller")) {
             //send a request to manager
         }
     }
 
-    public void login(String username, String password) throws Exception{
+    public void login(String username, String password) throws Exception {
         setLoggedInAccount(dataCenter.getAccountByName(username));
         if (!checkPassword(password)) {
             setLoggedInAccount(null);
@@ -60,36 +60,28 @@ public class TestCommandProcessor {
         }
     }
 
-    public boolean doesUsernameExists(String username){
+    public boolean doesUsernameExists(String username) {
         return dataCenter.userExistWithUsername(username);
     }
 
 
-    public boolean checkPassword(String password){
-
-        //check this.loggedInAccount.Password
-
-        return true;
+    public boolean checkPassword(String password) {
+        if (this.loggedInAccount.getPassword().equals(password))
+            return true;
+        else
+            return false;
     }
 
-    public String getPersonalInfo(){
-        String personalInfo = "";
-
-        //this.loggedInAccount.getPersonalInfo
-
-        return personalInfo;
+    public String getPersonalInfo() {
+        return loggedInAccount.getPersonalInfo();
     }
 
-    public String getPersonalInfo(String username){
-        String personalInfo = "";
+    public String getPersonalInfo(String username) {
         Account account = dataCenter.getAccountByName(username);
-
-        //account.getPersonalInfo
-
-        return personalInfo;
+        return account.getPersonalInfo();
     }
 
-    public void editPersonalInfo(String field, String newValue) throws Exception{
+    public void editPersonalInfo(String field, String newValue) throws Exception {
         if ((field.equals("first name") || field.equals("last name")) && !newValue.matches("\\w+")) {
             throw new InvalidCommandException("illegal field input");
         } else if (field.equals("phone number") && !newValue.matches("(\\d+)$")) {
@@ -99,17 +91,25 @@ public class TestCommandProcessor {
         } else if (field.equals("password") && !newValue.matches("\\S+")) {
             throw new InvalidCommandException("invalid field input");
         }
-        //change the field in loggedInAccount
-        //write new object in file
-        //or create new object -> delete previous version and save new object
+        if (field.equals("first name"))
+            this.loggedInAccount.setFirstName(newValue);
+        else if (field.equals("last name"))
+            this.loggedInAccount.setLastName(newValue);
+        else if (field.equals("phone number"))
+            this.loggedInAccount.setPhoneNumber(newValue);
+        else if (field.equals("email address"))
+            this.loggedInAccount.setEmailAddress(newValue);
+        else if (field.equals("password"))
+            this.loggedInAccount.setPassword(newValue);
+        dataCenter.saveAccount(loggedInAccount);
     }
 
-    public Set<String> getAllAccountsInfo(){
+    public Set<String> getAllAccountsInfo() {
         //this method is only used for manager
         return dataCenter.getAllAccountsInfo();
     }
 
-    public void deleteAccount(String username) throws Exception{
+    public void deleteAccount(String username) throws Exception {
         if (!dataCenter.doesUsernameExist(username))
             throw new RegisterPanelException("username doesn't exist");
         //call delete Account in data center

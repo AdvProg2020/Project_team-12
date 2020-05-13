@@ -25,7 +25,6 @@ public abstract class Account {
     private ArrayList<DiscountCode> allDiscountCodes;
 
 
-
     public Account(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password) {
         this.username = username;
         this.firstName = firstName;
@@ -56,7 +55,7 @@ public abstract class Account {
 
     public abstract void writeInfoInFile();
 
-    public void addDiscountCode(DiscountCode discountCode){
+    public void addDiscountCode(DiscountCode discountCode) {
         allDiscountCodes.add(discountCode);
     }
 
@@ -79,4 +78,61 @@ public abstract class Account {
                 Objects.equals(allDiscountCodes, account.allDiscountCodes);
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setCredit(double credit) {
+        this.credit = credit;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public double getCredit() {
+        return credit;
+    }
+
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        return allDiscountCodes;
+    }
+
+    public String getPersonalInfo() {
+        String personalInfo = "first name : " + getFirstName() + "\nlast name : " + getLastName() + "\nphone number : "
+                + getPhoneNumber() + "\nemail address : " + getEmailAddress() + "\n";
+        return personalInfo;
+    }
 }
