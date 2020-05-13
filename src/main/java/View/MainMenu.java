@@ -15,7 +15,7 @@ public class MainMenu extends Menu {
     public MainMenu() {
         super("Main Menu", null);
         this.testCommandProcessor = new TestCommandProcessor();
-        submenus = new HashMap<Integer, Menu>();
+        submenus = new HashMap();
         submenus.put(1, this.profile);
         submenus.put(2, new ProductsPage(this));
         submenus.put(3, new AuctionsPage(this));

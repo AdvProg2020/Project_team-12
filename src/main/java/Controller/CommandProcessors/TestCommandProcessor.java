@@ -17,7 +17,7 @@ public class TestCommandProcessor {
 
     public TestCommandProcessor() {
         this.loggedInAccount = null;
-        this.dataCenter = new DataCenter();
+        this.dataCenter = DataCenter.getInstance();
     }
 
     public static boolean managerExists() {
@@ -114,4 +114,6 @@ public class TestCommandProcessor {
             throw new RegisterPanelException("username doesn't exist");
         //call delete Account in data center
     }
+
+
 }

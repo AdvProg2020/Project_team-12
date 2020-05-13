@@ -151,4 +151,12 @@ public class Product {
     public int hashCode() {
         return Objects.hash(name, brand, specifications, Description, id, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
     }
+
+    public Review getReview(Review review) {
+        for (Review allReview : allReviews) {
+            if (review.equals(review))
+                return review;
+        }
+        return null;
+    }
 }

@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class DataCenterUnitTest {
     @Test
     public void DataSaving() throws Exception {
-        DataCenter dataCenter = new DataCenter();
+        DataCenter dataCenter = DataCenter.getInstance();
         Account[] accounts = new Account[3];
         accounts[0] = new Seller("ali", "ali", "ali", "ali", "ali", "ali", "ali");
         ArrayList<DiscountCode> codes = new ArrayList<>();
@@ -55,7 +55,7 @@ public class DataCenterUnitTest {
         Assert.assertEquals(accounts[0], dataCenter.getAccountByName(accounts[0].getUsername()));
         Assert.assertEquals(accounts[1], dataCenter.getAccountByName(accounts[1].getUsername()));
         Assert.assertEquals(accounts[2], dataCenter.getAccountByName(accounts[2].getUsername()));
-        dataCenter = new DataCenter();
+        dataCenter =DataCenter.getInstance();
         productDataSaving(product, dataCenter);
         discountDataSaving(discounts, dataCenter);
     }

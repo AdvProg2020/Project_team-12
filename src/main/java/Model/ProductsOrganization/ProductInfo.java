@@ -55,4 +55,8 @@ public class ProductInfo {
     public int hashCode() {
         return Objects.hash(quantity, price, PName, product);
     }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

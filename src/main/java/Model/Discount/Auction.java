@@ -47,4 +47,7 @@ public class Auction extends Discount {
         this.allIncludedProducts = allIncludedProducts;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
