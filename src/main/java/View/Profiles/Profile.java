@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
@@ -9,11 +10,9 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
-    protected CommandProcessor commandProcessor;
 
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
-        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new RegisterPanel(this));
         submenus.put(2, new ProductsPage(this));
@@ -41,12 +40,16 @@ public class Profile extends Menu {
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
         } else if (command.equals(commands.get(1))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
         } else if (command.equals(commands.get(2))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(1);
         } else if (command.equals(commands.get(3))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(4))) {
             return this;
@@ -70,7 +73,7 @@ public class Profile extends Menu {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                System.out.println(testCommandProcessor.getPersonalInfo());
+                System.out.println(CommandProcessor.getInstance().getPersonalInfo());
                 showCommands();
             }
 
@@ -85,7 +88,7 @@ public class Profile extends Menu {
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
                     String newFieldValue = getField(commandDetails[1], "\\w+");
-                    testCommandProcessor.editPersonalInfo(commandDetails[1], newFieldValue);
+                    CommandProcessor.getInstance().editPersonalInfo(commandDetails[1], newFieldValue);
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     return getGrandFatherMenu();

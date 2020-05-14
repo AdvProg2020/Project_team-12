@@ -8,13 +8,11 @@ import Controller.CommandProcessors.*;
 import java.util.HashMap;
 
 public class MainMenu extends Menu {
-    private CommandProcessor commandProcessor;
     private Profile profile;
     private Profile defaultProfile = new Profile(this);
 
     public MainMenu() {
         super("Main Menu", null);
-        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap();
         submenus.put(1, this.profile);
         submenus.put(2, new ProductsPage(this));
@@ -53,7 +51,7 @@ public class MainMenu extends Menu {
         System.out.println("what do you want to do?\n");
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            String profileType = commandProcessor.getProfileType();
+            String profileType = CommandProcessor.getInstance().getProfileType();
             if (profileType.equals("customer"))
                 setProfile(new CustomerProfile(defaultProfile, this));
             else if (profileType.equals("seller"))
@@ -62,14 +60,19 @@ public class MainMenu extends Menu {
                 setProfile(new ManagerProfile(defaultProfile, this));
             else
                 setProfile(defaultProfile);
+            CommandProcessor.goToSubCommandProcessor(CPS.ProfileCP.getId());
             return submenus.get(1);
         } else if (command.equals(commands.get(1))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
         } else if (command.equals(commands.get(2))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
         } else if (command.equals(commands.get(3))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.PurchasePageCP.getId());
             return submenus.get(4);
         } else if (command.equals(commands.get(4))) {
+            CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(5);
         } else if (command.equals(commands.get(5))) {
             return this;

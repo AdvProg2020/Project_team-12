@@ -2,26 +2,44 @@ package Controller.CommandProcessors;
 
 import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
-import Model.Account.*;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import Model.Discount.DiscountCode;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
-import java.io.File;
-
 public class CommandProcessor {
+    private static CommandProcessor Primitive;
+    private CommandProcessor Parent;
+    protected static CommandProcessor Instance;
     private Account loggedInAccount;
     private DataCenter dataCenter;
 
-    public CommandProcessor() {
+    protected CommandProcessor(CommandProcessor parent) {
+        Parent = parent;
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
+    }
+
+    public static CommandProcessor getInstance(){
+        if (Instance == null){
+            Instance = MainMenuCP.getInstance();
+            Primitive = Instance;
+        }
+        return Instance;
+    }
+
+    public static void setInstance(CommandProcessor instance) {
+        Instance = instance;
     }
 
     public static boolean managerExists() {
@@ -29,6 +47,19 @@ public class CommandProcessor {
         if (!file.exists() || file.listFiles().length == 0)
             return false;
         return true;
+    }
+
+    public static CommandProcessor getPrimitive() {
+        getInstance();
+        return Primitive;
+    }
+
+    public static void setPrimitive(CommandProcessor primitive) {
+        Primitive = primitive;
+    }
+
+    public static void back() {
+        Instance = Instance.getParent();
     }
 
     public String getProfileType() {
@@ -169,5 +200,35 @@ public class CommandProcessor {
         discountCode.setMaximumNumberOfUsages(Integer.parseInt(numberOfUsages));
         discountCode.setAllAllowedAccounts(usersList);
         dataCenter.saveDiscount(discountCode);
+    }
+
+    public static void goToSubCommandProcessor(int ID) throws Exception {
+        switch (ID){
+            case 1:
+                Instance = AuctionsPageCP.getInstance();
+                break;
+            case 2:
+                Instance = MainMenuCP.getInstance();
+                break;
+            case 3:
+                Instance = ProductPageCP.getInstance();
+                break;
+            case 4:
+               Instance =  ProductsPageCP.getInstance();
+                break;
+            case 5:
+                Instance = ProfileCP.getInstance();
+                break;
+            case 6:
+                Instance = PurchasePageCP.getInstance();
+                break;
+            case 7:
+                Instance = RegisterPanelCP.getInstance();
+                break;
+        }
+    }
+
+    public CommandProcessor getParent() {
+        return Parent;
     }
 }

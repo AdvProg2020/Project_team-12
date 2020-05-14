@@ -10,10 +10,8 @@ import java.util.HashMap;
 public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
-    private CommandProcessor commandProcessor;
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
-        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, getRegisterMenu());
         submenus.put(2, getLoginMenu());
