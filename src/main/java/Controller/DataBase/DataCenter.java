@@ -2,13 +2,11 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
-import Model.Account.Account;
-import Model.Account.Customer;
-import Model.Account.Manager;
-import Model.Account.Seller;
+import Model.Account.*;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
+import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductInfo;
 import Model.Request.AuctionRequest;
@@ -16,7 +14,6 @@ import Model.Request.ProductInfoRequest;
 import Model.Request.Request;
 import Model.Request.ReviewRequest;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -194,7 +191,7 @@ public class DataCenter {
             }
             ((Auction) auction).setAllIncludedProducts(products);
             discounts.add(auction);
-        } catch (FileNotFoundException var1) {
+        } catch (FileNotFoundException ignored) {
         }
     }
 
@@ -253,11 +250,6 @@ public class DataCenter {
         writer.write(manager, generateUserFilePath(manager.getUsername(), Config.AccountsPath.MANAGER.getNum(), "manager"), Account.class);
     }
 
-    private void addSavedAccount(Account account) {
-        if (!accountsByUsername.containsValue(account))
-            accountsByUsername.put(account.getUsername(), account);
-    }
-
 
     public void saveProduct(Product product) throws IOException {
         JsonFileWriter writer = new JsonFileWriter();
@@ -304,6 +296,11 @@ public class DataCenter {
     public void saveRequest(Request request) throws IOException {
         JsonFileWriter jsonFileWriter = new JsonFileWriter(requestRuntimeTypeAdapter);
         jsonFileWriter.write(request, generateRequestsFilePath(request.getId()), Request.class);
+    }
+
+    private void addSavedAccount(Account account) {
+        if (!accountsByUsername.containsValue(account))
+            accountsByUsername.put(account.getUsername(), account);
     }
 
     private String generateUserFilePath(String username, int state, String type) {
@@ -367,18 +364,17 @@ public class DataCenter {
         return productsByName.get(name);
     }
 
-    public DiscountCode getDiscountcodeWithCode(String code) throws BadRequestException {
+    public DiscountCode getDiscountcodeWithId(int id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount != null && discount instanceof DiscountCode)
-                if (((DiscountCode) discount).getCode().equals(code))
-                    return (DiscountCode) discount;
+            if (discount instanceof DiscountCode && discount.getId() == id)
+                return (DiscountCode) discount;
         }
         throw new BadRequestException("discount not found");
     }
 
     public Auction getAuctionWithId(int id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount != null && discount instanceof Auction && discount.getId() == id)
+            if (discount instanceof Auction && discount.getId() == id)
                 return (Auction) discount;
         }
         throw new BadRequestException("Auction not found");
@@ -410,7 +406,7 @@ public class DataCenter {
 
     public boolean discountcodeExistsWithId(int id) {
         for (Discount discount : discounts) {
-            if (discount != null && discount instanceof DiscountCode && discount.getId() == id)
+            if (discount instanceof DiscountCode && discount.getId() == id)
                 return true;
         }
         return false;
@@ -419,6 +415,87 @@ public class DataCenter {
     public ArrayList<Request> getAllUnsolvedRequests() {
         return requests;
     }
+
+    public boolean deleteAccount(String username) throws BadRequestException {
+        Account account = accountsByUsername.get(username);
+        for (DiscountCode discountCode : account.getAllDiscountCodes()) {
+            deleteAccountFromDiscountCode(discountCode,account.getUsername());
+        }
+        if (account instanceof Customer)
+            return deleteAccount((Customer) account);
+        else if (account instanceof Manager)
+            return deleteAccount((Manager) account);
+        else if (account instanceof Seller)
+            return deleteAccount((Seller) account);
+        else
+            throw new BadRequestException("Could not find the username.", new Throwable("Not such username found in Data Center"));
+
+    }
+
+    private void deleteAccountFromDiscountCode(DiscountCode discountCode, String username) {
+        discountCode.getAllAllowedAccounts().remove(username);
+    }
+
+    private boolean deleteAccount(Customer customer) {
+        File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "Customer"));
+        customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
+        return file.delete() && accountsByUsername.remove(customer.getUsername(),customer);
+    }
+
+    private boolean deleteAccount(Seller seller) {
+        File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "Manager"));
+        seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
+        for (ProductInfo productInfo : seller.getAllProducts()) {
+            deleteProductInfo(productInfo,seller.getUsername());
+        }
+        seller.getAuctionsId().forEach(this::deleteAuctionWithId);
+        return file.delete() && accountsByUsername.remove(seller.getUsername(),seller);
+    }
+
+    private void deleteAuctionWithId(Integer id)  {
+        try {
+            discounts.remove(getAuctionWithId(id));
+        } catch (BadRequestException ignored) {
+        }
+    }
+
+    private void deleteProductInfo(ProductInfo productInfo, String  username) {
+        if (productInfo.getProduct() != null)
+            productInfo.getProduct().getAllSellers().remove(username);
+    }
+
+
+    private boolean deleteAccount(Manager manager) {
+        File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "Seller"));
+        return file.delete() && accountsByUsername.remove(manager.getUsername(),manager);
+    }
+
+    private boolean deleteProduct(Product product){
+        for (String seller : product.getAllSellers()) {
+            deleteSellerEach(product, seller);
+        }
+        File file = new File(generateProductFilePath(product.getId()));
+        return file.delete() && productsByName.remove(product.getName(),product);
+    }
+
+    private void deleteSellerEach(Product product, String seller) {
+        ((Seller)accountsByUsername.get(seller)).deleteProductInfo(product);
+    }
+
+    public boolean deleteDiscountCode(DiscountCode discountCode){
+        for (Account account : discountCode.getAllAllowedAccounts()) {
+            account.getAllDiscountCodes().remove(discountCode);
+        }
+        File file = new File(generateDiscountCodeAccountsFilePath(discountCode.getId()));
+        return file.delete() && discounts.remove(discountCode);
+    }
+    //TODO: remove category should be written;
+    /*public boolean deleteCategory(Category category){
+
+    }*/
+
+
+
 
     public Set<String> getAllAccountsInfo() {
         return this.accountsByUsername.keySet();
@@ -456,12 +533,24 @@ public class DataCenter {
         }
         return allDiscountCodes;
     }
-}
 
+    public DiscountCode getDiscountcodeWithCode(String code) throws BadRequestException {
+        for (Discount discount : discounts) {
+            if (discount != null && discount instanceof DiscountCode)
+                if (((DiscountCode) discount).getCode().equals(code))
+                    return (DiscountCode) discount;
+        }
+        throw new BadRequestException("discount not found");
+    }
+}
 
 class BadRequestException extends Exception {
     public BadRequestException() {
         super();
+    }
+
+    public BadRequestException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     public BadRequestException(String message) {

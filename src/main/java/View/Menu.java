@@ -1,6 +1,6 @@
 package View;
 
-import Controller.CommandProcessors.TestCommandProcessor;
+import Controller.CommandProcessors.CommandProcessor;
 import Controller.DataBase.DataCenter;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public abstract class Menu {
     protected ArrayList<String> commands;
     protected Scanner scanner = InputUtility.getInstance();
     protected DataCenter dataCenter = DataCenter.getInstance();
-    protected TestCommandProcessor testCommandProcessor = new TestCommandProcessor();
+    protected CommandProcessor testCommandProcessor = new CommandProcessor();
 
     public Menu(String name, Menu parentMenu) {
         this.name = name;

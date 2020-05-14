@@ -8,13 +8,13 @@ import Controller.CommandProcessors.*;
 import java.util.HashMap;
 
 public class MainMenu extends Menu {
-    private TestCommandProcessor testCommandProcessor;
+    private CommandProcessor commandProcessor;
     private Profile profile;
     private Profile defaultProfile = new Profile(this);
 
     public MainMenu() {
         super("Main Menu", null);
-        this.testCommandProcessor = new TestCommandProcessor();
+        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap();
         submenus.put(1, this.profile);
         submenus.put(2, new ProductsPage(this));
@@ -53,7 +53,7 @@ public class MainMenu extends Menu {
         System.out.println("what do you want to do?\n");
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            String profileType = testCommandProcessor.getProfileType();
+            String profileType = commandProcessor.getProfileType();
             if (profileType.equals("customer"))
                 setProfile(new CustomerProfile(defaultProfile, this));
             else if (profileType.equals("seller"))

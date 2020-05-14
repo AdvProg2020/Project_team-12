@@ -46,7 +46,7 @@ public class DataCenterUnitTest {
         Discount[] discounts = new Discount[2];
         ArrayList<Product> products = new ArrayList<>();
         products.add(dataCenter.getProductByName("ali"));
-        discounts[0] = new Auction(new Date(0), new Date(0), 12, 12, products, Status.ACCEPTED);
+        discounts[0] = new Auction(new Date(0), new Date(0), 12, 12, products, Status.ACCEPTED, sellerUsername);
         ArrayList<Account> accounts1 = new ArrayList(Arrays.asList(accounts));
         discounts[1] = new DiscountCode(new Date(0), new Date(0), 12, 13, "string code", 12, 13, accounts1);
         dataCenter.saveDiscount(discounts[0]);

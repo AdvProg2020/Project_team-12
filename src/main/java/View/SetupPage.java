@@ -1,16 +1,7 @@
 package View;
 
-import Controller.CommandProcessors.TestCommandProcessor;
-import Controller.DataBase.Json.JsonFileWriter;
-import Model.Account.Customer;
-import Model.Discount.DiscountCode;
+import Controller.CommandProcessors.CommandProcessor;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.rmi.server.ExportException;
-import java.util.Date;
 import java.util.Scanner;
 
 public class SetupPage {
@@ -19,7 +10,7 @@ public class SetupPage {
         System.out.println("press enter to continue");
         Scanner scanner = InputUtility.getInstance();
         scanner.nextLine();
-        if (!TestCommandProcessor.managerExists()) {
+        if (!CommandProcessor.managerExists()) {
             System.out.println("no administrator is set yet\npress enter to setup");
             SetupPage.run();
         }

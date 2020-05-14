@@ -17,11 +17,11 @@ import java.util.Set;
 
 import java.io.File;
 
-public class TestCommandProcessor {
+public class CommandProcessor {
     private Account loggedInAccount;
     private DataCenter dataCenter;
 
-    public TestCommandProcessor() {
+    public CommandProcessor() {
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
     }

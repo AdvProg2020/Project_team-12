@@ -13,7 +13,6 @@ public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
     private TestCommandProcessor testCommandProcessor;
-
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
         this.testCommandProcessor = new TestCommandProcessor();

@@ -13,11 +13,13 @@ public class Auction extends Discount {
     private ArrayList<Product> allIncludedProducts;
     @Expose
     private Status status;
-
-    public Auction(Date start, Date end, double percent, int id, ArrayList<Product> allIncludedProducts, Status status) {
+    @Expose
+    private String sellerUsername;
+    public Auction(Date start, Date end, double percent, int id, ArrayList<Product> allIncludedProducts, Status status, String sellerUsername) {
         super(start, end, percent, id);
         this.allIncludedProducts = allIncludedProducts;
         this.status = status;
+        this.sellerUsername = sellerUsername;
     }
 
     @Override
@@ -49,5 +51,13 @@ public class Auction extends Discount {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getSellerUsername() {
+        return sellerUsername;
+    }
+
+    public void setSellerUsername(String sellerUsername) {
+        this.sellerUsername = sellerUsername;
     }
 }
