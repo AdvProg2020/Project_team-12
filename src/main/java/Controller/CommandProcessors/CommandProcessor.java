@@ -18,9 +18,9 @@ import java.util.Locale;
 import java.util.Set;
 
 public class CommandProcessor {
+    protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
     private CommandProcessor Parent;
-    protected static CommandProcessor Instance;
     private Account loggedInAccount;
     private DataCenter dataCenter;
 
@@ -30,8 +30,8 @@ public class CommandProcessor {
         this.dataCenter = DataCenter.getInstance();
     }
 
-    public static CommandProcessor getInstance(){
-        if (Instance == null){
+    public static CommandProcessor getInstance() {
+        if (Instance == null) {
             Instance = MainMenuCP.getInstance();
             Primitive = Instance;
         }
@@ -60,6 +60,39 @@ public class CommandProcessor {
 
     public static void back() {
         Instance = Instance.getParent();
+    }
+
+    public static void goToSubCommandProcessor(int ID) throws Exception {
+        switch (ID) {
+            case 1:
+                AuctionsPageCP.getInstance().setParent(Instance);
+                Instance = AuctionsPageCP.getInstance();
+                break;
+            case 2:
+                MainMenuCP.getInstance().setParent(Instance);
+                Instance = MainMenuCP.getInstance();
+                break;
+            case 3:
+                ProductPageCP.getInstance().setParent(Instance);
+                Instance = ProductPageCP.getInstance();
+                break;
+            case 4:
+                ProductsPageCP.getInstance().setParent(Instance);
+                Instance = ProductsPageCP.getInstance();
+                break;
+            case 5:
+                ProfileCP.getInstance().setParent(Instance);
+                Instance = ProfileCP.getInstance();
+                break;
+            case 6:
+                PurchasePageCP.getInstance().setParent(Instance);
+                Instance = PurchasePageCP.getInstance();
+                break;
+            case 7:
+                RegisterPanelCP.getInstance().setParent(Instance);
+                Instance = RegisterPanelCP.getInstance();
+                break;
+        }
     }
 
     public String getProfileType() {
@@ -103,7 +136,6 @@ public class CommandProcessor {
     public boolean doesUsernameExists(String username) {
         return dataCenter.userExistWithUsername(username);
     }
-
 
     public boolean checkPassword(String password) {
         if (this.loggedInAccount.getPassword().equals(password))
@@ -202,33 +234,11 @@ public class CommandProcessor {
         dataCenter.saveDiscount(discountCode);
     }
 
-    public static void goToSubCommandProcessor(int ID) throws Exception {
-        switch (ID){
-            case 1:
-                Instance = AuctionsPageCP.getInstance();
-                break;
-            case 2:
-                Instance = MainMenuCP.getInstance();
-                break;
-            case 3:
-                Instance = ProductPageCP.getInstance();
-                break;
-            case 4:
-               Instance =  ProductsPageCP.getInstance();
-                break;
-            case 5:
-                Instance = ProfileCP.getInstance();
-                break;
-            case 6:
-                Instance = PurchasePageCP.getInstance();
-                break;
-            case 7:
-                Instance = RegisterPanelCP.getInstance();
-                break;
-        }
-    }
-
     public CommandProcessor getParent() {
         return Parent;
+    }
+
+    public void setParent(CommandProcessor parent) {
+        Parent = parent;
     }
 }

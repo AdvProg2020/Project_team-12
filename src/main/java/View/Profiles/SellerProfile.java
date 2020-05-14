@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CommandProcessor;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
