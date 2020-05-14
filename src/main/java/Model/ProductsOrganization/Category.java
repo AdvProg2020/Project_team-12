@@ -6,14 +6,14 @@ import java.util.HashMap;
 public class Category {
     private String name;
     private Category parent;
-    private HashMap<String,Category> allSubCategories;
-    private HashMap<String,Product> allIncludedProducts;
+    private ArrayList<Category> allSubCategories;
+    private ArrayList<Product> allIncludedProducts;
 
     public Category(String name, Category parent) {
         this.name = name;
         this.parent = parent;
-        allIncludedProducts = new HashMap<>();
-        allIncludedProducts = new HashMap<>();
+        allIncludedProducts = new ArrayList<>();
+        allIncludedProducts = new ArrayList<>();
     }
 
     public void addSubCategory(Category category){}
@@ -21,6 +21,8 @@ public class Category {
 
     @Override
     public String toString() {
-        return "";
+        if (parent == null)
+            return "/" + name;
+        return parent.toString() + "/" + name;
     }
 }
