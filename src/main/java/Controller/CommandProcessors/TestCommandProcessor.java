@@ -3,10 +3,14 @@ package Controller.CommandProcessors;
 import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.*;
+import Model.Discount.DiscountCode;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Set;
 
 import java.io.File;
@@ -50,6 +54,11 @@ public class TestCommandProcessor {
         } else if (role.equals("seller")) {
             //send a request to manager
         }
+    }
+
+    public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
+        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
+        dataCenter.saveAccount(manager);
     }
 
     public void login(String username, String password) throws Exception {
@@ -115,5 +124,50 @@ public class TestCommandProcessor {
         //call delete Account in data center
     }
 
+    public void deleteProduct(String productId) throws Exception {
+        if (!dataCenter.doesProductExist(productId))
+            throw new RegisterPanelException("product doesn't exist");
+        //call delete Account in data center
+    }
 
+    public Set<String> getAllProducts() {
+        return dataCenter.getAllProducts();
+    }
+
+    public void createDiscountCode(String startingDate, String lastDate, String percent, String code, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
+        ArrayList<Account> usersList = new ArrayList<Account>();
+        String[] users = listOfUsers.split("\\s");
+        for (String username : users) {
+            usersList.add(dataCenter.getAccountByName(username));
+        }
+        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
+                dataCenter.getLastDiscountId() + 1, code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
+        dataCenter.saveDiscount(discountCode);
+    }
+
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        return dataCenter.getAllDiscountCodes();
+    }
+
+    public DiscountCode getDiscountCode(String code) throws Exception {
+        return dataCenter.getDiscountcodeWithCode(code);
+    }
+
+    public void editDiscountCode(String code, String startingDate, String lastDate, String percent, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
+        DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
+        ArrayList<Account> usersList = new ArrayList<Account>();
+        String[] users = listOfUsers.split("\\s");
+        for (String username : users) {
+            usersList.add(dataCenter.getAccountByName(username));
+        }
+        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        discountCode.setStart(format.parse(startingDate));
+        discountCode.setEnd(format.parse(lastDate));
+        discountCode.setPercent(Double.parseDouble(percent));
+        discountCode.setMaximumDiscountAmount(Integer.parseInt(maximumAmount));
+        discountCode.setMaximumNumberOfUsages(Integer.parseInt(numberOfUsages));
+        discountCode.setAllAllowedAccounts(usersList);
+        dataCenter.saveDiscount(discountCode);
+    }
 }

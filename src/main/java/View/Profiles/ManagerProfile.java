@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Model.Discount.DiscountCode;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
@@ -77,13 +78,14 @@ public class ManagerProfile extends Profile {
                     testCommandProcessor.deleteAccount(commandDetails[2]);
                     return this;
                 } else if (command.equals(commands.get(2))) {
+                    String username = getField("username", "\\S+");
                     String password = getField("password", "\\S+");
                     String firstName = getField("first name", "\\w+");
                     String lastName = getField("last name", "\\w+");
                     String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
                     String phoneNumber = getField("phone number", "(\\d+)$");
                     //adding other fields
-                    //calling create manager profile method with these inputs : role username password ...
+                    testCommandProcessor.createManagerAccount(username, password, firstName, lastName, phoneNumber, emailAddress);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -108,7 +110,10 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get products info and show
+                String[] allProductsInfo = (String[]) testCommandProcessor.getAllProducts().toArray();
+                for (int i = 1; i <= allProductsInfo.length; i++) {
+                    System.out.println(i + ". " + allProductsInfo[i - 1]);
+                }
                 showCommands();
             }
 
@@ -122,7 +127,7 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling remove product method by commandDetails[1]
+                    testCommandProcessor.deleteProduct(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     return getGrandFatherMenu();
@@ -144,13 +149,14 @@ public class ManagerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
+                String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                 String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                 String percent = getField("percent", "(\\d+)$");
                 String code = getField("code", "\\S+");
                 String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                 String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
                 String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
-                //calling create discount method
+                testCommandProcessor.createDiscountCode(startingDate, lastDate, percent, code, maximumAmount, numberOfUsages, listOfUsers);
                 return this.parentMenu;
             }
         };
@@ -170,7 +176,9 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get discounts info and show
+                for (DiscountCode discountCode : testCommandProcessor.getAllDiscountCodes()) {
+                    System.out.println(discountCode.toString());
+                }
                 showCommands();
             }
 
@@ -184,17 +192,17 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view discount method by commandDetails[3]
+                    System.out.println(testCommandProcessor.getDiscountCode(commandDetails[3]).toString());
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
+                    String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    String code = getField("code", "\\S+");
                     String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                     String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
                     String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
-                    //calling edit discount method by commandDetails[3] and new fields
+                    testCommandProcessor.editDiscountCode(commandDetails[3], startingDate, lastDate, percent, maximumAmount, numberOfUsages, listOfUsers);
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
@@ -275,7 +283,7 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get requests info and show
+                //get categories info and show
                 showCommands();
             }
 
@@ -289,15 +297,15 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling show request method by commandDetails[1]
+                    //calling edit category by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling accept request method by commandDetails[1]
+                    //calling add category method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling decline request method by commandDetails[1]
+                    //calling remove category commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();

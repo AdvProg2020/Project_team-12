@@ -54,7 +54,7 @@ public class DataCenter {
 
     public static DataCenter getInstance() {
         if (Instance == null) {
-           Instance = new DataCenter();
+            Instance = new DataCenter();
         }
         return Instance;
     }
@@ -69,7 +69,7 @@ public class DataCenter {
         File[] files = requestsFile.listFiles();
         Arrays.stream(files).map((file) -> {
             try {
-                return  jsonFileReader.read(file, Request.class);
+                return jsonFileReader.read(file, Request.class);
             } catch (FileNotFoundException e) {
                 return null;
             }
@@ -81,7 +81,7 @@ public class DataCenter {
             requests.add(request);
     }
 
-    public void deleteRequestWithId(int id){
+    public void deleteRequestWithId(int id) {
         for (Request request : requests) {
             if (request.getId() == id)
                 requests.remove(request);
@@ -226,7 +226,8 @@ public class DataCenter {
                 //Logger.log(exception.getMessage())
             }
     }
-    public void saveAccount(Account account) throws IOException{
+
+    public void saveAccount(Account account) throws IOException {
         if (account instanceof Seller)
             saveAccount((Seller) account);
         if (account instanceof Customer)
@@ -235,6 +236,7 @@ public class DataCenter {
             saveAccount((Manager) account);
         addSavedAccount(account);
     }
+
     public void saveAccount(Customer customer) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
         writer.write(customer, generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"), Account.class);
@@ -255,7 +257,6 @@ public class DataCenter {
         if (!accountsByUsername.containsValue(account))
             accountsByUsername.put(account.getUsername(), account);
     }
-
 
 
     public void saveProduct(Product product) throws IOException {
@@ -302,12 +303,7 @@ public class DataCenter {
 
     public void saveRequest(Request request) throws IOException {
         JsonFileWriter jsonFileWriter = new JsonFileWriter(requestRuntimeTypeAdapter);
-        jsonFileWriter.write(request,generateRequestsFilePath(request.getId()),Request.class);
-    }
-
-    private void addSavedAccount(Account account) {
-        if (!accountsByUsername.containsValue(account))
-            accountsByUsername.put(account.getUsername(), account);
+        jsonFileWriter.write(request, generateRequestsFilePath(request.getId()), Request.class);
     }
 
     private String generateUserFilePath(String username, int state, String type) {
@@ -371,10 +367,11 @@ public class DataCenter {
         return productsByName.get(name);
     }
 
-    public DiscountCode getDiscountcodeWithId(int id) throws BadRequestException {
+    public DiscountCode getDiscountcodeWithCode(String code) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount != null && discount instanceof DiscountCode && discount.getId() == id)
-                return (DiscountCode) discount;
+            if (discount != null && discount instanceof DiscountCode)
+                if (((DiscountCode) discount).getCode().equals(code))
+                    return (DiscountCode) discount;
         }
         throw new BadRequestException("discount not found");
     }
@@ -418,7 +415,8 @@ public class DataCenter {
         }
         return false;
     }
-    public ArrayList<Request> getAllUnsolvedRequests(){
+
+    public ArrayList<Request> getAllUnsolvedRequests() {
         return requests;
     }
 
@@ -433,7 +431,33 @@ public class DataCenter {
         }
         return false;
     }
+
+    public boolean doesProductExist(String productId) {
+        for (Product product : productsByName.values()) {
+            if (Integer.toString(product.getId()).equals(productId))
+                return true;
+        }
+        return false;
+    }
+
+    public Set<String> getAllProducts() {
+        return productsByName.keySet();
+    }
+
+    public int getLastDiscountId() {
+        return discounts.size();
+    }
+
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+        for (Discount discount : discounts) {
+            if (discount instanceof DiscountCode)
+                allDiscountCodes.add((DiscountCode) discount);
+        }
+        return allDiscountCodes;
+    }
 }
+
 
 class BadRequestException extends Exception {
     public BadRequestException() {

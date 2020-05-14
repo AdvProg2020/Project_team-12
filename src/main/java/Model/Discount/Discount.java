@@ -53,4 +53,16 @@ public abstract class Discount {
     public int hashCode() {
         return Objects.hash(start, end, percent, id);
     }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public void setPercent(double percent) {
+        this.percent = percent;
+    }
 }
