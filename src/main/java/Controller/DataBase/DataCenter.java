@@ -511,15 +511,13 @@ public class DataCenter {
         }
     }
 
-    public void deleteProductInfo(ProductInfo productInfo, String  username) {
-        if (productInfo.getProduct() != null)
+        public void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
+            if (productInfo.getProduct() == null)
+                productInfo.setProduct(productsByName.get(productInfo.getPName()));
             productInfo.getProduct().getAllSellers().remove(username);
-    private void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
-        if (productInfo.getProduct() == null)
-            productInfo.setProduct(productsByName.get(productInfo.getPName()));
-        productInfo.getProduct().getAllSellers().remove(username);
-        saveProduct(productInfo.getProduct());
-    }
+            saveProduct(productInfo.getProduct());
+        }
+
 
 
     private boolean deleteAccount(Manager manager) {
@@ -527,7 +525,7 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
     }
 
-    public boolean deleteProduct(Product product){
+    public boolean deleteProduct(Product product) throws IOException {
         for (String seller : product.getAllSellers()) {
             deleteSellerEach(product, seller);
             saveAccount(accountsByUsername.get(seller));

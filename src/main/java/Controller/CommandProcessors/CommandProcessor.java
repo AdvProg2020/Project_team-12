@@ -34,7 +34,7 @@ public class CommandProcessor {
     private Account loggedInAccount;
     private DataCenter dataCenter;
 
-    protected CommandProcessor(CommandProcessor parent) {
+    public CommandProcessor(CommandProcessor parent) {
         Parent = parent;
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();

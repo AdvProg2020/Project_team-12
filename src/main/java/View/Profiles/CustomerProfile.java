@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CommandProcessor;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 import View.PurchasePage;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class CustomerProfile extends Profile {
     Profile profile;
+    CommandProcessor commandProcessor = CommandProcessor.getInstance();
 
     public CustomerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);

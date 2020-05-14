@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class SellerProfile extends Profile {
     Profile profile;
+    CommandProcessor commandProcessor = CommandProcessor.getInstance();
 
     public SellerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
@@ -47,7 +48,7 @@ public class SellerProfile extends Profile {
             public void show() {
                 System.out.println(this.getName());
                 System.out.println("commands\n1. back\n\n");
-                System.out.println(testCommandProcessor.getCompanyInfo());
+                System.out.println(CommandProcessor.getCompanyInfo());
             }
 
             @Override
@@ -66,8 +67,8 @@ public class SellerProfile extends Profile {
             public void show() {
                 System.out.println(this.getName());
                 System.out.println("commands\n1. back\n\n");
-                for (int i = 1; i <= testCommandProcessor.getSalesHistory().size(); i++)
-                    System.out.println(i + ". " + testCommandProcessor.getSalesHistory().get(i - 1));
+                for (int i = 1; i <= CommandProcessor.getSalesHistory().size(); i++)
+                    System.out.println(i + ". " + CommandProcessor.getSalesHistory().get(i - 1));
             }
 
             @Override
