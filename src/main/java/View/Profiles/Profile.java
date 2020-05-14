@@ -1,6 +1,5 @@
 package View.Profiles;
 
-import Controller.CommandProcessors.TestCommandProcessor;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -9,11 +8,8 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
-    protected TestCommandProcessor testCommandProcessor;
-
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
-        this.testCommandProcessor = new TestCommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new RegisterPanel(this));
         submenus.put(2, new ProductsPage(this));
@@ -70,7 +66,7 @@ public class Profile extends Menu {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                System.out.println(testCommandProcessor.getPersonalInfo());
+                //get account info and show
                 showCommands();
             }
 
@@ -84,8 +80,7 @@ public class Profile extends Menu {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    String newFieldValue = getField(commandDetails[1], "\\w+");
-                    testCommandProcessor.editPersonalInfo(commandDetails[1], newFieldValue);
+                    //calling edit method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     return getGrandFatherMenu();

@@ -1,6 +1,5 @@
 package View.Profiles;
 
-import Model.Discount.DiscountCode;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
@@ -53,11 +52,7 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                String[] allAccountsInfo = (String[]) testCommandProcessor.getAllAccountsInfo().toArray();
-                for (int i = 1; i <= allAccountsInfo.length; i++) {
-                    System.out.println(i + ". " + allAccountsInfo[i - 1]);
-                }
-                System.out.println("\n");
+                //get accounts info and show
                 showCommands();
             }
 
@@ -71,21 +66,20 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    System.out.println(testCommandProcessor.getPersonalInfo(commandDetails[1]));
+                    //calling view account method by commandDetails[1]
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    testCommandProcessor.deleteAccount(commandDetails[2]);
+                    //calling delete account method by commandDetails[2]
                     return this;
                 } else if (command.equals(commands.get(2))) {
-                    String username = getField("username", "\\S+");
                     String password = getField("password", "\\S+");
                     String firstName = getField("first name", "\\w+");
                     String lastName = getField("last name", "\\w+");
                     String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
                     String phoneNumber = getField("phone number", "(\\d+)$");
                     //adding other fields
-                    testCommandProcessor.createManagerAccount(username, password, firstName, lastName, phoneNumber, emailAddress);
+                    //calling create manager profile method with these inputs : role username password ...
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -110,10 +104,7 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                String[] allProductsInfo = (String[]) testCommandProcessor.getAllProducts().toArray();
-                for (int i = 1; i <= allProductsInfo.length; i++) {
-                    System.out.println(i + ". " + allProductsInfo[i - 1]);
-                }
+                //get products info and show
                 showCommands();
             }
 
@@ -127,7 +118,7 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    testCommandProcessor.deleteProduct(commandDetails[1]);
+                    //calling remove product method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     return getGrandFatherMenu();
@@ -149,14 +140,13 @@ public class ManagerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
-                String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                 String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                 String percent = getField("percent", "(\\d+)$");
                 String code = getField("code", "\\S+");
                 String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                 String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
                 String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
-                testCommandProcessor.createDiscountCode(startingDate, lastDate, percent, code, maximumAmount, numberOfUsages, listOfUsers);
+                //calling create discount method
                 return this.parentMenu;
             }
         };
@@ -176,9 +166,7 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                for (DiscountCode discountCode : testCommandProcessor.getAllDiscountCodes()) {
-                    System.out.println(discountCode.toString());
-                }
+                //get discounts info and show
                 showCommands();
             }
 
@@ -192,17 +180,17 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    System.out.println(testCommandProcessor.getDiscountCode(commandDetails[3]).toString());
+                    //calling view discount method by commandDetails[3]
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
+                    String code = getField("code", "\\S+");
                     String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                     String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
                     String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
-                    testCommandProcessor.editDiscountCode(commandDetails[3], startingDate, lastDate, percent, maximumAmount, numberOfUsages, listOfUsers);
+                    //calling edit discount method by commandDetails[3] and new fields
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
@@ -283,7 +271,7 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get categories info and show
+                //get requests info and show
                 showCommands();
             }
 
@@ -297,15 +285,15 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling edit category by commandDetails[1]
+                    //calling show request method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling add category method by commandDetails[1]
+                    //calling accept request method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling remove category commandDetails[1]
+                    //calling decline request method by commandDetails[1]
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -320,7 +308,7 @@ public class ManagerProfile extends Profile {
 
     @Override
     public void show() {
-        System.out.println(this.getName() + "\ncommands\n");
+        System.out.println(this.getName()+"\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
         }

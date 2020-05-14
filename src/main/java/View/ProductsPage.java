@@ -28,7 +28,7 @@ public class ProductsPage extends Menu {
         commands.add("show product (\\d+)$");
         commands.add("back");
         commands.add("help");
-        commands.add("go to register panel");
+        commands.add("go to register menu");
     }
 
     protected Menu getFilteringMenu() {
