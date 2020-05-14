@@ -2,6 +2,10 @@ package Controller.CommandProcessors;
 
 import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import Model.Account.*;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
@@ -16,21 +20,36 @@ import View.Exceptions.InvalidCommandException;
 import View.Exceptions.ProductExceptions;
 import View.Exceptions.RegisterPanelException;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
-import java.io.File;
-
 public class CommandProcessor {
+    protected static CommandProcessor Instance;
+    private static CommandProcessor Primitive;
+    private CommandProcessor Parent;
     private Account loggedInAccount;
     private DataCenter dataCenter;
 
-    public CommandProcessor() {
+    protected CommandProcessor(CommandProcessor parent) {
+        Parent = parent;
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
+    }
+
+    public static CommandProcessor getInstance() {
+        if (Instance == null) {
+            Instance = MainMenuCP.getInstance();
+            Primitive = Instance;
+        }
+        return Instance;
+    }
+
+    public static void setInstance(CommandProcessor instance) {
+        Instance = instance;
     }
 
     public static boolean managerExists() {
@@ -38,6 +57,52 @@ public class CommandProcessor {
         if (!file.exists() || file.listFiles().length == 0)
             return false;
         return true;
+    }
+
+    public static CommandProcessor getPrimitive() {
+        getInstance();
+        return Primitive;
+    }
+
+    public static void setPrimitive(CommandProcessor primitive) {
+        Primitive = primitive;
+    }
+
+    public static void back() {
+        Instance = Instance.getParent();
+    }
+
+    public static void goToSubCommandProcessor(int ID) throws Exception {
+        switch (ID) {
+            case 1:
+                AuctionsPageCP.getInstance().setParent(Instance);
+                Instance = AuctionsPageCP.getInstance();
+                break;
+            case 2:
+                MainMenuCP.getInstance().setParent(Instance);
+                Instance = MainMenuCP.getInstance();
+                break;
+            case 3:
+                ProductPageCP.getInstance().setParent(Instance);
+                Instance = ProductPageCP.getInstance();
+                break;
+            case 4:
+                ProductsPageCP.getInstance().setParent(Instance);
+                Instance = ProductsPageCP.getInstance();
+                break;
+            case 5:
+                ProfileCP.getInstance().setParent(Instance);
+                Instance = ProfileCP.getInstance();
+                break;
+            case 6:
+                PurchasePageCP.getInstance().setParent(Instance);
+                Instance = PurchasePageCP.getInstance();
+                break;
+            case 7:
+                RegisterPanelCP.getInstance().setParent(Instance);
+                Instance = RegisterPanelCP.getInstance();
+                break;
+        }
     }
 
     public String getProfileType() {
@@ -274,5 +339,13 @@ public class CommandProcessor {
         Score newScore = new Score(Double.parseDouble(score));
         product.addScore(newScore);
         dataCenter.saveProduct(product);
+    }
+
+    public CommandProcessor getParent() {
+        return Parent;
+    }
+
+    public void setParent(CommandProcessor parent) {
+        Parent = parent;
     }
 }

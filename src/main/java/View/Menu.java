@@ -14,12 +14,11 @@ public abstract class Menu {
     protected ArrayList<String> commands;
     protected Scanner scanner = InputUtility.getInstance();
     protected DataCenter dataCenter = DataCenter.getInstance();
-    protected CommandProcessor testCommandProcessor = new CommandProcessor();
 
     public Menu(String name, Menu parentMenu) {
         this.name = name;
         this.parentMenu = parentMenu;
-        commands = new ArrayList<String>();
+        commands = new ArrayList<>();
     }
 
     protected String getName() {

@@ -29,7 +29,7 @@ public class Product {
     @Expose
     private ArrayList<Review> allReviews;
     @Expose
-    private String categoryPath;
+    private String categoryName;
     public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
         this.name = name;
@@ -104,12 +104,12 @@ public class Product {
         this.allReviews = allReviews;
     }
 
-    public String getCategoryPath() {
-        return categoryPath;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryPath(String categoryPath) {
-        this.categoryPath = categoryPath;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public void addScore(Score score){
@@ -129,7 +129,7 @@ public class Product {
                 ", parent=" + parent +
                 ", allSubmittedScores=" + allSubmittedScores +
                 ", allReviews=" + allReviews +
-                ", categoryPath='" + categoryPath + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 
@@ -148,12 +148,12 @@ public class Product {
                 Objects.equals(parent, product.parent) &&
                 Objects.equals(allSubmittedScores, product.allSubmittedScores) &&
                 Objects.equals(allReviews, product.allReviews) &&
-                Objects.equals(categoryPath, product.categoryPath);
+                Objects.equals(categoryName, product.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, brand, specifications, Description, id, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryPath);
+        return Objects.hash(name, brand, specifications, Description, id, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryName);
     }
 
     public Review getReview(Review review) {

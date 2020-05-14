@@ -13,33 +13,36 @@ public class Config {
     @Expose
     private static Config Instance;
     @Expose
-    private final String[] accountsPath ;
+    private final String[] accountsPath;
     @Expose
-    private final String productsPath ;
+    private final String productsPath;
     @Expose
-    private final String[] discountsPath ;
+    private final String[] discountsPath;
     @Expose
-    private final String requestsPath ;
+    private final String requestsPath;
     @Expose
-    private  final InitializeObjectsNumber objectsNumber;
+    private final String categoriesPath;
+    @Expose
+    private final InitializeObjectsNumber objectsNumber;
 
     public Config() {
-           accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
-           productsPath = "Resources/Products";
-           discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
-           requestsPath = "Resources/Requests";
-           objectsNumber = new InitializeObjectsNumber(0,0,0,0);
+        accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
+        productsPath = "Resources/Products";
+        discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
+        requestsPath = "Resources/Requests";
+        categoriesPath = "Resources/Categories";
+        objectsNumber = new InitializeObjectsNumber(0, 0, 0, 0, 0);
     }
 
     public static Config getInstance() {
         if (Instance == null) {
             try {
                 JsonFileReader jsonReader = new JsonFileReader();
-                Instance = (Config) jsonReader.read("configurations.json", Config.class);
+                Instance = jsonReader.read("configurations.json", Config.class);
             } catch (FileNotFoundException var1) {
                 Instance = new Config();
                 try {
-                    new JsonFileWriter().write(Instance,configPath);
+                    new JsonFileWriter().write(Instance, configPath);
                 } catch (IOException e) {
 
                 }
@@ -64,7 +67,41 @@ public class Config {
         return requestsPath;
     }
 
-    private class InitializeObjectsNumber{
+    public void updateConfig() throws Exception {
+        try {
+            new JsonFileWriter().write(Instance, configPath);
+        } catch (IOException e) {
+            throw new Exception("can not update Config", e.getCause());
+        }
+    }
+
+    public enum AccountsPath {
+        CUSTOMER(0), SELLER(1), MANAGER(2);
+        private int num;
+
+        AccountsPath(int i) {
+            num = i;
+        }
+
+        public int getNum() {
+            return num;
+        }
+    }
+
+    public enum DiscountsPath {
+        DISCOUNTCODE(0), AUCTION(1);
+        private int num;
+
+        DiscountsPath(int i) {
+            num = i;
+        }
+
+        public int getNum() {
+            return num;
+        }
+    }
+
+    private class InitializeObjectsNumber {
         @Expose
         private int createdDiscounts;
         @Expose
@@ -73,12 +110,15 @@ public class Config {
         private int createdProducts;
         @Expose
         private int createdAuctions;
+        @Expose
+        private int createdRequestsId;
 
-        public InitializeObjectsNumber(int createdDiscounts, int createdLogs, int createdProducts, int createdAuctions) {
+        public InitializeObjectsNumber(int createdDiscounts, int createdLogs, int createdProducts, int createdAuctions, int createdRequestsId) {
             this.createdDiscounts = createdDiscounts;
             this.createdLogs = createdLogs;
             this.createdProducts = createdProducts;
             this.createdAuctions = createdAuctions;
+            this.createdRequestsId = createdRequestsId;
         }
 
         public int getCreatedDiscounts() {
@@ -112,31 +152,21 @@ public class Config {
         public void setCreatedAuctions(int createdAuctions) {
             this.createdAuctions = createdAuctions;
         }
-    }
-    public enum AccountsPath{CUSTOMER (0),SELLER(1),MANAGER(2);
-        private int num;
-        AccountsPath(int i) {
-            num = i;
+
+        public int getCreatedRequestsId() {
+            return createdRequestsId;
         }
-        public int getNum(){
-            return num;
-        }
-    }
-    public enum DiscountsPath{DISCOUNTCODE (0),AUCTION(1);
-        private int num;
-        DiscountsPath(int i) {
-            num = i;
-        }
-        public int getNum(){
-            return num;
+
+        public void setCreatedRequestsId(int createdRequestsId) {
+            this.createdRequestsId = createdRequestsId;
         }
     }
 
-    public void updateConfig() throws Exception {
-        try {
-            new JsonFileWriter().write(Instance,configPath);
-        } catch (IOException e) {
-            throw new Exception("can not update Config",e.getCause());
-        }
+    public String getCategoriesPath() {
+        return categoriesPath;
+    }
+
+    public InitializeObjectsNumber getObjectsNumber() {
+        return objectsNumber;
     }
 }

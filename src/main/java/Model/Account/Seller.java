@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class Seller extends Account implements CanRequest{
     @Expose
+    private boolean accountTypeAccepted = false;
+    @Expose
     private String companyInformation;
     @Expose
     private ArrayList<SellLog> sellLogs = new ArrayList<>();
@@ -81,6 +83,14 @@ public class Seller extends Account implements CanRequest{
             if (productInfo.getPName().equals(product.getName()))
                 allProducts.remove(productInfo);
         }
+    }
+
+    public boolean isAccountTypeAccepted() {
+        return accountTypeAccepted;
+    }
+
+    public void setAccountTypeAccepted(boolean accountTypeAccepted) {
+        this.accountTypeAccepted = accountTypeAccepted;
     }
 }
 
