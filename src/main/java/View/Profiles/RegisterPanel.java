@@ -13,6 +13,7 @@ public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
     private TestCommandProcessor testCommandProcessor;
+
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
         this.testCommandProcessor = new TestCommandProcessor();
@@ -24,8 +25,6 @@ public class RegisterPanel extends Menu {
     }
 
     public void setCommands() {
-        //I have deleted the manager option in create account bcz only a manager can create manager account
-
         commands.add("create account (seller|customer) (\\S+)$");
         commands.add("login (\\S+)$");
         commands.add("logout");
@@ -76,8 +75,19 @@ public class RegisterPanel extends Menu {
                 String phoneNumber = getField("phone number", "(\\d+)$");
                 String username = getUsername();
                 String role = getAccountType();
-                testCommandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress);
+                if (role.equals("seller")) {
+                    String companyInfo = getCompanyInformation();
+                }
+                testCommandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
                 return getGrandFatherMenu();
+            }
+
+            public String getCompanyInformation() {
+                String companyName = getField("company name", "(\\w+)$");
+                String companyAddress = getField("company address (just separate by comma)", "\\S+");
+                String companyPhoneNumber = getField("company phone number", "(\\d+)$");
+                String companyInfo = "{company info}\n" + "company name : " + companyName + "company address : " + companyAddress + "company phone number : " + companyPhoneNumber;
+                return companyInfo;
             }
         };
     }

@@ -4,6 +4,8 @@ import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.*;
 import Model.Discount.DiscountCode;
+import Model.Log.SellLog;
+import Model.ProductsOrganization.Product;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 
@@ -46,12 +48,13 @@ public class TestCommandProcessor {
         this.loggedInAccount = loggedInAccount;
     }
 
-    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
+    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
         Account newAccount;
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
             dataCenter.saveAccount((Customer) newAccount);
         } else if (role.equals("seller")) {
+            newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             //send a request to manager
         }
     }
@@ -170,4 +173,17 @@ public class TestCommandProcessor {
         discountCode.setAllAllowedAccounts(usersList);
         dataCenter.saveDiscount(discountCode);
     }
+
+    public String getCompanyInfo(){
+        return ((Seller) this.loggedInAccount).getCompanyInformation();
+    }
+
+    public ArrayList<SellLog> getSalesHistory(){
+        return ((Seller) this.loggedInAccount).getSellLogs();
+    }
+
+    public ArrayList<Product> getAllSellerProduct(){
+        return ((Seller) this.loggedInAccount).getAllProducts();
+    }
+
 }

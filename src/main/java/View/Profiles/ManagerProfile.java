@@ -216,7 +216,6 @@ public class ManagerProfile extends Profile {
                 }
                 throw new InvalidCommandException("invalid command");
             }
-
         };
     }
 

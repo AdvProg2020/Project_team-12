@@ -59,4 +59,15 @@ public class ProductInfo {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "ProductInfo{" +
+                "quantity=" + quantity +
+                ", price=" + price +
+                ", product name='" + PName + '\'' +
+                ", status=" + status +
+                ", product=" + product +
+                '}';
+    }
 }

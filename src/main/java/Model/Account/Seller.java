@@ -1,7 +1,7 @@
 package Model.Account;
 
 import Model.Log.SellLog;
-import Model.ProductsOrganization.ProductInfo;
+import Model.ProductsOrganization.Product;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class Seller extends Account implements CanRequest{
     @Expose
     private ArrayList<SellLog> sellLogs = new ArrayList<>();
     @Expose
-    private ArrayList<ProductInfo> allProducts = new ArrayList<>();
+    private ArrayList<Product> allProducts = new ArrayList<Product>();
     @Expose
     private ArrayList<Integer> activeRequestsId = new ArrayList<>();
     @Expose
@@ -28,7 +28,7 @@ public class Seller extends Account implements CanRequest{
 
     }
 
-    public ArrayList<ProductInfo> getAllProducts() {
+    public ArrayList<Product> getAllProducts() {
         return allProducts;
     }
 
@@ -39,6 +39,10 @@ public class Seller extends Account implements CanRequest{
                 ", sellLogs=" + sellLogs +
                 ", allProducts=" + allProducts +
                 '}';
+    }
+
+    public String getCompanyInformation() {
+        return companyInformation;
     }
 
     public void deleteRequestWithId(int id){
@@ -55,6 +59,10 @@ public class Seller extends Account implements CanRequest{
 
     public ArrayList<Integer> getActiveRequestsId() {
         return activeRequestsId;
+    }
+
+    public ArrayList<SellLog> getSellLogs() {
+        return sellLogs;
     }
 }
 
