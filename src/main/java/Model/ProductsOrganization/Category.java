@@ -1,10 +1,15 @@
 package Model.ProductsOrganization;
 
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashMap;
 
 public class Category {
+    @Expose
     private String name;
+    @Expose
+    private String categoryPath;
     private Category parent;
     private HashMap<String,Category> allSubCategories;
     private HashMap<String,Product> allIncludedProducts;
@@ -70,5 +75,13 @@ public class Category {
 
     public void setAllIncludedProducts(HashMap<String, Product> allIncludedProducts) {
         this.allIncludedProducts = allIncludedProducts;
+    }
+
+    public String getCategoryPath() {
+        return categoryPath;
+    }
+
+    public void setCategoryPath(String categoryPath) {
+        this.categoryPath = categoryPath;
     }
 }

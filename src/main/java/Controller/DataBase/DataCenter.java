@@ -39,19 +39,52 @@ public class DataCenter {
     private HashMap<String, Product> productsByName;
     private ArrayList<Discount> discounts;
     private ArrayList<Request> requests;
+    private HashMap<String, Category> categories;
 
     private DataCenter() {
+        initCategories();
         initProducts();
         initAccounts();
         initDiscounts();
         initRequests();
     }
 
+
+
     public static DataCenter getInstance() {
         if (Instance == null) {
             Instance = new DataCenter();
         }
         return Instance;
+    }
+    private void initCategories() {
+        categories = new HashMap<>();
+        JsonFileReader reader = new JsonFileReader();
+        File file = new File(Config.getInstance().getCategoriesPath());
+        if (!file.exists())
+            file.mkdir();
+        File[] files = file.listFiles();
+        Arrays.stream(files).map((file1) -> {
+            try {
+               return reader.read(file1,Category.class);
+            } catch (FileNotFoundException e) {
+                return null;
+            }
+        }).forEach(this::addCategory);
+    }
+
+    private void addCategory(Category category) {
+        String[] categories = category.getCategoryPath().split("/");
+        Category var100 = null;
+        for (int i = 0; i < categories.length - 1 ; i++) {
+            if (!this.categories.containsValue(categories[i])){
+                var100 = new Category(categories[i],var100);
+                this.categories.put(categories[i],var100);
+            }else
+                var100 = this.categories.get(categories[i]);
+        }
+        category.setParent(var100);
+        this.categories.put(category.getName(),category);
     }
 
     private void initRequests() {
@@ -85,6 +118,7 @@ public class DataCenter {
             }
         }
     }
+
 
     private void initAccounts() {
         accountsByUsername = new HashMap<>();
@@ -122,12 +156,9 @@ public class DataCenter {
             Arrays.stream(productsFiles).map((file) -> {
                 try {
                     Product temp = reader.read(file, Product.class);
-                    /*this is commented because i have made the category path a string in the product itself which is just used for storing the path in the product itself 
-                    File categoryFileAddr = new File(Config.getInstance().getProductsPath() + "/CategoryPath" + temp.getName());
-                    String categoryString = reader.read(categoryFileAddr, String.class);*/
-                    /*temp.setParent(Category.categoryCreatorByTreeAddress(temp.getCategoryPath()));
-                    temp.setCategoryPath(null);*/
-                    //TODO: a method which creates the categories from its field should be called
+                    String var100 = temp.getCategoryName();
+                    if (var100!= null && var100!="")
+                    temp.setParent(categories.get(var100));
                     return temp;
                 } catch (FileNotFoundException var4) {
                     return null;
@@ -254,7 +285,7 @@ public class DataCenter {
 
     public void saveProduct(Product product) throws IOException {
         JsonFileWriter writer = new JsonFileWriter();
-        //TODO:a method which updates field categoryPath should be called on product
+        product.setCategoryName(product.getParent().getName());
         writer.write(product, generateProductFilePath(product.getId()));
         if (!productsByName.containsValue(product))
             productsByName.put(product.getName(), product);
@@ -299,6 +330,11 @@ public class DataCenter {
         jsonFileWriter.write(request, generateRequestsFilePath(request.getId()), Request.class);
     }
 
+    public void saveCategory(Category category) throws IOException {
+        JsonFileWriter writer = new JsonFileWriter();
+        writer.write(category,generateCategoryFilePath(category.getName()));
+    }
+
     private void addSavedAccount(Account account) {
         if (!accountsByUsername.containsValue(account))
             accountsByUsername.put(account.getUsername(), account);
@@ -337,6 +373,11 @@ public class DataCenter {
     private String generateRequestsFilePath(int id) {
         String var10000 = Config.getInstance().getRequestsPath() + "/" + id;
         return var10000 + ".request.json";
+    }
+
+    private String generateCategoryFilePath(String name){
+        String var10000 = Config.getInstance().getCategoriesPath() + "/" + name;
+        return var10000 + ".category.json";
     }
 
     public Account getAccountByName(String name) {
