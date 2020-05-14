@@ -21,7 +21,7 @@ public class ReviewRequest extends Request {
         this.pId = pId;
     }
 
-    public void AcceptRequest() throws Exception {
+    public void acceptRequest() throws Exception {
         accepted = true;
         Review review = DataCenter.getInstance().getProductById(pId).getReview(this.review);
         if(review!= null){

@@ -28,7 +28,7 @@ public class Config {
            productsPath = "Resources/Products";
            discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
            requestsPath = "Resources/Requests";
-           objectsNumber = new InitializeObjectsNumber(0,0,0,0);
+           objectsNumber = new InitializeObjectsNumber(0,0,0,0, 0);
     }
 
     public static Config getInstance() {
@@ -73,12 +73,14 @@ public class Config {
         private int createdProducts;
         @Expose
         private int createdAuctions;
-
-        public InitializeObjectsNumber(int createdDiscounts, int createdLogs, int createdProducts, int createdAuctions) {
+        @Expose
+        private int createdRequestsId;
+        public InitializeObjectsNumber(int createdDiscounts, int createdLogs, int createdProducts, int createdAuctions, int createdRequestsId) {
             this.createdDiscounts = createdDiscounts;
             this.createdLogs = createdLogs;
             this.createdProducts = createdProducts;
             this.createdAuctions = createdAuctions;
+            this.createdRequestsId = createdRequestsId;
         }
 
         public int getCreatedDiscounts() {
@@ -111,6 +113,14 @@ public class Config {
 
         public void setCreatedAuctions(int createdAuctions) {
             this.createdAuctions = createdAuctions;
+        }
+
+        public int getCreatedRequestsId() {
+            return createdRequestsId;
+        }
+
+        public void setCreatedRequestsId(int createdRequestsId) {
+            this.createdRequestsId = createdRequestsId;
         }
     }
     public enum AccountsPath{CUSTOMER (0),SELLER(1),MANAGER(2);

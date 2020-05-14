@@ -9,10 +9,7 @@ import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductInfo;
-import Model.Request.AuctionRequest;
-import Model.Request.ProductInfoRequest;
-import Model.Request.Request;
-import Model.Request.ReviewRequest;
+import Model.Request.*;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.io.File;
@@ -33,7 +30,8 @@ public class DataCenter {
     private final RuntimeTypeAdapterFactory<Request> requestRuntimeTypeAdapter = RuntimeTypeAdapterFactory.of(Request.class, "type")
             .registerSubtype(ProductInfoRequest.class, ProductInfoRequest.class.getName())
             .registerSubtype(AuctionRequest.class, AuctionRequest.class.getName())
-            .registerSubtype(ReviewRequest.class, ReviewRequest.class.getName());
+            .registerSubtype(ReviewRequest.class, ReviewRequest.class.getName())
+            .registerSubtype(SellerRequest.class,SellerRequest.class.getName());
     private final RuntimeTypeAdapterFactory<Discount> discountsRuntimeTypeAdaptor = RuntimeTypeAdapterFactory.of(Discount.class, "type")
             .registerSubtype(Auction.class, Auction.class.getName())
             .registerSubtype(DiscountCode.class, DiscountCode.class.getName());
@@ -80,8 +78,11 @@ public class DataCenter {
 
     public void deleteRequestWithId(int id) {
         for (Request request : requests) {
-            if (request.getId() == id)
+            if (request.getId() == id){
                 requests.remove(request);
+                File file = new File(generateRequestsFilePath(id));
+                file.delete();
+            }
         }
     }
 

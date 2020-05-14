@@ -22,7 +22,7 @@ public class ProductInfoRequest extends Request {
     }
 
     @Override
-    public void AcceptRequest() throws Exception {
+    public void acceptRequest() throws Exception {
         for (ProductInfo productInfo : ((Seller) DataCenter.getInstance().getAccountByName(senderUsername)).getAllProducts()) {
             if (productInfo == this.productInfo){
                 productInfo.setStatus(Status.ACCEPTED);

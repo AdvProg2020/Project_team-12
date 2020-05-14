@@ -19,7 +19,7 @@ public class AuctionRequest extends Request {
     }
 
     @Override
-    public void AcceptRequest() throws Exception {
+    public void acceptRequest() throws Exception {
         try {
             DataCenter.getInstance().getAuctionWithId(auctionId).setStatus(Status.ACCEPTED);
             deleteRequest();
