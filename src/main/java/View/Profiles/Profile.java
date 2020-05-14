@@ -1,6 +1,6 @@
 package View.Profiles;
 
-import Controller.CommandProcessors.TestCommandProcessor;
+import Controller.CommandProcessors.CommandProcessor;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -9,11 +9,11 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
-    protected TestCommandProcessor testCommandProcessor;
+    protected CommandProcessor commandProcessor;
 
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
-        this.testCommandProcessor = new TestCommandProcessor();
+        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new RegisterPanel(this));
         submenus.put(2, new ProductsPage(this));

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
@@ -492,6 +493,55 @@ public class DataCenter {
     /*public boolean deleteCategory(Category category){
 
     }*/
+
+
+
+
+    public Set<String> getAllAccountsInfo() {
+        return this.accountsByUsername.keySet();
+    }
+
+    public boolean doesUsernameExist(String username) {
+        for (String accountUsername : this.accountsByUsername.keySet()) {
+            if (username.equals(accountUsername))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean doesProductExist(String productId) {
+        for (Product product : productsByName.values()) {
+            if (Integer.toString(product.getId()).equals(productId))
+                return true;
+        }
+        return false;
+    }
+
+    public Set<String> getAllProducts() {
+        return productsByName.keySet();
+    }
+
+    public int getLastDiscountId() {
+        return discounts.size();
+    }
+
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        ArrayList<DiscountCode> allDiscountCodes = new ArrayList<DiscountCode>();
+        for (Discount discount : discounts) {
+            if (discount instanceof DiscountCode)
+                allDiscountCodes.add((DiscountCode) discount);
+        }
+        return allDiscountCodes;
+    }
+
+    public DiscountCode getDiscountcodeWithCode(String code) throws BadRequestException {
+        for (Discount discount : discounts) {
+            if (discount != null && discount instanceof DiscountCode)
+                if (((DiscountCode) discount).getCode().equals(code))
+                    return (DiscountCode) discount;
+        }
+        throw new BadRequestException("discount not found");
+    }
 }
 
 class BadRequestException extends Exception {

@@ -3,6 +3,7 @@ package Model.ProductsOrganization;
 import Model.Status;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ProductInfo {
@@ -14,6 +15,8 @@ public class ProductInfo {
     private String PName;
     @Expose
     private Status status;
+    @Expose
+    private ArrayList<String> buyers = new ArrayList<>();
     @Expose(serialize = false,deserialize = false)
     private Product product;
 
@@ -62,5 +65,13 @@ public class ProductInfo {
 
     public Product getProduct() {
         return product;
+    }
+
+    public ArrayList<String> getBuyers() {
+        return buyers;
+    }
+
+    public void setBuyers(ArrayList<String> buyers) {
+        this.buyers = buyers;
     }
 }
