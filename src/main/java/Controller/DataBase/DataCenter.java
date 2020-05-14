@@ -452,14 +452,14 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(seller.getUsername(),seller);
     }
 
-    private void deleteAuctionWithId(Integer id)  {
+    public void deleteAuctionWithId(Integer id)  {
         try {
             discounts.remove(getAuctionWithId(id));
         } catch (BadRequestException ignored) {
         }
     }
 
-    private void deleteProductInfo(ProductInfo productInfo, String  username) {
+    public void deleteProductInfo(ProductInfo productInfo, String  username) {
         if (productInfo.getProduct() != null)
             productInfo.getProduct().getAllSellers().remove(username);
     }
@@ -470,7 +470,7 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(manager.getUsername(),manager);
     }
 
-    private boolean deleteProduct(Product product){
+    public boolean deleteProduct(Product product){
         for (String seller : product.getAllSellers()) {
             deleteSellerEach(product, seller);
         }

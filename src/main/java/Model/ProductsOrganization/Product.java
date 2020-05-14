@@ -112,6 +112,10 @@ public class Product {
         this.categoryPath = categoryPath;
     }
 
+    public void addScore(Score score){
+        this.allSubmittedScores.add(score);
+    }
+
     @Override
     public String toString() {
         return "Product{" +

@@ -21,6 +21,10 @@ public class Score {
         return Double.compare(score1.score, score) == 0;
     }
 
+    public double getScore() {
+        return score;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(score);

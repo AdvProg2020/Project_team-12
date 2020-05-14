@@ -48,4 +48,8 @@ public class Customer extends Account implements CanRequest{
     public void setActiveRequestsId(ArrayList<Integer> activeRequestsId) {
         this.activeRequestsId = activeRequestsId;
     }
+
+    public ArrayList<PurchaseLog> getBuyLogs() {
+        return buyLogs;
+    }
 }

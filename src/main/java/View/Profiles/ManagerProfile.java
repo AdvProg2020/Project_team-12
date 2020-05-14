@@ -206,7 +206,7 @@ public class ManagerProfile extends Profile {
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling remove discount method by commandDetails[3]
+                    commandProcessor.deleteDiscountCode(commandDetails[3]);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();

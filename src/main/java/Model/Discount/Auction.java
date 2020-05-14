@@ -60,4 +60,17 @@ public class Auction extends Discount {
     public void setSellerUsername(String sellerUsername) {
         this.sellerUsername = sellerUsername;
     }
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "allIncludedProducts=" + allIncludedProducts +
+                ", status=" + status +
+                ", sellerUsername='" + sellerUsername + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", percent=" + percent +
+                ", id=" + id +
+                '}';
+    }
 }

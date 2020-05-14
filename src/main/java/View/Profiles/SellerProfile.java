@@ -93,7 +93,8 @@ public class SellerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get products info and show
+                for (int i = 1; i <= commandProcessor.getAllSellerProducts().size(); i++)
+                    System.out.println(i + ". " + commandProcessor.getAllSellerProducts().get(i - 1));
                 showCommands();
             }
 
@@ -107,11 +108,12 @@ public class SellerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view product method by commandDetails[1]
+                    System.out.println(commandProcessor.getProductById(commandDetails[1]).toString());
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view buyers method by commandDetails[1] and new fields
+                    for (int i = 1; i <= commandProcessor.getProductById(commandDetails[1]).getBuyers().size(); i++)
+                        System.out.println(i + ". " + commandProcessor.getProductById(commandDetails[1]).getBuyers().get(i - 1));
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
@@ -121,6 +123,7 @@ public class SellerProfile extends Profile {
                     String category = getField("category", "(\\w+)$");
                     String remainingItems = getField("remaining items", "(\\d+)$");
                     String description = getField("description", "\\S+");
+                    //request to edit product
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -149,7 +152,7 @@ public class SellerProfile extends Profile {
                 String category = getField("category", "(\\w+)$");
                 String remainingItems = getField("remaining items", "(\\d+)$");
                 String description = getField("description", "\\S+");
-                //call add product method
+                //call add product method and request
                 return this.parentMenu;
             }
         };
@@ -187,8 +190,9 @@ public class SellerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //show all auctions
-                showCommands();
+                for (int i = 1; i <= commandProcessor.getAllSellerAuctions().size(); i++)
+                    System.out.println(i + ". "+commandProcessor.getAllSellerAuctions().get(i-1).toString());
+                    showCommands();
             }
 
             private void showCommands() {
@@ -201,7 +205,7 @@ public class SellerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view off method by commandDetails[1]
+                    System.out.println(commandProcessor.getAuctionWithId(commandDetails[1]));
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
@@ -209,7 +213,7 @@ public class SellerProfile extends Profile {
                     String percent = getField("percent", "(\\d+)$");
                     String id = getField("auction id", "(\\d+)$");
                     String listOfUsers = getField("products' id and separate them by comma", "(\\w+,)+");
-                    //request to manager
+                    //request edit auction
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
@@ -217,7 +221,7 @@ public class SellerProfile extends Profile {
                     String percent = getField("percent", "(\\d+)$");
                     String id = getField("auction id", "(\\d+)$");
                     String listOfProducts = getField("products' id and separate them by comma", "(\\w+,)+");
-                    //request to manager
+                    //request add auction
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -256,14 +260,14 @@ public class SellerProfile extends Profile {
             return submenus.get(8);
         } else if (command.matches(commands.get(5))) {
             String[] commandDetails = command.split("\\s");
-            //remove product with id commandDetails[2]
+            commandProcessor.removeProductWithId(commandDetails[2]);
             return this;
         } else if (command.equals(commands.get(6))) {
             return submenus.get(9);
         } else if (command.equals(commands.get(7))) {
             return submenus.get(10);
         } else if (command.equals(commands.get(8))) {
-            //show balance
+            commandProcessor.getSellerBalance();
             return this;
         } else if (command.equals(commands.get(9))) {
             return this.parentMenu;

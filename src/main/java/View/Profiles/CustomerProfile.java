@@ -46,7 +46,8 @@ public class CustomerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get orders info and show
+                for (int i = 0; i <= commandProcessor.getCustomerOrdersHistory().size(); i++)
+                    System.out.println(i + ". " + commandProcessor.getCustomerOrdersHistory().get(i - 1).toString());
                 showCommands();
             }
 
@@ -60,11 +61,11 @@ public class CustomerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling rate method by commandDetails[1] and [2]
+                    commandProcessor.rate(commandDetails[1], commandDetails[2]);
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling view order method by commandDetails[2]
+                    System.out.println(commandProcessor.getOrderById(commandDetails[2]).toString());
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     return getGrandFatherMenu();
@@ -79,7 +80,7 @@ public class CustomerProfile extends Profile {
 
     @Override
     public void show() {
-        System.out.println(this.getName()+"\ncommands\n");
+        System.out.println(this.getName() + "\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
         }
@@ -95,10 +96,11 @@ public class CustomerProfile extends Profile {
         } else if (command.equals(commands.get(2))) {
             return submenus.get(6);
         } else if (command.equals(commands.get(3))) {
-            //show balance
+            System.out.println(commandProcessor.getCustomerBalance());
             return this;
         } else if (command.equals(commands.get(4))) {
-            //show discount codes
+            for (int i = 1; i <= commandProcessor.getCustomerDiscountCodes().size(); i++)
+                System.out.println(i + ". " + commandProcessor.getCustomerDiscountCodes().get(i - 1).toString());
             return this;
         } else if (command.equals(commands.get(5))) {
             return this.parentMenu;

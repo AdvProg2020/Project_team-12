@@ -17,14 +17,21 @@ public class ProductInfo {
     private Status status;
     @Expose
     private ArrayList<String> buyers = new ArrayList<>();
-    @Expose(serialize = false,deserialize = false)
+    @Expose(serialize = false, deserialize = false)
     private Product product;
+    @Expose
+    private Double averageScore;
 
     public ProductInfo(int quantity, double price, Product product) {
         this.quantity = quantity;
         this.price = price;
         this.product = product;
         this.PName = product.getName();
+        this.averageScore = Double.valueOf(0);
+        for (Score score : product.getAllSubmittedScores()) {
+            averageScore += score.getScore();
+        }
+        averageScore /= product.getAllSubmittedScores().size();
     }
 
     public void setProduct(Product product) {
@@ -41,6 +48,10 @@ public class ProductInfo {
 
     public String getPName() {
         return PName;
+    }
+
+    public int getId() {
+        return this.product.getId();
     }
 
     @Override
@@ -83,6 +94,7 @@ public class ProductInfo {
                 ", product name='" + PName + '\'' +
                 ", status=" + status +
                 ", product=" + product +
+                ", average score=" + averageScore +
                 '}';
     }
 }
