@@ -40,4 +40,12 @@ public class Customer extends Account implements CanRequest{
     public void setSolvedRequests(ArrayList<String> solvedRequests) {
         this.solvedRequests = solvedRequests;
     }
+
+    public ArrayList<Integer> getActiveRequestsId() {
+        return activeRequestsId;
+    }
+
+    public void setActiveRequestsId(ArrayList<Integer> activeRequestsId) {
+        this.activeRequestsId = activeRequestsId;
+    }
 }

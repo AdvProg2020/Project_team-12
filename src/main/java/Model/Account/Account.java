@@ -79,4 +79,7 @@ public abstract class Account {
                 Objects.equals(allDiscountCodes, account.allDiscountCodes);
     }
 
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        return allDiscountCodes;
+    }
 }

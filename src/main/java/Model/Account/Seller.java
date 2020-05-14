@@ -1,6 +1,7 @@
 package Model.Account;
 
 import Model.Log.SellLog;
+import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductInfo;
 import com.google.gson.annotations.Expose;
 
@@ -17,6 +18,8 @@ public class Seller extends Account implements CanRequest{
     private ArrayList<Integer> activeRequestsId = new ArrayList<>();
     @Expose
     private ArrayList<String> solvedRequests = new ArrayList<>();
+    @Expose
+    private ArrayList<Integer> auctionsId = new ArrayList<>();
 
     public Seller(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password, String companyInformation) {
         super(username, firstName, lastName, emailAddress, phoneNumber, password);
@@ -55,6 +58,21 @@ public class Seller extends Account implements CanRequest{
 
     public ArrayList<Integer> getActiveRequestsId() {
         return activeRequestsId;
+    }
+
+    public ArrayList<Integer> getAuctionsId() {
+        return auctionsId;
+    }
+
+    public void setAuctionsId(ArrayList<Integer> auctionsId) {
+        this.auctionsId = auctionsId;
+    }
+
+    public void deleteProductInfo(Product product){
+        for (ProductInfo productInfo : allProducts) {
+            if (productInfo.getPName().equals(product.getName()))
+                allProducts.remove(productInfo);
+        }
     }
 }
 

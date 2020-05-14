@@ -159,4 +159,8 @@ public class Product {
         }
         return null;
     }
+
+    public ArrayList<String> getAllSellers() {
+        return allSellers;
+    }
 }

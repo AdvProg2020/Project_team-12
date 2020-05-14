@@ -1,21 +1,19 @@
 package View.Profiles;
 
-import Controller.CommandProcessors.TestCommandProcessor;
+import Controller.CommandProcessors.CommandProcessor;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 import View.Menu;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
-    private TestCommandProcessor testCommandProcessor;
+    private CommandProcessor commandProcessor;
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
-        this.testCommandProcessor = new TestCommandProcessor();
+        this.commandProcessor = new CommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, getRegisterMenu());
         submenus.put(2, getLoginMenu());
@@ -76,7 +74,7 @@ public class RegisterPanel extends Menu {
                 String phoneNumber = getField("phone number", "(\\d+)$");
                 String username = getUsername();
                 String role = getAccountType();
-                testCommandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress);
+                commandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress);
                 return getGrandFatherMenu();
             }
         };
@@ -93,7 +91,7 @@ public class RegisterPanel extends Menu {
             public Menu getCommand() throws Exception {
                 String password = getField("password", "\\S+");
                 String username = getUsername();
-                testCommandProcessor.login(username, password);
+                commandProcessor.login(username, password);
                 return getGrandFatherMenu();
             }
         };
@@ -105,14 +103,14 @@ public class RegisterPanel extends Menu {
         String command = scanner.nextLine();
         if (command.matches(this.commands.get(0))) {
             String[] commandDetails = command.split("\\s");
-            if (testCommandProcessor.doesUsernameExists(commandDetails[3]))
+            if (commandProcessor.doesUsernameExists(commandDetails[3]))
                 throw new RegisterPanelException("this username is in use");
             setUsername(commandDetails[3]);
             setAccountType(commandDetails[2]);
             return submenus.get(1);
         } else if (command.matches(this.commands.get(1))) {
             String[] commandDetails = command.split("\\s");
-            if (!testCommandProcessor.doesUsernameExists(commandDetails[3]))
+            if (!commandProcessor.doesUsernameExists(commandDetails[3]))
                 throw new RegisterPanelException("username doesn't exist");
             setUsername(commandDetails[3]);
             return submenus.get(2);

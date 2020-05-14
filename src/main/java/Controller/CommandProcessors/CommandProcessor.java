@@ -8,13 +8,22 @@ import View.Exceptions.RegisterPanelException;
 
 import java.io.File;
 
-public class TestCommandProcessor {
-    private Account loggedInAccount;
-    private DataCenter dataCenter;
+public class CommandProcessor {
+    protected CommandProcessor parent;
+    protected static CommandProcessor nod;
+    protected Account loggedInAccount;
+    protected DataCenter dataCenter;
 
-    public TestCommandProcessor() {
+    protected CommandProcessor() {
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
+    }
+
+
+    public static CommandProcessor getNod(){
+        if (nod == null)
+            nod = new CommandProcessor();
+        return nod;
     }
 
     public static boolean managerExists() {
@@ -92,5 +101,33 @@ public class TestCommandProcessor {
         //or create new object -> delete previous version and save new object
     }
 
+    public void goBack(){
+        if (nod.getParent()!= null)
+            nod = nod.getParent();
+    }
 
+    public CommandProcessor getParent() {
+        return parent;
+    }
+
+    public void setParent(CommandProcessor parent) {
+        this.parent = parent;
+    }
+
+
+    public void setNod(CommandProcessor nod) {
+        this.nod = nod;
+    }
+
+    public Account getLoggedInAccount() {
+        return loggedInAccount;
+    }
+
+    public DataCenter getDataCenter() {
+        return dataCenter;
+    }
+
+    public void setDataCenter(DataCenter dataCenter) {
+        this.dataCenter = dataCenter;
+    }
 }
