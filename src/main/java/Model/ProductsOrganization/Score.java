@@ -1,20 +1,34 @@
 package Model.ProductsOrganization;
 
 import Model.Account.Customer;
+import com.google.gson.annotations.Expose;
+
+import java.util.Objects;
 
 public class Score {
-    private Customer customer;
+    @Expose
     private double score;
-    private Product product;
 
-    public Score(Customer customer, double score, Product product) {
-        this.customer = customer;
+    public Score( double score) {
         this.score = score;
-        this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Score score1 = (Score) o;
+        return Double.compare(score1.score, score) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(score);
     }
 
     @Override
     public String toString() {
         return "Score{}";
     }
+
 }

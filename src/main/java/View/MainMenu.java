@@ -1,22 +1,32 @@
 package View;
 
 import View.Exceptions.InvalidCommandException;
-import View.Profiles.Profile;
+import View.Profiles.*;
 import View.Profiles.RegisterPanel;
+import Controller.CommandProcessors.*;
 
 import java.util.HashMap;
 
 public class MainMenu extends Menu {
+    private TestCommandProcessor testCommandProcessor;
+    private Profile profile;
+    private Profile defaultProfile = new Profile(this);
 
     public MainMenu() {
         super("Main Menu", null);
-        submenus = new HashMap<Integer, Menu>();
-        submenus.put(1, new Profile(this));
+        this.testCommandProcessor = new TestCommandProcessor();
+        submenus = new HashMap();
+        submenus.put(1, this.profile);
         submenus.put(2, new ProductsPage(this));
         submenus.put(3, new AuctionsPage(this));
         submenus.put(4, PurchasePage.getInstance(this));
         submenus.put(5, new RegisterPanel(this));
         this.setSubmenus(submenus);
+        setCommands();
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     private void setCommands() {
@@ -43,7 +53,15 @@ public class MainMenu extends Menu {
         System.out.println("what do you want to do?\n");
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            //get type of profile and return
+            String profileType = testCommandProcessor.getProfileType();
+            if (profileType.equals("customer"))
+                setProfile(new CustomerProfile(defaultProfile, this));
+            else if (profileType.equals("seller"))
+                setProfile(new SellerProfile(defaultProfile, this));
+            else if (profileType.equals("manager"))
+                setProfile(new ManagerProfile(defaultProfile, this));
+            else
+                setProfile(defaultProfile);
             return submenus.get(1);
         } else if (command.equals(commands.get(1))) {
             return submenus.get(2);
