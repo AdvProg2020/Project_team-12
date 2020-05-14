@@ -107,6 +107,7 @@ public class RegisterPanel extends Menu {
                 throw new RegisterPanelException("this username is in use");
             setUsername(commandDetails[3]);
             setAccountType(commandDetails[2]);
+
             return submenus.get(1);
         } else if (command.matches(this.commands.get(1))) {
             String[] commandDetails = command.split("\\s");

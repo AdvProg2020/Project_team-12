@@ -1,6 +1,6 @@
 package View.Profiles;
 
-import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.TestCommandProcessor;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -9,11 +9,11 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
-    private CommandProcessor commandProcessor;
+    protected TestCommandProcessor testCommandProcessor;
 
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
-        this.commandProcessor = new CommandProcessor();
+        this.testCommandProcessor = new TestCommandProcessor();
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, new RegisterPanel(this));
         submenus.put(2, new ProductsPage(this));
@@ -70,7 +70,7 @@ public class Profile extends Menu {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                System.out.println(commandProcessor.getPersonalInfo());
+                System.out.println(testCommandProcessor.getPersonalInfo());
                 showCommands();
             }
 
@@ -85,7 +85,7 @@ public class Profile extends Menu {
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
                     String newFieldValue = getField(commandDetails[1], "\\w+");
-                    commandProcessor.editPersonalInfo(commandDetails[1], newFieldValue);
+                    testCommandProcessor.editPersonalInfo(commandDetails[1], newFieldValue);
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     return getGrandFatherMenu();

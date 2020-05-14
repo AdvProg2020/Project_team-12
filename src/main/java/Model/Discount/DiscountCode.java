@@ -52,4 +52,30 @@ public class DiscountCode extends Discount {
     public int hashCode() {
         return Objects.hash(super.hashCode(), code, maximumDiscountAmount, maximumNumberOfUsages, allAllowedAccounts);
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setMaximumDiscountAmount(int maximumDiscountAmount) {
+        this.maximumDiscountAmount = maximumDiscountAmount;
+    }
+
+    public void setMaximumNumberOfUsages(int maximumNumberOfUsages) {
+        this.maximumNumberOfUsages = maximumNumberOfUsages;
+    }
+
+    @Override
+    public String toString() {
+        return "DiscountCode{" +
+                "code='" + code + '\'' +
+                ", maximumDiscountAmount=" + maximumDiscountAmount +
+                ", maximumNumberOfUsages=" + maximumNumberOfUsages +
+                ", allAllowedAccounts=" + allAllowedAccounts +
+                ", start=" + start +
+                ", end=" + end +
+                ", percent=" + percent +
+                ", id=" + id +
+                '}';
+    }
 }
