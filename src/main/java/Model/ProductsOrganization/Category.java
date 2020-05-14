@@ -11,17 +11,15 @@ public class Category {
     @Expose
     private String categoryPath;
     private Category parent;
-    private HashMap<String,Category> allSubCategories;
-    private HashMap<String,Product> allIncludedProducts;
+    private HashMap<String, Category> subCategories = new HashMap<>();
+    private HashMap<String, Product> includedPRoducts = new HashMap<>();
 
     public Category(String name, Category parent) {
         this.name = name;
         this.parent = parent;
-        allIncludedProducts = new HashMap<>();
-        allIncludedProducts = new HashMap<>();
     }
 
-    public static String  createCategoryStringPath(Category category){
+    public static String createCategoryStringPath(Category category) {
         String var1000 = "";
         Category temp = category;
         while (temp.getParent() != null) {
@@ -31,14 +29,17 @@ public class Category {
         var1000 += temp.getName();
         String[] strings = var1000.split("/");
         var1000 = "";
-        for (int i = strings.length - 1 ; i >-1 ; i--) {
+        for (int i = strings.length - 1; i > -1; i--) {
             var1000 += strings[i] + "/";
         }
         return var1000;
     }
 
-    public void addSubCategory(Category category){}
-    public void addProduct (Product product){}
+    public void addSubCategory(Category category) {
+    }
+
+    public void addProduct(Product product) {
+    }
 
     @Override
     public String toString() {
@@ -61,20 +62,20 @@ public class Category {
         this.parent = parent;
     }
 
-    public HashMap<String, Category> getAllSubCategories() {
-        return allSubCategories;
+    public HashMap<String, Category> getSubCategories() {
+        return subCategories;
     }
 
-    public void setAllSubCategories(HashMap<String, Category> allSubCategories) {
-        this.allSubCategories = allSubCategories;
+    public void setSubCategories(HashMap<String, Category> subCategories) {
+        this.subCategories = subCategories;
     }
 
-    public HashMap<String, Product> getAllIncludedProducts() {
-        return allIncludedProducts;
+    public HashMap<String, Product> getIncludedPRoducts() {
+        return includedPRoducts;
     }
 
-    public void setAllIncludedProducts(HashMap<String, Product> allIncludedProducts) {
-        this.allIncludedProducts = allIncludedProducts;
+    public void setIncludedPRoducts(HashMap<String, Product> includedPRoducts) {
+        this.includedPRoducts = includedPRoducts;
     }
 
     public String getCategoryPath() {

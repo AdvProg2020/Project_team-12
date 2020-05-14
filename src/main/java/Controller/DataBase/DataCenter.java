@@ -2,7 +2,10 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
-import Model.Account.*;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
@@ -31,7 +34,7 @@ public class DataCenter {
             .registerSubtype(ProductInfoRequest.class, ProductInfoRequest.class.getName())
             .registerSubtype(AuctionRequest.class, AuctionRequest.class.getName())
             .registerSubtype(ReviewRequest.class, ReviewRequest.class.getName())
-            .registerSubtype(SellerRequest.class,SellerRequest.class.getName());
+            .registerSubtype(SellerRequest.class, SellerRequest.class.getName());
     private final RuntimeTypeAdapterFactory<Discount> discountsRuntimeTypeAdaptor = RuntimeTypeAdapterFactory.of(Discount.class, "type")
             .registerSubtype(Auction.class, Auction.class.getName())
             .registerSubtype(DiscountCode.class, DiscountCode.class.getName());
@@ -50,13 +53,13 @@ public class DataCenter {
     }
 
 
-
     public static DataCenter getInstance() {
         if (Instance == null) {
             Instance = new DataCenter();
         }
         return Instance;
     }
+
     private void initCategories() {
         categories = new HashMap<>();
         JsonFileReader reader = new JsonFileReader();
@@ -66,7 +69,7 @@ public class DataCenter {
         File[] files = file.listFiles();
         Arrays.stream(files).map((file1) -> {
             try {
-               return reader.read(file1,Category.class);
+                return reader.read(file1, Category.class);
             } catch (FileNotFoundException e) {
                 return null;
             }
@@ -76,15 +79,18 @@ public class DataCenter {
     private void addCategory(Category category) {
         String[] categories = category.getCategoryPath().split("/");
         Category var100 = null;
-        for (int i = 0; i < categories.length - 1 ; i++) {
-            if (!this.categories.containsValue(categories[i])){
-                var100 = new Category(categories[i],var100);
-                this.categories.put(categories[i],var100);
-            }else
+        for (int i = 0; i < categories.length - 1; i++) {
+            if (!this.categories.containsValue(categories[i])) {
+                Category temp = new Category(categories[i], var100);
+                if (var100 != null)
+                    var100.getSubCategories().put(categories[i], temp);
+                var100 = temp;
+                this.categories.put(categories[i], var100);
+            } else
                 var100 = this.categories.get(categories[i]);
         }
         category.setParent(var100);
-        this.categories.put(category.getName(),category);
+        this.categories.put(category.getName(), category);
     }
 
     private void initRequests() {
@@ -111,7 +117,7 @@ public class DataCenter {
 
     public void deleteRequestWithId(int id) {
         for (Request request : requests) {
-            if (request.getId() == id){
+            if (request.getId() == id) {
                 requests.remove(request);
                 File file = new File(generateRequestsFilePath(id));
                 file.delete();
@@ -157,8 +163,10 @@ public class DataCenter {
                 try {
                     Product temp = reader.read(file, Product.class);
                     String var100 = temp.getCategoryName();
-                    if (var100!= null && var100!="")
-                    temp.setParent(categories.get(var100));
+                    if (var100 != null && var100 != "") {
+                        temp.setParent(categories.get(var100));
+                        categories.get(var100).getIncludedPRoducts().put(temp.getName(), temp);
+                    }
                     return temp;
                 } catch (FileNotFoundException var4) {
                     return null;
@@ -332,7 +340,8 @@ public class DataCenter {
 
     public void saveCategory(Category category) throws IOException {
         JsonFileWriter writer = new JsonFileWriter();
-        writer.write(category,generateCategoryFilePath(category.getName()));
+        category.setCategoryPath(category.createCategoryStringPath(category));
+        writer.write(category, generateCategoryFilePath(category.getName()));
     }
 
     private void addSavedAccount(Account account) {
@@ -375,7 +384,7 @@ public class DataCenter {
         return var10000 + ".request.json";
     }
 
-    private String generateCategoryFilePath(String name){
+    private String generateCategoryFilePath(String name) {
         String var10000 = Config.getInstance().getCategoriesPath() + "/" + name;
         return var10000 + ".category.json";
     }
@@ -458,10 +467,10 @@ public class DataCenter {
         return requests;
     }
 
-    public boolean deleteAccount(String username) throws BadRequestException {
+    public boolean deleteAccount(String username) throws BadRequestException, IOException {
         Account account = accountsByUsername.get(username);
         for (DiscountCode discountCode : account.getAllDiscountCodes()) {
-            deleteAccountFromDiscountCode(discountCode,account.getUsername());
+            deleteAccountFromDiscountCode(discountCode, account.getUsername());
         }
         if (account instanceof Customer)
             return deleteAccount((Customer) account);
@@ -481,62 +490,77 @@ public class DataCenter {
     private boolean deleteAccount(Customer customer) {
         File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "Customer"));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
-        return file.delete() && accountsByUsername.remove(customer.getUsername(),customer);
+        return file.delete() && accountsByUsername.remove(customer.getUsername(), customer);
     }
 
-    private boolean deleteAccount(Seller seller) {
+    private boolean deleteAccount(Seller seller) throws IOException {
         File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "Manager"));
         seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
         for (ProductInfo productInfo : seller.getAllProducts()) {
-            deleteProductInfo(productInfo,seller.getUsername());
+            deleteProductInfo(productInfo, seller.getUsername());
         }
         seller.getAuctionsId().forEach(this::deleteAuctionWithId);
-        return file.delete() && accountsByUsername.remove(seller.getUsername(),seller);
+        return file.delete() && accountsByUsername.remove(seller.getUsername(), seller);
     }
 
-    private void deleteAuctionWithId(Integer id)  {
+    private void deleteAuctionWithId(Integer id) {
         try {
             discounts.remove(getAuctionWithId(id));
+            File file = new File(generateAuctionFilePath(id));
+            file.delete();
+            file = new File(generateAuctionProductsFilePath(id));
+            file.delete();
         } catch (BadRequestException ignored) {
         }
     }
 
-    private void deleteProductInfo(ProductInfo productInfo, String  username) {
-        if (productInfo.getProduct() != null)
-            productInfo.getProduct().getAllSellers().remove(username);
+    private void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
+        if (productInfo.getProduct() == null)
+            productInfo.setProduct(productsByName.get(productInfo.getPName()));
+        productInfo.getProduct().getAllSellers().remove(username);
+        saveProduct(productInfo.getProduct());
     }
 
 
     private boolean deleteAccount(Manager manager) {
         File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "Seller"));
-        return file.delete() && accountsByUsername.remove(manager.getUsername(),manager);
+        return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
     }
 
-    private boolean deleteProduct(Product product){
+    private boolean deleteProduct(Product product) throws IOException {
         for (String seller : product.getAllSellers()) {
             deleteSellerEach(product, seller);
+            saveAccount(accountsByUsername.get(seller));
         }
         File file = new File(generateProductFilePath(product.getId()));
-        return file.delete() && productsByName.remove(product.getName(),product);
+        return file.delete() && productsByName.remove(product.getName(), product);
     }
 
     private void deleteSellerEach(Product product, String seller) {
-        ((Seller)accountsByUsername.get(seller)).deleteProductInfo(product);
+        ((Seller) accountsByUsername.get(seller)).deleteProductInfo(product);
     }
 
-    public boolean deleteDiscountCode(DiscountCode discountCode){
+    public boolean deleteDiscountCode(DiscountCode discountCode) throws IOException {
         for (Account account : discountCode.getAllAllowedAccounts()) {
             account.getAllDiscountCodes().remove(discountCode);
+            saveAccount(account);
         }
         File file = new File(generateDiscountCodeAccountsFilePath(discountCode.getId()));
         return file.delete() && discounts.remove(discountCode);
     }
-    //TODO: remove category should be written;
-    /*public boolean deleteCategory(Category category){
 
-    }*/
-
-
+    public boolean deleteCategory(Category category) throws IOException {
+        for (Product product : category.getIncludedPRoducts().values()) {
+            product.setParent(category.getParent());
+            saveProduct(product);
+        }
+        for (Category value : category.getSubCategories().values()) {
+            value.setParent(category.getParent());
+            saveCategory(value);
+        }
+        File file = new File(generateCategoryFilePath(category.getName()));
+        return file.delete() && this.categories.remove(category.getName(), category);
+    }
 
 
     public Set<String> getAllAccountsInfo() {
