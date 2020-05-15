@@ -68,8 +68,11 @@ public class Cart {
 
     public void decreaseProductWithId(int productID) {
         for (ProductInCart product : products) {
-            if (product.getProductInfo().getId() == productID)
+            if (product.getProductInfo().getId() == productID){
                 product.setQuantity(product.getQuantity() - 1);
+                if (product.getQuantity() == 0)
+                    products.remove(product);
+            }
         }
     }
 

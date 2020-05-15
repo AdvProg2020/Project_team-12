@@ -127,6 +127,7 @@ public class Config {
 
         public void setCreatedDiscounts(int createdDiscounts) {
             this.createdDiscounts = createdDiscounts;
+            saveConfig();
         }
 
         public int getCreatedLogs() {
@@ -135,6 +136,7 @@ public class Config {
 
         public void setCreatedLogs(int createdLogs) {
             this.createdLogs = createdLogs;
+            saveConfig();
         }
 
         public int getCreatedProducts() {
@@ -143,6 +145,7 @@ public class Config {
 
         public void setCreatedProducts(int createdProducts) {
             this.createdProducts = createdProducts;
+            saveConfig();
         }
 
         public int getCreatedAuctions() {
@@ -150,7 +153,7 @@ public class Config {
         }
 
         public void setCreatedAuctions(int createdAuctions) {
-            this.createdAuctions = createdAuctions;
+            this.createdAuctions = createdAuctions;saveConfig();
         }
 
         public int getCreatedRequestsId() {
@@ -158,7 +161,7 @@ public class Config {
         }
 
         public void setCreatedRequestsId(int createdRequestsId) {
-            this.createdRequestsId = createdRequestsId;
+            this.createdRequestsId = createdRequestsId;saveConfig();
         }
     }
 
@@ -168,5 +171,14 @@ public class Config {
 
     public InitializeObjectsNumber getObjectsNumber() {
         return objectsNumber;
+    }
+
+    private void saveConfig(){
+       JsonFileWriter writer = new JsonFileWriter();
+        try {
+            writer.write(Config.getInstance(),configPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

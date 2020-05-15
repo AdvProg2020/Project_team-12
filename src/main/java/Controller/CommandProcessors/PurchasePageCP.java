@@ -23,8 +23,9 @@ public class PurchasePageCP extends CommandProcessor {
     }
 
     public void increaseProduct(int productID,String sellerUserName) throws Exception {
-        if (!checkProductAvailability(productID,sellerUserName))
-            throw new Exception("cannot purchase this product");
+
+        if (!checkProductAvailability(productID,sellerUserName)||sellerHasProduct(productID,sellerUserName))
+            throw new Exception("cannot purchase this product",new Throwable("this account isn a seller or the seller doesnt have this product"));
         if (CommandProcessor.getCart().getProductWIthID(productID).getSellerUserName().equals(sellerUserName))
             CommandProcessor.getCart().increaseProductWithId(productID);
         else
@@ -47,10 +48,16 @@ public class PurchasePageCP extends CommandProcessor {
 
     public void decreaseProductWithID(int productID){
         CommandProcessor.getCart().decreaseProductWithId(productID);
+
     }
 
     public void showTotalPrice(){
         //TODO:this method should be written carefully bcz the product might be in auction.
     }
 
+    private boolean sellerHasProduct(int productId, String username){
+        if (!(DataCenter.getInstance().getAccountByName(username) instanceof Seller)||((Seller)DataCenter.getInstance().getAccountByName(username)).getProductInfo(productId)==null)
+            return false;
+        return true;
+    }
 }
