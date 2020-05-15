@@ -9,7 +9,6 @@ import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Sort.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ProductsPageCP extends CommandProcessor {
     private static CommandProcessor Instance;
@@ -17,7 +16,7 @@ public class ProductsPageCP extends CommandProcessor {
     private ArrayList<Product> allProducts;
     private ArrayList<Filter> allFilters;
     private Category currentCategory;
-    private String sortType;
+    private Sort sort;
 
     // Command: view categories
     public ArrayList<String> getAllCategories() {
@@ -36,7 +35,8 @@ public class ProductsPageCP extends CommandProcessor {
         availableFilters.add("Seller");
         availableFilters.add("Availability");
         availableFilters.add("Price");
-        availableFilters.addAll(currentCategory.getFeatures());
+        if (currentCategory != null)
+            availableFilters.addAll(currentCategory.getFeatures());
         return availableFilters;
     }
 
@@ -73,31 +73,25 @@ public class ProductsPageCP extends CommandProcessor {
 
     // Command: show available sorts
     public ArrayList<String> getAvailableSorts() {
-        ArrayList<String> availableSorts = new ArrayList<>();
-        availableSorts.add("Most viewed");
-        availableSorts.add("Newest");
-        availableSorts.add("Best score");
-        availableSorts.add("Lowest price");
-        availableSorts.add("Highest price");
-        return availableSorts;
+        return sort.getAvailableSorts();
     }
 
     // Command: sort [an available sort]
     public boolean canSort(String type) {
-        return getAvailableSorts().contains(type);
+        return sort.canSort(type);
     }
     public void setSortType(String type) {
-        sortType = type;
+        sort.setSortType(type);
     }
 
     // Command: current sort
     public String getCurrentSort() {
-        return sortType;
+        return sort.getCurrentSort();
     }
 
     // Command: disable sort
     public void disableSort() {
-        sortType = "Most viewed";
+        sort.disableSort();
     }
 
     // Command: show products
@@ -109,25 +103,7 @@ public class ProductsPageCP extends CommandProcessor {
         return productsNames;
     }
     public ArrayList<Product> getSortedProducts() {
-        ArrayList<Product> products = getFilteredProducts();
-        switch(sortType) {
-            case "Most viewed":
-                Collections.sort(products, new SortByView());
-                break;
-            case "Newest":
-                Collections.sort(products, new SortByDate());
-                break;
-            case "Best Score":
-                Collections.sort(products, new SortByScore());
-                break;
-            case "Lowest Price":
-                Collections.sort(products, new SortByLowestPrice());
-                break;
-            case "Highest Price":
-                Collections.sort(products, new SortByHighestPrice());
-                break;
-        }
-        return products;
+        return sort.getSortedProducts(getFilteredProducts());
     }
     public ArrayList<Product> getFilteredProducts() {
         ArrayList<Product> products = new ArrayList<>();
@@ -144,8 +120,6 @@ public class ProductsPageCP extends CommandProcessor {
         }
         return products;
     }
-
-    //TODO Command: show product [productId]
 
     // Additional methods
     public Filter getFilterByName(String name) {

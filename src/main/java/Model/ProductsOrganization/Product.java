@@ -1,14 +1,12 @@
 package Model.ProductsOrganization;
 
-import Model.Status;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Product {
     private String ID;
-    private Status status;
+    private ProductStatus status;
     private String name;
     private String brand;
     private double price;
@@ -36,7 +34,7 @@ public class Product {
         return ID;
     }
 
-    public Status getStatus() {
+    public ProductStatus getStatus() {
         return status;
     }
 
