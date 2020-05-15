@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Product {
+
+    @Expose
+    private int numberOfViews = 0;
     @Expose
     private String name;
     @Expose
@@ -166,5 +169,13 @@ public class Product {
 
     public ArrayList<String> getAllSellers() {
         return allSellers;
+    }
+
+    public int getNumberOfViews() {
+        return numberOfViews;
+    }
+
+    public void setNumberOfViews(int numberOfViews) {
+        this.numberOfViews = numberOfViews;
     }
 }

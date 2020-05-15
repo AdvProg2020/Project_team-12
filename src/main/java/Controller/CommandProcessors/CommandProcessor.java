@@ -293,7 +293,7 @@ public class CommandProcessor {
     public Auction getAuctionWithId(String id) throws Exception {
         return dataCenter.getAuctionWithId(Integer.parseInt(id));
     }
-
+    //what the hell is this method?? //TODO
     public void removeProductWithId(String id) throws Exception {
         if (!dataCenter.doesProductExist(id))
             throw new ProductExceptions("there is no product with this id");
@@ -304,6 +304,7 @@ public class CommandProcessor {
             dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
         } else
             dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
+
     }
 
     public String getSellerBalance() {

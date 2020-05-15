@@ -2,7 +2,10 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
-import Model.Account.*;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
@@ -23,6 +26,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
     private static DataCenter Instance;
+    private final RuntimeTypeAdapterFactory<Discount> discountsRuntimeTypeAdaptor = RuntimeTypeAdapterFactory.of(Discount.class, "type")
+            .registerSubtype(Auction.class, Auction.class.getName())
+            .registerSubtype(DiscountCode.class, DiscountCode.class.getName());
     private final RuntimeTypeAdapterFactory<Account> accountRuntimeTypeAdapter = RuntimeTypeAdapterFactory.of(Account.class, "type")
             .registerSubtype(Customer.class, Customer.class.getName())
             .registerSubtype(Seller.class, Seller.class.getName())
@@ -32,9 +38,7 @@ public class DataCenter {
             .registerSubtype(AuctionRequest.class, AuctionRequest.class.getName())
             .registerSubtype(ReviewRequest.class, ReviewRequest.class.getName())
             .registerSubtype(SellerRequest.class, SellerRequest.class.getName());
-    private final RuntimeTypeAdapterFactory<Discount> discountsRuntimeTypeAdaptor = RuntimeTypeAdapterFactory.of(Discount.class, "type")
-            .registerSubtype(Auction.class, Auction.class.getName())
-            .registerSubtype(DiscountCode.class, DiscountCode.class.getName());
+
     private HashMap<String, Account> accountsByUsername;
     private HashMap<String, Product> productsByName;
     private ArrayList<Discount> discounts;
@@ -73,21 +77,29 @@ public class DataCenter {
         }).forEach(this::addCategory);
     }
 
-    private void addCategory(Category category) {
+    private void addCategory(Category category)  {
         String[] categories = category.getCategoryPath().split("/");
         Category var100 = null;
         for (int i = 0; i < categories.length - 1; i++) {
             if (!this.categories.containsValue(categories[i])) {
-                Category temp = new Category(categories[i], var100);
-                if (var100 != null)
-                    var100.getSubCategories().put(categories[i], temp);
-                var100 = temp;
-                this.categories.put(categories[i], var100);
-            } else
+                initCategory(categories[i]);
                 var100 = this.categories.get(categories[i]);
+            }
         }
         category.setParent(var100);
+        if (var100 != null)
+            var100.getSubCategories().put(category.getName(), category);
         this.categories.put(category.getName(), category);
+    }
+
+    private void initCategory(String category)  {
+        File file = new File(generateCategoryFilePath(category));
+        JsonFileReader reader = new JsonFileReader();
+        try {
+            addCategory(reader.read(file, Category.class));
+        } catch (FileNotFoundException e) {
+            addCategory(new Category(category,new ArrayList<String>(),null));
+        }
     }
 
     private void initRequests() {
@@ -162,7 +174,7 @@ public class DataCenter {
                     String var100 = temp.getCategoryName();
                     if (var100 != null && var100 != "") {
                         temp.setParent(categories.get(var100));
-                        categories.get(var100).getIncludedPRoducts().put(temp.getName(), temp);
+                        categories.get(var100).getIncludedProducts().put(temp.getName(), temp);
                     }
                     return temp;
                 } catch (FileNotFoundException var4) {
@@ -500,7 +512,7 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(seller.getUsername(), seller);
     }
 
-    public void deleteAuctionWithId(Integer id)  {
+    public void deleteAuctionWithId(Integer id) {
         try {
             discounts.remove(getAuctionWithId(id));
             File file = new File(generateAuctionFilePath(id));
@@ -511,13 +523,12 @@ public class DataCenter {
         }
     }
 
-        public void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
-            if (productInfo.getProduct() == null)
-                productInfo.setProduct(productsByName.get(productInfo.getPName()));
-            productInfo.getProduct().getAllSellers().remove(username);
-            saveProduct(productInfo.getProduct());
-        }
-
+    public void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
+        if (productInfo.getProduct() == null)
+            productInfo.setProduct(productsByName.get(productInfo.getPName()));
+        productInfo.getProduct().getAllSellers().remove(username);
+        saveProduct(productInfo.getProduct());
+    }
 
 
     private boolean deleteAccount(Manager manager) {
@@ -548,7 +559,7 @@ public class DataCenter {
     }
 
     public boolean deleteCategory(Category category) throws IOException {
-        for (Product product : category.getIncludedPRoducts().values()) {
+        for (Product product : category.getIncludedProducts().values()) {
             product.setParent(category.getParent());
             saveProduct(product);
         }
@@ -581,9 +592,6 @@ public class DataCenter {
         return false;
     }
 
-    public Set<String> getAllProducts() {
-        return productsByName.keySet();
-    }
 
     public int getLastDiscountId() {
         return discounts.size();
@@ -606,12 +614,16 @@ public class DataCenter {
         }
         throw new BadRequestException("discount not found");
     }
+
+    public ArrayList<Product> getAllProductsObject() {
+        return (ArrayList<Product>) productsByName.values();
+    }
+    public Set<String> getAllProducts() {
+        return  productsByName.keySet();
+    }
 }
 
 class BadRequestException extends Exception {
-    public BadRequestException() {
-        super();
-    }
 
     public BadRequestException(String message, Throwable cause) {
         super(message, cause);
