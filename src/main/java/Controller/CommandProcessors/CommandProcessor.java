@@ -12,6 +12,7 @@ import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
 import Model.Log.PurchaseLog;
 import Model.Log.SellLog;
+import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductInfo;
 import Model.ProductsOrganization.Score;
@@ -33,7 +34,7 @@ public class CommandProcessor {
     private CommandProcessor Parent;
     private static Account loggedInAccount;
     private DataCenter dataCenter;
-
+    private static Cart cart = new Cart(null);
     public CommandProcessor(CommandProcessor parent) {
         Parent = parent;
         this.loggedInAccount = null;
@@ -103,6 +104,14 @@ public class CommandProcessor {
                 Instance = RegisterPanelCP.getInstance();
                 break;
         }
+    }
+
+    public static Cart getCart() {
+        return cart;
+    }
+
+    public static void setCart(Cart cart) {
+        CommandProcessor.cart = cart;
     }
 
     public String getProfileType() {

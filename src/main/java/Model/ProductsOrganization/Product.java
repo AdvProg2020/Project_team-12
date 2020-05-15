@@ -1,5 +1,7 @@
 package Model.ProductsOrganization;
 
+import Controller.DataBase.DataCenter;
+import Model.Account.Seller;
 import Model.Status;
 import com.google.gson.annotations.Expose;
 
@@ -33,6 +35,7 @@ public class Product {
     private ArrayList<Review> allReviews;
     @Expose
     private String categoryName;
+
     public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
         this.name = name;
@@ -115,7 +118,7 @@ public class Product {
         this.categoryName = categoryName;
     }
 
-    public void addScore(Score score){
+    public void addScore(Score score) {
         this.allSubmittedScores.add(score);
     }
 
@@ -177,5 +180,13 @@ public class Product {
 
     public void setNumberOfViews(int numberOfViews) {
         this.numberOfViews = numberOfViews;
+    }
+
+    public String getSellersInfo() {
+        String var100 = "";
+        for (String s : allSellers) {
+            var100 += ((Seller) DataCenter.getInstance().getAccountByName(s)).getProductInfo(name).getQuantityString();
+        }
+        return var100;
     }
 }

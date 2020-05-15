@@ -92,5 +92,21 @@ public class Seller extends Account implements CanRequest{
     public void setAccountTypeAccepted(boolean accountTypeAccepted) {
         this.accountTypeAccepted = accountTypeAccepted;
     }
+
+    public ProductInfo getProductInfo(String name) {
+        for (ProductInfo product : allProducts) {
+            if (product.getPName().equals(name))
+                return product;
+        }
+        return null;
+    }
+
+    public ProductInfo getProductInfo(int productId) {
+        for (ProductInfo product : allProducts) {
+            if (product.getPName().equals(product))
+                return product;
+        }
+        return null;
+    }
 }
 
