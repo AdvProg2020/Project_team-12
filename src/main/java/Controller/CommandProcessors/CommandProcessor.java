@@ -31,7 +31,7 @@ public class CommandProcessor {
     protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
     private CommandProcessor Parent;
-    private Account loggedInAccount;
+    private static Account loggedInAccount;
     private DataCenter dataCenter;
 
     public CommandProcessor(CommandProcessor parent) {
@@ -198,6 +198,7 @@ public class CommandProcessor {
         dataCenter.deleteDiscountCode(discountCode);
 
         //should i delete it for each customer ??
+        //no need to delete it for each customer it has been handled in data center
     }
 
     public void deleteAccount(String username) throws Exception {
