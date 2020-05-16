@@ -22,8 +22,7 @@ public class Config {
     private final String requestsPath;
     @Expose
     private final String categoriesPath;
-    @Expose
-    private final InitializeObjectsNumber objectsNumber;
+
 
     public Config() {
         accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
@@ -31,7 +30,7 @@ public class Config {
         discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
         requestsPath = "Resources/Requests";
         categoriesPath = "Resources/Categories";
-        objectsNumber = new InitializeObjectsNumber(0, 0, 0, 0, 0);
+
     }
 
     public static Config getInstance() {
@@ -101,84 +100,5 @@ public class Config {
         }
     }
 
-    private class InitializeObjectsNumber {
-        @Expose
-        private int createdDiscounts;
-        @Expose
-        private int createdLogs;
-        @Expose
-        private int createdProducts;
-        @Expose
-        private int createdAuctions;
-        @Expose
-        private int createdRequestsId;
 
-        public InitializeObjectsNumber(int createdDiscounts, int createdLogs, int createdProducts, int createdAuctions, int createdRequestsId) {
-            this.createdDiscounts = createdDiscounts;
-            this.createdLogs = createdLogs;
-            this.createdProducts = createdProducts;
-            this.createdAuctions = createdAuctions;
-            this.createdRequestsId = createdRequestsId;
-        }
-
-        public int getCreatedDiscounts() {
-            return createdDiscounts;
-        }
-
-        public void setCreatedDiscounts(int createdDiscounts) {
-            this.createdDiscounts = createdDiscounts;
-            saveConfig();
-        }
-
-        public int getCreatedLogs() {
-            return createdLogs;
-        }
-
-        public void setCreatedLogs(int createdLogs) {
-            this.createdLogs = createdLogs;
-            saveConfig();
-        }
-
-        public int getCreatedProducts() {
-            return createdProducts;
-        }
-
-        public void setCreatedProducts(int createdProducts) {
-            this.createdProducts = createdProducts;
-            saveConfig();
-        }
-
-        public int getCreatedAuctions() {
-            return createdAuctions;
-        }
-
-        public void setCreatedAuctions(int createdAuctions) {
-            this.createdAuctions = createdAuctions;saveConfig();
-        }
-
-        public int getCreatedRequestsId() {
-            return createdRequestsId;
-        }
-
-        public void setCreatedRequestsId(int createdRequestsId) {
-            this.createdRequestsId = createdRequestsId;saveConfig();
-        }
-    }
-
-    public String getCategoriesPath() {
-        return categoriesPath;
-    }
-
-    public InitializeObjectsNumber getObjectsNumber() {
-        return objectsNumber;
-    }
-
-    private void saveConfig(){
-       JsonFileWriter writer = new JsonFileWriter();
-        try {
-            writer.write(Config.getInstance(),configPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
