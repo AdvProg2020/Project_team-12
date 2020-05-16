@@ -2,6 +2,7 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
+
 import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
@@ -10,16 +11,17 @@ import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
+import Model.ProductsOrganization.Product;
 import Model.Request.*;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+import org.apache.commons.net.ntp.NTPUDPClient;
+import org.apache.commons.net.ntp.TimeInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.net.InetAddress;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
@@ -38,7 +40,7 @@ public class DataCenter {
             .registerSubtype(SellerRequest.class, SellerRequest.class.getName());
 
     private HashMap<String, Account> accountsByUsername;
-    private HashMap<String, Model.ProductsOrganization.Product> productsByName;
+    private HashMap<String, Product> productsByName;
     private ArrayList<Discount> discounts;
     private ArrayList<Request> requests;
     private HashMap<String, Category> categories;
@@ -620,16 +622,23 @@ public class DataCenter {
         //TODO: should be written
         return null;
     }
-}
 
-class BadRequestException extends Exception {
-
-    public BadRequestException(String message, Throwable cause) {
-        super(message, cause);
+    public ArrayList<Category> getCategories() {
+        return (ArrayList<Category>) categories.values();
     }
 
-    public BadRequestException(String message) {
-        super(message);
+    public Date getDate() {
+        TimeInfo timeInfo = null;
+         final String TIME_SERVER = "time-a.nist.gov";
+        try {
+        NTPUDPClient timeClient = new NTPUDPClient();
+        InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+            timeInfo = timeClient.getTime(inetAddress);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        long returnTime = timeInfo.getReturnTime();
+        return new Date(returnTime);
     }
-
 }
+

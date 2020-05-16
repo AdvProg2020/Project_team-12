@@ -29,7 +29,7 @@ public class CommandProcessor {
     protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
     private static Account loggedInAccount;
-    private static Cart cart = new Cart(null);
+    private static Cart cart = Cart.getInstance();
     private CommandProcessor Parent;
     private DataCenter dataCenter;
 
@@ -366,17 +366,7 @@ public class CommandProcessor {
     }
 
     public void buy() throws Exception {
-        if (loggedInAccount.getCredit() < getPaymentAmount())
-            throw new CustomerExceptions("you don't have enough credit");
-        else {
 
-            Seller[] sellers = (Seller[]) cart.getTraders().values().toArray();
-            SellLog sellLog = new SellLog()
-            //add trade logs
-            //reduce customer credit
-            //increase seller credit
-            cart.restart();
-        }
     }
 
 

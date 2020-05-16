@@ -1,6 +1,7 @@
 package Controller.CommandProcessors;
 
 
+import Controller.DataBase.DataCenter;
 import Model.Discount.Auction;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Filter.Filter;
@@ -15,6 +16,7 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
     private ArrayList<Category> allCategories;
     private ArrayList<Auction> allAuctions;
     private ArrayList<Product> allProducts;
+    private ArrayList<Filter> allFilters;
     private Filter filter;
     private Sort sort;
     public static CommandProcessor getInstance(){
@@ -24,14 +26,14 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
     }
     public AuctionsPageCP() {
         super(MainMenuCP.getInstance());
-        /* TODO: get these from data center:
-        this.allCategories = ;
+        /* TODO: get these from data center:*/
+        this.allCategories = DataCenter.getInstance().getCategories();
         this.allProducts = new ArrayList<>();
         for (Auction auction : allAuctions)
             allProducts.addAll(auction.getAllProducts());
         this.allFilters = new ArrayList<>();
         this.filter = new Filter(null);
-        this.sort = new Sort(); */
+        this.sort = new Sort();
     }
 
     // Command: show available filters
@@ -115,5 +117,13 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
             if (auction.getAllProducts().contains(product))
                 return auction;
         return null;
+    }
+
+    public ArrayList<Filter> getAllFilters() {
+        return allFilters;
+    }
+
+    public void setAllFilters(ArrayList<Filter> allFilters) {
+        this.allFilters = allFilters;
     }
 }

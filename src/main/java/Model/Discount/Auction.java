@@ -49,4 +49,9 @@ public class Auction extends Discount {
     public void removeProduct(Product product) {
         allProducts.remove(product);
     }
+
+    @Override
+    public double calculatePrice(Double amount) {
+        return amount - (amount*percent/100);
+    }
 }

@@ -8,46 +8,52 @@ import java.util.Date;
 
 public class SellLog extends Log {
     @Expose
-    private int receivedCredit;
+    private double receivedCredit;
     @Expose
-    private int decreasedPriceAtAuction;
+    private double decreasedPriceAtAuction;
     @Expose
     private ArrayList<ProductOnLog> allSoldProducts;
-    /*@Expose(serialize = true)
-    private Status status;*///I dont know what you want this for but if its necessary, uncomment it.
+    @Expose
+    private SellStatus status = SellStatus.TO_BE_SENT;
 
-    public SellLog(int id, Date date) {
-        super(id, date);
-    }
-
-    @Override
-    public String toString() {
-        return "SellLog{}";
-    }
-
-    public void setAllSoldProducts(ArrayList<ProductOnLog> allSoldProducts) {
+    public SellLog(Date date, double receivedCredit, double decreasedPriceAtAuction, ArrayList<ProductOnLog> allSoldProducts) {
+        super(date);
+        this.receivedCredit = receivedCredit;
+        this.decreasedPriceAtAuction = decreasedPriceAtAuction;
         this.allSoldProducts = allSoldProducts;
     }
 
-    public void setReceivedCredit(int receivedCredit) {
-        this.receivedCredit = receivedCredit;
-    }
-
-    public void setDecreasedPriceAtAuction(int decreasedPriceAtAuction) {
-        this.decreasedPriceAtAuction = decreasedPriceAtAuction;
-    }
-
-    public int getReceivedCredit() {
+    public double getReceivedCredit() {
         return receivedCredit;
     }
 
-    public int getDecreasedPriceAtAuction() {
+    public void setReceivedCredit(double receivedCredit) {
+        this.receivedCredit = receivedCredit;
+    }
+
+    public double getDecreasedPriceAtAuction() {
         return decreasedPriceAtAuction;
+    }
+
+    public void setDecreasedPriceAtAuction(double decreasedPriceAtAuction) {
+        this.decreasedPriceAtAuction = decreasedPriceAtAuction;
     }
 
     public ArrayList<ProductOnLog> getAllSoldProducts() {
         return allSoldProducts;
     }
 
-    private enum Status {SENT, TO_BE_SENT}
+    public void setAllSoldProducts(ArrayList<ProductOnLog> allSoldProducts) {
+        this.allSoldProducts = allSoldProducts;
+    }
+
+    public SellStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SellStatus status) {
+        this.status = status;
+    }
+
+
 }

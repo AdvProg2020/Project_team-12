@@ -11,7 +11,7 @@ public class DiscountCode extends Discount {
     @Expose
     private String code;
     @Expose
-    private int maximumDiscount;
+    private double maximumDiscount;
     @Expose
     private int maxUsageNumber;
     @Expose(serialize = false, deserialize = false)
@@ -33,11 +33,11 @@ public class DiscountCode extends Discount {
         this.code = code;
     }
 
-    public int getMaximumDiscount() {
+    public double getMaximumDiscount() {
         return maximumDiscount;
     }
 
-    public void setMaximumDiscount(int maximumDiscount) {
+    public void setMaximumDiscount(double maximumDiscount) {
         this.maximumDiscount = maximumDiscount;
     }
 
@@ -55,5 +55,20 @@ public class DiscountCode extends Discount {
 
     public void setAllAllowedAccounts(ArrayList<Account> allAllowedAccounts) {
         this.allAllowedAccounts = allAllowedAccounts;
+    }
+
+    @Override
+    public double calculatePrice(Double amount) {
+        if (maxUsageNumber > 0 )
+            if (amount*percent/100 >maximumDiscount)
+                return amount - maximumDiscount;
+            else
+                return amount - (amount*percent/100);
+            else
+                return amount;
+    }
+
+    public void useCode() {
+        maxUsageNumber--;
     }
 }

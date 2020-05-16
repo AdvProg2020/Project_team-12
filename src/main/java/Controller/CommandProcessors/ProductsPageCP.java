@@ -1,12 +1,14 @@
 package Controller.CommandProcessors;
 
 
+import Controller.DataBase.DataCenter;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Filter.Filter;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Sort.Sort;
 import View.ProductPage;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 public class ProductsPageCP extends CommandProcessor {
@@ -24,6 +26,10 @@ public class ProductsPageCP extends CommandProcessor {
         this.allProducts = ;
         this.filter = new Filter(null);
         this.sort = new Sort(); */
+        this.allCategories = DataCenter.getInstance().getCategories();
+        this.allProducts = DataCenter.getInstance().getAllProductsObject();
+        this.filter = new Filter(null);
+        this.sort = new Sort();
     }
 
     public static CommandProcessor getInstance() {
@@ -120,6 +126,11 @@ public class ProductsPageCP extends CommandProcessor {
         ProductPageCP.getInstance(Id).setParent(this);
         CommandProcessor.setInstance(ProductPageCP.getInstance());
     }
+
+    public void showProduct(String productID){
+        ProductPageCP.getInstance(productID).setParent(this);
+        CommandProcessor.setInstance(ProductPageCP.getInstance());
+    }
 }
 
 
@@ -136,4 +147,4 @@ public class ProductsPageCP extends CommandProcessor {
 //⇒ current sort (Done)
 //⇒ disable sort (Done)
 //show products (Done)
-//TODO: show product [productId]
+//TODO: show product [productId]//DONE

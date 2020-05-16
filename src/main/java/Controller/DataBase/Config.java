@@ -74,6 +74,10 @@ public class Config {
         }
     }
 
+    public String getCategoriesPath() {
+        return categoriesPath;
+    }
+
     public enum AccountsPath {
         CUSTOMER(0), SELLER(1), MANAGER(2);
         private int num;

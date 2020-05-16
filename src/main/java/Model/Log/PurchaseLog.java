@@ -1,6 +1,5 @@
 package Model.Log;
 
-import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductOnLog;
 import com.google.gson.annotations.Expose;
 
@@ -9,21 +8,53 @@ import java.util.Date;
 
 public class PurchaseLog extends Log {
     @Expose
-    private int payedCredit;
+    private double payedCredit;
     @Expose
-    private int finalPrice;
+    private double finalPrice;
     @Expose
     private ArrayList<ProductOnLog> allPurchasedProducts;
+    @Expose
+    private PurchaseStatus status = PurchaseStatus.TO_BE_DELIVERED;
 
-    public PurchaseLog(int id, Date date) {
-        super(id, date);
+    public PurchaseLog(Date date, double payedCredit, double finalPrice, ArrayList<ProductOnLog> allPurchasedProducts) {
+        super(date);
+        this.payedCredit = payedCredit;
+        this.finalPrice = finalPrice;
+        this.allPurchasedProducts = allPurchasedProducts;
+
     }
 
-    private enum Status {DELIVERED, TO_BE_DELIVERED}
-    private Status status;
+    public double getPayedCredit() {
+        return payedCredit;
+    }
 
+    public void setPayedCredit(double payedCredit) {
+        this.payedCredit = payedCredit;
+    }
 
-    public boolean hasBoughtProduct(int productId){return true;}
+    public double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+    public ArrayList<ProductOnLog> getAllPurchasedProducts() {
+        return allPurchasedProducts;
+    }
+
+    public void setAllPurchasedProducts(ArrayList<ProductOnLog> allPurchasedProducts) {
+        this.allPurchasedProducts = allPurchasedProducts;
+    }
+
+    public PurchaseStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PurchaseStatus status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {

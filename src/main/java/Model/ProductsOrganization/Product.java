@@ -17,7 +17,7 @@ public class Product {
     @Expose
     private String name;
     @Expose
-    private double discountPercentInAuction;
+    private double discountPercentInAuction = 0;
     @Expose
     private String seller;
     @Expose
@@ -103,6 +103,9 @@ public class Product {
     }
 
     public double getPrice() {
+        return price - (price*discountPercentInAuction/100);
+    }
+    public double getRawPrice(){
         return price;
     }
 

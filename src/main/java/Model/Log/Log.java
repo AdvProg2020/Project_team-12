@@ -6,22 +6,12 @@ import java.util.Date;
 
 public abstract class Log {
     @Expose
-    private int id;
-    @Expose
     private Date date;
 
-    public Log(int id, Date date) {
-        this.id = id;
+    public Log( Date date) {
         this.date = date;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;

@@ -53,4 +53,6 @@ public abstract class Discount {
     public void setID(String ID) {
         this.ID = ID;
     }
+
+    public abstract double calculatePrice(Double amount);
 }

@@ -8,14 +8,16 @@ public class ProductOnLog {
     @Expose
     private final String name;
     @Expose
-    private final int price;
+    private final double price;
     @Expose
     private final String sellerOrBuyer;
-
-    public ProductOnLog(String name, int price, String seller) {
+    @Expose
+    private final int quantity;
+    public ProductOnLog(String name, Double price, String seller, int quantity) {
         this.name = name;
         this.price = price;
         this.sellerOrBuyer = seller;
+        this.quantity = quantity;
     }
 
     @Override
@@ -31,5 +33,9 @@ public class ProductOnLog {
     @Override
     public int hashCode() {
         return Objects.hash(name, price, sellerOrBuyer);
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

@@ -1,35 +1,41 @@
 package Model.ProductsOrganization;
 
-import Controller.DataBase.DataCenter;
 import Model.Account.Customer;
-import Model.Account.Seller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Cart {
     //private ArrayList<Product> products;
-    private HashMap<Product, Seller> traders;
     private ArrayList<ProductInCart> products;
     private Customer owner;
     private String receiverInfo;
+    private static Cart Instance;
 
-    public Cart(Customer owner) {
+    private Cart(Customer owner) {
         this.owner = owner;
         products = new ArrayList<>();
-        traders = new HashMap<Product, Seller>();
+    }
+
+    public static Cart getInstance() {
+        if (Instance == null)
+            Instance = new Cart(null);
+        return Instance;
+    }
+
+    public void resetCart() {
+        Instance = null;
     }
 
     public Double getPayAmount() {
         Double price = Double.valueOf(0);
-        for (Product product : this.products) {
+        for (ProductInCart product : this.products) {
             price += product.getPrice();
         }
         return price;
     }
 
-    public void addProduct(int productId, String sellerUsername) {
-        products.add(new ProductInCart(((Seller) DataCenter.getInstance().getAccountByName(sellerUsername)).getProductInfo(productId), 1));
+    public void addProduct(Product product) {
+        products.add(new ProductInCart(product, 1));
     }
 
     public ArrayList<ProductInCart> getProducts() {
@@ -53,54 +59,86 @@ public class Cart {
         String var1000 = "Owner Username IS:" + owner.getUsername() +
                 "your Products are:";
         for (ProductInCart product : products) {
-            var1000 += product.getProductInfo().toString() + "you have selected "
+            var1000 += product.getProduct().toString() + "you have selected "
                     + product.getQuantity() + "\n";
         }
         var1000 += "Sum of prices is:" + getPayAmount();
         return var1000;
     }
 
-    public ProductInfo getProductWIthID(int productId) throws Exception {
+    public Product getProductWIthID(String productId) throws Exception {
         for (ProductInCart product : products) {
-            if (product.getProductInfo().getId() == productId)
-                return product.getProductInfo();
+            if (product.getProduct().getID().equals(productId))
+                return product.getProduct();
         }
         throw new Exception("Product with id didnt found");
     }
 
-    public void increaseProductWithId(int productID) {
-        for (ProductInCart product : products) {
-            if (product.getProductInfo().getId() == productID)
-                product.setQuantity(product.getQuantity() + 1);
-        }
-    }
-
-    public void decreaseProductWithId(int productID) {
-        for (ProductInCart product : products) {
-            if (product.getProductInfo().getId() == productID){
-                product.setQuantity(product.getQuantity() - 1);
-                if (product.getQuantity() == 0)
-                    products.remove(product);
+    public void increaseProductWithId(String productID) throws Exception {
+        for (ProductInCart entry : products) {
+            if (entry.getProduct().getID().equals(productID)) {
+                increaseProductEach(entry);
+                return;
             }
         }
+        throw new Exception("Product with this id didnt found" + productID);
     }
 
 
-    class ProductInCart {
-        private ProductInfo productInfo;
+    private void increaseProductEach(ProductInCart product) throws Exception {
+        if (product.getProduct().getRemainingItems() >= (product.getQuantity() + 1))
+            product.setQuantity(product.getQuantity() + 1);
+        else
+            throw new Exception("Can not add more of this item.");
+    }
+
+    public void decreaseProductWithId(String productID) throws Exception {
+        for (ProductInCart entry : products) {
+            if (entry.getProduct().getID().equals(productID)) {
+                products.remove(entry);
+                for (ProductInCart product : products) {
+                    if (product.getQuantity() == 0)
+                        products.remove(product);
+                }
+                return;
+            }
+        }
+        throw new Exception("Product with this id didnt found" + productID);
+    }
+
+
+    public String getReceiverInfo() {
+        return receiverInfo;
+    }
+
+    public void setReceiverInfo(String receiverInfo) {
+        this.receiverInfo = receiverInfo;
+    }
+
+    public int getQuantityWIthID(String productID) throws Exception {
+            for (ProductInCart product : products) {
+                if (product.getProduct().getID().equals(productID))
+                    return product.getQuantity();
+            }
+            throw new Exception("Product with id didnt found");
+    }
+
+
+    public class ProductInCart {
+        private Product product;
         private int quantity;
 
-        public ProductInCart(ProductInfo productInfo, int quantity) {
-            this.productInfo = productInfo;
+        public ProductInCart(Product product, int quantity) {
+            this.product = product;
             this.quantity = quantity;
         }
 
-        public ProductInfo getProductInfo() {
-            return productInfo;
+        public Product getProduct() {
+            return product;
         }
 
-        public void setProductInfo(ProductInfo productInfo) {
-            this.productInfo = productInfo;
+        public void setProduct(Product product) {
+            this.product = product;
         }
 
         public int getQuantity() {
@@ -110,35 +148,9 @@ public class Cart {
         public void setQuantity(int quantity) {
             this.quantity = quantity;
         }
-    }
 
-
-    public void setReceiverInfo(String receiverInfo) {
-        this.receiverInfo = receiverInfo;
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    public String getReceiverInfo() {
-        return receiverInfo;
-    }
-
-    public void restart() {
-        this.products.clear();
-        this.owner = null;
-        this.receiverInfo = null;
-    }
-
-    public HashMap<Product, Seller> getTraders() {
-        return traders;
-    }
-
-    public void addToTraders(Product product,Seller seller){
-        traders.put(product, seller);
-    }
-
-    public void addProduct(Product product) {
+        public Double getPrice() {
+            return quantity * product.getPrice();
+        }
     }
 }

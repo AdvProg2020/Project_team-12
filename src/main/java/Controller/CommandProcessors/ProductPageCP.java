@@ -1,5 +1,6 @@
 package Controller.CommandProcessors;
 
+import Controller.DataBase.DataCenter;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Review;
 import View.ProductsPage;
@@ -18,6 +19,7 @@ public class ProductPageCP extends CommandProcessor{
     protected ProductPageCP(String ID) {
         super(ProductsPageCP.getInstance());
         //TODO: this.selectedProduct = getProductByID(ID);
+        this.selectedProduct = DataCenter.getInstance().getProductById(ID);
     }
 
     // Command: digest & attributes

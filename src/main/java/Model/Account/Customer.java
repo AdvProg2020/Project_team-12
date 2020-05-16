@@ -1,5 +1,6 @@
 package Model.Account;
 
+import Model.Discount.DiscountCode;
 import Model.Log.PurchaseLog;
 
 import Model.ProductsOrganization.Cart;
@@ -51,5 +52,21 @@ public class Customer extends Account implements CanRequest{
 
     public ArrayList<PurchaseLog> getBuyLogs() {
         return buyLogs;
+    }
+
+    public double getPaymentAmountWithDiscountCode(Double amount,String discountCodeID) throws Exception {
+        for (DiscountCode discountCode : this.getAllDiscountCodes()) {
+            if (discountCode.getID().equals(discountCodeID))
+                return discountCode.calculatePrice(amount);
+        }
+        throw new Exception("DiscountCode has not found.");
+    }
+
+    public boolean hasDiscountCode(String discountCodeId) {
+        for (DiscountCode discountCode : getAllDiscountCodes()) {
+            if (discountCode.getID().equals(discountCodeId))
+                return true;
+        }
+        return false;
     }
 }
