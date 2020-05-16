@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class AuctionRequest extends Request {
-    private int auctionId;
+    private String auctionId;
     private String senderUsername;
     private String message;
 
-    public AuctionRequest(String sender, int id, String text, boolean active, int auctionId, String senderUsername) {
+    public AuctionRequest(String sender, int id, String text, boolean active, String auctionId, String senderUsername) {
         super(sender, id, text, active);
         this.auctionId = auctionId;
         this.senderUsername = senderUsername;

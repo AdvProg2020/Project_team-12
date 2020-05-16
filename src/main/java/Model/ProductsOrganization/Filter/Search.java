@@ -1,4 +1,4 @@
-package Model.Filter;
+package Model.ProductsOrganization.Filter;
 
 import java.util.ArrayList;
 

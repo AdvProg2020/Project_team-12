@@ -2,8 +2,6 @@ package Controller.CommandProcessors;
 
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
-import Model.ProductsOrganization.Product;
-import Model.ProductsOrganization.ProductInfo;
 
 public class PurchasePageCP extends CommandProcessor {
     private static CommandProcessor Instance;

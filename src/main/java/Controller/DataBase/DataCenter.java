@@ -10,8 +10,6 @@ import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
-import Model.ProductsOrganization.Product;
-import Model.ProductsOrganization.ProductInfo;
 import Model.Request.*;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
@@ -34,23 +32,31 @@ public class DataCenter {
             .registerSubtype(Seller.class, Seller.class.getName())
             .registerSubtype(Manager.class, Manager.class.getName());
     private final RuntimeTypeAdapterFactory<Request> requestRuntimeTypeAdapter = RuntimeTypeAdapterFactory.of(Request.class, "type")
-            .registerSubtype(ProductInfoRequest.class, ProductInfoRequest.class.getName())
+            .registerSubtype(ProductRequest.class, ProductRequest.class.getName())
             .registerSubtype(AuctionRequest.class, AuctionRequest.class.getName())
             .registerSubtype(ReviewRequest.class, ReviewRequest.class.getName())
             .registerSubtype(SellerRequest.class, SellerRequest.class.getName());
 
     private HashMap<String, Account> accountsByUsername;
-    private HashMap<String, Product> productsByName;
+    private HashMap<String, Model.ProductsOrganization.Product> productsByName;
     private ArrayList<Discount> discounts;
     private ArrayList<Request> requests;
     private HashMap<String, Category> categories;
 
     private DataCenter() {
         initCategories();
-        initProducts();
         initAccounts();
+        initProducts();
         initDiscounts();
         initRequests();
+    }
+
+    private void initProducts() {
+        productsByName = new HashMap<>();
+        for (Account value : accountsByUsername.values()) {
+            if (value instanceof Seller)
+                ((Seller) value).getAllProducts().forEach(this::addProduct);
+        }
     }
 
 
@@ -88,7 +94,7 @@ public class DataCenter {
         }
         category.setParent(var100);
         if (var100 != null)
-            var100.getSubCategories().put(category.getName(), category);
+            var100.getAllSubCategories().put(category.getName(), category);
         this.categories.put(category.getName(), category);
     }
 
@@ -160,7 +166,7 @@ public class DataCenter {
         }
     }
 
-    private void initProducts() {
+    {/*private void initProducts() {
         productsByName = new HashMap<>();
         JsonFileReader reader = new JsonFileReader();
         File productsDirectory = new File(Config.getInstance().getProductsPath());
@@ -174,7 +180,7 @@ public class DataCenter {
                     String var100 = temp.getCategoryName();
                     if (var100 != null && var100 != "") {
                         temp.setParent(categories.get(var100));
-                        categories.get(var100).getIncludedProducts().put(temp.getName(), temp);
+                        categories.get(var100).getAllProductsInside().put(temp.getName(), temp);
                     }
                     return temp;
                 } catch (FileNotFoundException var4) {
@@ -182,7 +188,7 @@ public class DataCenter {
                 }
             }).forEach(this::addProduct);
         }
-    }
+    }*/}
 
     private void initDiscounts() {
         discounts = new ArrayList<>();
@@ -216,7 +222,7 @@ public class DataCenter {
     private void initDiscount(DiscountCode discount) throws Exception {
         JsonFileReader reader = new JsonFileReader();
         try {
-            File file = new File(generateDiscountCodeAccountsFilePath(discount.getId()));
+            File file = new File(generateDiscountCodeAccountsFilePath(discount.getID()));
             ArrayList<String> strings = reader.read(file, ArrayList.class);
             ArrayList<Account> accounts = new ArrayList<>();
             for (String s : strings) {
@@ -232,19 +238,19 @@ public class DataCenter {
     private void initDiscount(Auction auction) throws Exception {
         JsonFileReader reader = new JsonFileReader();
         try {
-            File file = new File(generateAuctionProductsFilePath(auction.getId()));
-            ArrayList<Double> strings = reader.read(file, ArrayList.class);
-            ArrayList<Product> products = new ArrayList<>();
-            for (double id : strings) {
-                products.add(getProductById((int) id));
+            File file = new File(generateAuctionProductsFilePath(auction.getID()));
+            ArrayList<String> strings = reader.read(file, ArrayList.class);
+            ArrayList<Model.ProductsOrganization.Product> products = new ArrayList<>();
+            for (String id : strings) {
+                products.add(getProductById(id));
             }
-            ((Auction) auction).setAllIncludedProducts(products);
+            ((Auction) auction).setAllProducts(products);
             discounts.add(auction);
         } catch (FileNotFoundException ignored) {
         }
     }
 
-    private void addProduct(Product product) {
+    private void addProduct(Model.ProductsOrganization.Product product) {
         if (!productsByName.containsValue(product.getName()))
             productsByName.put(product.getName(), product);
     }
@@ -252,10 +258,6 @@ public class DataCenter {
     private void addAccount(Account account) {
         if (!accountsByUsername.containsValue(account)) {
             account.setAllDiscountCodes(new ArrayList<>());
-            if (account instanceof Seller)
-                for (ProductInfo productInfo : ((Seller) account).getAllProducts()) {
-                    productInfo.setProduct(productsByName.get(productInfo.getPName()));
-                }
             accountsByUsername.put(account.getUsername(), account);
         }
     }
@@ -300,13 +302,13 @@ public class DataCenter {
     }
 
 
-    public void saveProduct(Product product) throws IOException {
+    {  /*public void saveProduct(Product product) throws IOException {
         JsonFileWriter writer = new JsonFileWriter();
         product.setCategoryName(product.getParent().getName());
-        writer.write(product, generateProductFilePath(product.getId()));
+        writer.write(product, generateProductFilePath(product.getID()));
         if (!productsByName.containsValue(product))
             productsByName.put(product.getName(), product);
-    }
+    }*/}
 
     public void saveDiscount(Discount discount) throws IOException {
         if (discount instanceof Auction) {
@@ -319,12 +321,12 @@ public class DataCenter {
     public void saveDiscount(Auction auction) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
         Discount tmp = auction;
-        writer.write(tmp, generateAuctionFilePath(auction.getId()), Discount.class);
-        ArrayList<Integer> products = new ArrayList<>();
-        for (Product product : auction.getAllIncludedProducts()) {
-            products.add(product.getId());
+        writer.write(tmp, generateAuctionFilePath(auction.getID()), Discount.class);
+        ArrayList<String> products = new ArrayList<>();
+        for (Model.ProductsOrganization.Product product : auction.getAllProducts()) {
+            products.add(product.getID());
         }
-        writer.write(products, generateAuctionProductsFilePath(auction.getId()));
+        writer.write(products, generateAuctionProductsFilePath(auction.getID()));
         if (!discounts.contains(auction))
             discounts.add(auction);
     }
@@ -332,12 +334,12 @@ public class DataCenter {
     public void saveDiscount(DiscountCode discountCode) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(discountsRuntimeTypeAdaptor);
         Discount tmp = discountCode;
-        writer.write(tmp, generateDiscountCodeFilePath(discountCode.getId()), Discount.class);
+        writer.write(tmp, generateDiscountCodeFilePath(discountCode.getID()), Discount.class);
         ArrayList<String> accounts = new ArrayList<>();
         for (Account product : discountCode.getAllAllowedAccounts()) {
             accounts.add(product.getUsername());
         }
-        new JsonFileWriter().write(accounts, generateDiscountCodeAccountsFilePath(discountCode.getId()));
+        new JsonFileWriter().write(accounts, generateDiscountCodeAccountsFilePath(discountCode.getID()));
         if (!discounts.contains(discountCode))
             discounts.add(discountCode);
     }
@@ -363,27 +365,27 @@ public class DataCenter {
         return var10000 + "." + type + ".json";
     }
 
-    private String generateProductFilePath(int id) {
+    {/* private String generateProductFilePath(int id) {
         String var10000 = Config.getInstance().getProductsPath() + "/" + id;
         return var10000 + ".product.json";
     }
-
-    private String generateAuctionFilePath(int id) {
+*/}
+    private String generateAuctionFilePath(String id) {
         String var10000 = Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "/" + id;
         return var10000 + ".auction.json";
     }
 
-    private String generateDiscountCodeFilePath(int id) {
+    private String generateDiscountCodeFilePath(String id) {
         String var10000 = Config.getInstance().getDiscountsPath()[Config.DiscountsPath.DISCOUNTCODE.getNum()] + "/" + id;
         return var10000 + ".discountcode.json";
     }
 
-    private String generateAuctionProductsFilePath(int id) {
+    private String generateAuctionProductsFilePath(String id) {
         String var10000 = Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "/" + id;
         return var10000 + ".auction.products.json";
     }
 
-    private String generateDiscountCodeAccountsFilePath(int id) {
+    private String generateDiscountCodeAccountsFilePath(String id) {
         String var10000 = Config.getInstance().getDiscountsPath()[Config.DiscountsPath.DISCOUNTCODE.getNum()] + "/" + id;
         return var10000 + ".discountcode.accounts.json";
     }
@@ -410,47 +412,47 @@ public class DataCenter {
         return false;
     }
 
-    public Product getProductById(int id) {
-        AtomicReference<Product> temp = new AtomicReference<>();
+    public Model.ProductsOrganization.Product getProductById(String id) {
+        AtomicReference<Model.ProductsOrganization.Product> temp = new AtomicReference<>();
         productsByName.forEach((k, v) -> {
             if (v != null)
-                if (v.getId() == id)
+                if (v.getID().equals(id))
                     temp.set(v);
         });
         return temp.get();
     }
 
-    public Product getProductByName(String name) {
+    public Model.ProductsOrganization.Product getProductByName(String name) {
         return productsByName.get(name);
     }
 
-    public DiscountCode getDiscountcodeWithId(int id) throws BadRequestException {
+    public DiscountCode getDiscountcodeWithId(String id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount instanceof DiscountCode && discount.getId() == id)
+            if (discount instanceof DiscountCode && discount.getID().equals(id))
                 return (DiscountCode) discount;
         }
         throw new BadRequestException("discount not found");
     }
 
-    public Auction getAuctionWithId(int id) throws BadRequestException {
+    public Auction getAuctionWithId(String id) throws BadRequestException {
         for (Discount discount : discounts) {
-            if (discount instanceof Auction && discount.getId() == id)
+            if (discount instanceof Auction && discount.getID().equals(id))
                 return (Auction) discount;
         }
         throw new BadRequestException("Auction not found");
     }
 
-    public Product getProductWithId(int id) throws BadRequestException {
-        for (Product product : productsByName.values()) {
-            if (product != null && product.getId() == id)
+    public Model.ProductsOrganization.Product getProductWithId(String id) throws BadRequestException {
+        for (Model.ProductsOrganization.Product product : productsByName.values()) {
+            if (product != null && product.getID().equals(id))
                 return product;
         }
         throw new BadRequestException("product with this id hasn't found");
     }
 
-    public boolean productExistWithId(int id) {
-        for (Product product : productsByName.values()) {
-            if (product != null && product.getId() == id)
+    public boolean productExistWithId(String id) {
+        for (Model.ProductsOrganization.Product product : productsByName.values()) {
+            if (product != null && product.getID().equals(id))
                 return true;
         }
         return false;
@@ -458,15 +460,15 @@ public class DataCenter {
 
     public boolean auctionExistsWithId(int id) {
         for (Discount discount : discounts) {
-            if (discount != null && discount instanceof Auction && discount.getId() == id)
+            if (discount != null && discount instanceof Auction && discount.getID().equals(id))
                 return true;
         }
         return false;
     }
 
-    public boolean discountcodeExistsWithId(int id) {
+    public boolean discountcodeExistsWithId(String id) {
         for (Discount discount : discounts) {
-            if (discount instanceof DiscountCode && discount.getId() == id)
+            if (discount instanceof DiscountCode && discount.getID().equals(id))
                 return true;
         }
         return false;
@@ -502,17 +504,20 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(customer.getUsername(), customer);
     }
 
-    private boolean deleteAccount(Seller seller) throws IOException {
+    private boolean deleteAccount(Seller seller) throws IOException, BadRequestException {
         File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "Manager"));
         seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
-        for (ProductInfo productInfo : seller.getAllProducts()) {
-            deleteProductInfo(productInfo, seller.getUsername());
+        for (Model.ProductsOrganization.Product product : seller.getAllProducts()) {
+            productsByName.remove(product.getName());
+        }
+        for (String s : seller.getAuctionsId()) {
+            deleteAuctionWithId(s);
         }
         seller.getAuctionsId().forEach(this::deleteAuctionWithId);
         return file.delete() && accountsByUsername.remove(seller.getUsername(), seller);
     }
 
-    public void deleteAuctionWithId(Integer id) {
+    public void deleteAuctionWithId(String id) {
         try {
             discounts.remove(getAuctionWithId(id));
             File file = new File(generateAuctionFilePath(id));
@@ -523,12 +528,6 @@ public class DataCenter {
         }
     }
 
-    public void deleteProductInfo(ProductInfo productInfo, String username) throws IOException {
-        if (productInfo.getProduct() == null)
-            productInfo.setProduct(productsByName.get(productInfo.getPName()));
-        productInfo.getProduct().getAllSellers().remove(username);
-        saveProduct(productInfo.getProduct());
-    }
 
 
     private boolean deleteAccount(Manager manager) {
@@ -536,34 +535,29 @@ public class DataCenter {
         return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
     }
 
-    public boolean deleteProduct(Product product) throws IOException {
-        for (String seller : product.getAllSellers()) {
-            deleteSellerEach(product, seller);
-            saveAccount(accountsByUsername.get(seller));
+    public boolean deleteProduct(Model.ProductsOrganization.Product product) throws IOException, BadRequestException {
+        ((Seller)getAccountByName(product.getSeller())).getAllProducts().remove(product);
+        for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {
+            getAuctionWithId(s).removeProduct(product);
         }
-        File file = new File(generateProductFilePath(product.getId()));
-        return file.delete() && productsByName.remove(product.getName(), product);
+        return true;
     }
 
-    private void deleteSellerEach(Product product, String seller) {
-        ((Seller) accountsByUsername.get(seller)).deleteProductInfo(product);
-    }
 
     public boolean deleteDiscountCode(DiscountCode discountCode) throws IOException {
         for (Account account : discountCode.getAllAllowedAccounts()) {
             account.getAllDiscountCodes().remove(discountCode);
             saveAccount(account);
         }
-        File file = new File(generateDiscountCodeAccountsFilePath(discountCode.getId()));
+        File file = new File(generateDiscountCodeAccountsFilePath(discountCode.getID()));
         return file.delete() && discounts.remove(discountCode);
     }
 
     public boolean deleteCategory(Category category) throws IOException {
-        for (Product product : category.getIncludedProducts().values()) {
+        for (Model.ProductsOrganization.Product product : category.getAllProductsInside().values()) {
             product.setParent(category.getParent());
-            saveProduct(product);
         }
-        for (Category value : category.getSubCategories().values()) {
+        for (Category value : category.getAllSubCategories().values()) {
             value.setParent(category.getParent());
             saveCategory(value);
         }
@@ -585,8 +579,8 @@ public class DataCenter {
     }
 
     public boolean doesProductExist(String productId) {
-        for (Product product : productsByName.values()) {
-            if (Integer.toString(product.getId()).equals(productId))
+        for (Model.ProductsOrganization.Product product : productsByName.values()) {
+            if (product.getID().equals(productId))
                 return true;
         }
         return false;
@@ -615,11 +609,16 @@ public class DataCenter {
         throw new BadRequestException("discount not found");
     }
 
-    public ArrayList<Product> getAllProductsObject() {
-        return (ArrayList<Product>) productsByName.values();
+    public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
+        return (ArrayList<Model.ProductsOrganization.Product>) productsByName.values();
     }
     public Set<String> getAllProducts() {
         return  productsByName.keySet();
+    }
+
+    public String getNewDiscountID() {
+        //TODO: should be written
+        return null;
     }
 }
 

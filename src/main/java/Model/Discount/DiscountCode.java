@@ -11,71 +11,49 @@ public class DiscountCode extends Discount {
     @Expose
     private String code;
     @Expose
-    private int maximumDiscountAmount;
+    private int maximumDiscount;
     @Expose
-    private int maximumNumberOfUsages;
+    private int maxUsageNumber;
     @Expose(serialize = false, deserialize = false)
     private ArrayList<Account> allAllowedAccounts = new ArrayList<>();
 
-    public DiscountCode(Date start, Date end, double percent, int id, String code, int maximumDiscountAmount, int maximumNumberOfUsages, ArrayList<Account> allAllowedAccounts) {
-        super(start, end, percent, id);
+    public DiscountCode(Date start, Date end, double percent, String ID, String code, int maximumDiscount, int maxUsageNumber, ArrayList<Account> allAllowedAccounts) {
+        super(start, end, percent, ID);
         this.code = code;
-        this.maximumDiscountAmount = maximumDiscountAmount;
-        this.maximumNumberOfUsages = maximumNumberOfUsages;
+        this.maximumDiscount = maximumDiscount;
+        this.maxUsageNumber = maxUsageNumber;
         this.allAllowedAccounts = allAllowedAccounts;
-    }
-
-    public void addAllowedAccount(Account account){
-        allAllowedAccounts.add(account);
-    }
-
-    public void setAllAllowedAccounts(ArrayList<Account> allAllowedAccounts) {
-        this.allAllowedAccounts = allAllowedAccounts;
-    }
-
-    public ArrayList<Account> getAllAllowedAccounts() {
-        return allAllowedAccounts;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        DiscountCode that = (DiscountCode) o;
-        return maximumDiscountAmount == that.maximumDiscountAmount &&
-                maximumNumberOfUsages == that.maximumNumberOfUsages &&
-                code.equals(that.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), code, maximumDiscountAmount, maximumNumberOfUsages, allAllowedAccounts);
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setMaximumDiscountAmount(int maximumDiscountAmount) {
-        this.maximumDiscountAmount = maximumDiscountAmount;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setMaximumNumberOfUsages(int maximumNumberOfUsages) {
-        this.maximumNumberOfUsages = maximumNumberOfUsages;
+    public int getMaximumDiscount() {
+        return maximumDiscount;
     }
 
-    @Override
-    public String toString() {
-        return "DiscountCode{" +
-                "code='" + code + '\'' +
-                ", maximumDiscountAmount=" + maximumDiscountAmount +
-                ", maximumNumberOfUsages=" + maximumNumberOfUsages +
-                ", allAllowedAccounts=" + allAllowedAccounts +
-                ", start=" + start +
-                ", end=" + end +
-                ", percent=" + percent +
-                ", id=" + id +
-                '}';
+    public void setMaximumDiscount(int maximumDiscount) {
+        this.maximumDiscount = maximumDiscount;
+    }
+
+    public int getMaxUsageNumber() {
+        return maxUsageNumber;
+    }
+
+    public void setMaxUsageNumber(int maxUsageNumber) {
+        this.maxUsageNumber = maxUsageNumber;
+    }
+
+    public ArrayList<Account> getAllAllowedAccounts() {
+        return allAllowedAccounts;
+    }
+
+    public void setAllAllowedAccounts(ArrayList<Account> allAllowedAccounts) {
+        this.allAllowedAccounts = allAllowedAccounts;
     }
 }

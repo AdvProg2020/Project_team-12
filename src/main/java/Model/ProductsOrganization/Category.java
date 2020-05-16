@@ -12,14 +12,14 @@ public class Category {
     @Expose
     private String categoryPath;
     @Expose
-    private ArrayList<String> attributes;
+    private ArrayList<String> features;
     private Category parent;
-    private HashMap<String, Category> subCategories = new HashMap<>();
-    private HashMap<String, Product> includedProducts = new HashMap<>();
+    private HashMap<String, Category> allSubCategories = new HashMap<>();
+    private HashMap<String, Product> allProductsInside = new HashMap<>();
 
-    public Category(String name, ArrayList<String> attributes, Category parent) {
+    public Category(String name, ArrayList<String> features, Category parent) {
         this.name = name;
-        this.attributes = attributes;
+        this.features = features;
         this.parent = parent;
     }
 
@@ -66,20 +66,20 @@ public class Category {
         this.parent = parent;
     }
 
-    public HashMap<String, Category> getSubCategories() {
-        return subCategories;
+    public HashMap<String, Category> getAllSubCategories() {
+        return allSubCategories;
     }
 
-    public void setSubCategories(HashMap<String, Category> subCategories) {
-        this.subCategories = subCategories;
+    public void setAllSubCategories(HashMap<String, Category> allSubCategories) {
+        this.allSubCategories = allSubCategories;
     }
 
-    public HashMap<String, Product> getIncludedProducts() {
-        return includedProducts;
+    public HashMap<String, Product> getAllProductsInside() {
+        return allProductsInside;
     }
 
-    public void setIncludedProducts(HashMap<String, Product> includedProducts) {
-        this.includedProducts = includedProducts;
+    public void setAllProductsInside(HashMap<String, Product> allProductsInside) {
+        this.allProductsInside = allProductsInside;
     }
 
     public String getCategoryPath() {
@@ -88,5 +88,13 @@ public class Category {
 
     public void setCategoryPath(String categoryPath) {
         this.categoryPath = categoryPath;
+    }
+
+    public ArrayList<String> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(ArrayList<String> features) {
+        this.features = features;
     }
 }

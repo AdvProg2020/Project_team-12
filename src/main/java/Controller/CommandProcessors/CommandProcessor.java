@@ -6,15 +6,12 @@ import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
 import Model.Account.Seller;
-import Model.Account.*;
 import Model.Discount.Auction;
-import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
 import Model.Log.PurchaseLog;
 import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.Product;
-import Model.ProductsOrganization.ProductInfo;
 import Model.ProductsOrganization.Score;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
@@ -31,11 +28,12 @@ import java.util.Set;
 public class CommandProcessor {
     protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
-    private CommandProcessor Parent;
     private static Account loggedInAccount;
-    private DataCenter dataCenter;
     private static Cart cart = new Cart(null);
-    public CommandProcessor(CommandProcessor parent) {
+    private CommandProcessor Parent;
+    private DataCenter dataCenter;
+
+    protected CommandProcessor(CommandProcessor parent) {
         Parent = parent;
         this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
@@ -83,10 +81,7 @@ public class CommandProcessor {
                 MainMenuCP.getInstance().setParent(Instance);
                 Instance = MainMenuCP.getInstance();
                 break;
-            case 3:
-                ProductPageCP.getInstance().setParent(Instance);
-                Instance = ProductPageCP.getInstance();
-                break;
+
             case 4:
                 ProductsPageCP.getInstance().setParent(Instance);
                 Instance = ProductsPageCP.getInstance();
@@ -219,7 +214,7 @@ public class CommandProcessor {
     public void deleteProduct(String productId) throws Exception {
         if (!dataCenter.doesProductExist(productId))
             throw new RegisterPanelException("product doesn't exist");
-        if (!dataCenter.deleteProduct(dataCenter.getProductById(Integer.parseInt(productId))))
+        if (!dataCenter.deleteProduct(dataCenter.getProductById(productId)))
             throw new ProductExceptions("can't delete this product");
     }
 
@@ -235,7 +230,7 @@ public class CommandProcessor {
         }
         DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
         DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
-                dataCenter.getLastDiscountId() + 1, code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
+                dataCenter.getNewDiscountID() + 1, code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
         dataCenter.saveDiscount(discountCode);
     }
 
@@ -258,8 +253,8 @@ public class CommandProcessor {
         discountCode.setStart(format.parse(startingDate));
         discountCode.setEnd(format.parse(lastDate));
         discountCode.setPercent(Double.parseDouble(percent));
-        discountCode.setMaximumDiscountAmount(Integer.parseInt(maximumAmount));
-        discountCode.setMaximumNumberOfUsages(Integer.parseInt(numberOfUsages));
+        discountCode.setMaximumDiscount(Integer.parseInt(maximumAmount));
+        discountCode.setMaxUsageNumber(Integer.parseInt(numberOfUsages));
         discountCode.setAllAllowedAccounts(usersList);
         dataCenter.saveDiscount(discountCode);
     }
@@ -273,13 +268,13 @@ public class CommandProcessor {
         return ((Seller) this.loggedInAccount).getSellLogs();
     }
 
-    public ArrayList<ProductInfo> getAllSellerProducts() {
+    public ArrayList<Product> getAllSellerProducts() {
         return ((Seller) this.loggedInAccount).getAllProducts();
     }
 
-    public ProductInfo getProductById(String id) throws Exception {
-        for (ProductInfo product : ((Seller) this.loggedInAccount).getAllProducts()) {
-            if (Integer.toString(product.getId()).equals(id))
+    public Product getProductById(String id) throws Exception {
+        for (Product product : ((Seller) this.loggedInAccount).getAllProducts()) {
+            if (product.getID().equals(id))
                 return product;
         }
         throw new ProductExceptions("there is no product with this id");
@@ -287,7 +282,7 @@ public class CommandProcessor {
 
     public ArrayList<Auction> getAllSellerAuctions() {
         ArrayList<Auction> allAuctions = new ArrayList<Auction>();
-        for (Integer auctionId : ((Seller) this.loggedInAccount).getAuctionsId()) {
+        for (String auctionId : ((Seller) this.loggedInAccount).getAuctionsId()) {
             Auction auction = null;
             try {
                 auction = dataCenter.getAuctionWithId(auctionId);
@@ -300,19 +295,17 @@ public class CommandProcessor {
     }
 
     public Auction getAuctionWithId(String id) throws Exception {
-        return dataCenter.getAuctionWithId(Integer.parseInt(id));
+        return dataCenter.getAuctionWithId(id);
     }
 
     public void removeProductWithId(String id) throws Exception {
         if (!dataCenter.doesProductExist(id))
             throw new ProductExceptions("there is no product with this id");
-        ProductInfo productInfo = getProductById(id);
-        if (productInfo.getBuyers().size() == 1) {
-            if (!dataCenter.deleteProduct(dataCenter.getProductById(Integer.parseInt(id))))
+        Product product = getProductById(id);
+        if (product.getBuyers().size() == 1) {
+            if (!dataCenter.deleteProduct(dataCenter.getProductById(id)))
                 throw new ProductExceptions("can't delete product");
-            dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
-        } else
-            dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
+        }
 
     }
 
@@ -345,10 +338,10 @@ public class CommandProcessor {
     public void rate(String productId, String score) throws Exception {
         if (!dataCenter.doesProductExist(productId))
             throw new ProductExceptions("there is no product with this id");
-        Product product = dataCenter.getProductById(Integer.parseInt(productId));
+        Product product = dataCenter.getProductById(productId);
         Score newScore = new Score(Double.parseDouble(score));
-        product.addScore(newScore);
-        dataCenter.saveProduct(product);
+        product.submitScore(newScore);
+        dataCenter.saveAccount(dataCenter.getAccountByName(product.getSeller()));
     }
 
     //customer end
@@ -364,15 +357,15 @@ public class CommandProcessor {
         return false;
     }
 
-    public void setReceiverInfo(String receiverInfo){
+    public void setReceiverInfo(String receiverInfo) {
         cart.setReceiverInfo(receiverInfo);
     }
 
-    public Double getPaymentAmount(){
+    public Double getPaymentAmount() {
         return cart.getPayAmount();
     }
 
-    public void buy() throws Exception{
+    public void buy() throws Exception {
         if (loggedInAccount.getCredit() < getPaymentAmount())
             throw new CustomerExceptions("you don't have enough credit");
         else {

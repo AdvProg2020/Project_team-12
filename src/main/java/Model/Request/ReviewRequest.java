@@ -4,6 +4,7 @@ package Model.Request;
 import Controller.DataBase.DataCenter;
 import Model.Account.CanRequest;
 import Model.ProductsOrganization.Review;
+import Model.ProductsOrganization.ReviewStatus;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -11,10 +12,10 @@ import java.util.Objects;
 public class ReviewRequest extends Request {
     private Review review;
     private String senderUsername;
-    private int pId;
+    private String  pId;
     private boolean accepted;
 
-    public ReviewRequest(String sender, int id, String text, boolean active, Review review, String senderUsername, int pId) {
+    public ReviewRequest(String sender, int id, String text, boolean active, Review review, String senderUsername, String pId) {
         super(sender, id, text, active);
         this.review = review;
         this.senderUsername = senderUsername;
@@ -25,7 +26,7 @@ public class ReviewRequest extends Request {
         accepted = true;
         Review review = DataCenter.getInstance().getProductById(pId).getReview(this.review);
         if(review!= null){
-            review.setStatus(Review.Status.CONFIRMED);
+            review.setStatus(ReviewStatus.CONFIRMED);
             deleteRequest();
         }
         else
@@ -43,7 +44,7 @@ public class ReviewRequest extends Request {
         accepted = false;
         Review review = DataCenter.getInstance().getProductById(pId).getReview(this.review);
         if(review!= null){
-            review.setStatus(Review.Status.UNCONFIRMED);
+            review.setStatus(ReviewStatus.UNCONFIRMED);
             deleteRequest();
         }
         else

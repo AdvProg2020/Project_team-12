@@ -1,59 +1,89 @@
 package Model.ProductsOrganization;
 
-import Controller.DataBase.DataCenter;
-import Model.Account.Seller;
+
 import Model.Status;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
+
 
 public class Product {
 
     @Expose
-    private int numberOfViews = 0;
+    private int views = 0;
     @Expose
     private String name;
     @Expose
-    private String brand;
+    private double discountPercentInAuction;
     @Expose
-    private HashMap<String, String> specifications;
-    @Expose
-    private String Description;
-    @Expose
-    private int id;
+    private String seller;
     @Expose
     private int remainingItems;
     @Expose
-    private ArrayList<String> allSellers;
+    private double price;
+    @Expose
+    private String brand;
+    @Expose
+    private HashMap<String, String> specs;
+    @Expose
+    private String description;
+    @Expose
+    private String ID;
+    @Expose
+    private Status status = Status.CONSTRUCTING;
+    @Expose
+    private double averageMark;
+    @Expose
+    private Date date;
     @Expose(serialize = false, deserialize = false)
     private Category parent;
     @Expose
-    private ArrayList<Score> allSubmittedScores;
+    private ArrayList<Score> allScores;
     @Expose
     private ArrayList<Review> allReviews;
     @Expose
-    private String categoryName;
+    private String parentStr;
     @Expose
-    private Double price;
+    private ArrayList<String> buyers = new ArrayList<>();
 
-    public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
-        this.id = id;
+    public Product(String name, String seller, int remainingItems, double price, String brand, HashMap<String, String> specs, String description, String ID, Date date) {
         this.name = name;
-        this.brand = brand;
+        this.seller = seller;
         this.remainingItems = remainingItems;
-        this.specifications = specifications;
-        Description = description;
-        this.parent = parent;
+        this.price = price;
+        this.brand = brand;
+        this.specs = specs;
+        this.description = description;
+        this.ID = ID;
+        this.date = date;
     }
 
-    public int getId() {
-        return id;
+    public void submitScore(Score score) {
+        allScores.add(score);
+        averageMark = (averageMark * (allScores.size() - 1) + score.getScore()) / allScores.size();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void submitReview(Review review) {
+        allReviews.add(review);
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getName() {
@@ -72,28 +102,36 @@ public class Product {
         this.brand = brand;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getDiscountPercentInAuction() {
+        return discountPercentInAuction;
+    }
+
+    public void setDiscountPercentInAuction(double discountPercentInAuction) {
+        this.discountPercentInAuction = discountPercentInAuction;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
     public int getRemainingItems() {
         return remainingItems;
     }
 
     public void setRemainingItems(int remainingItems) {
         this.remainingItems = remainingItems;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
     }
 
     public Category getParent() {
@@ -104,12 +142,28 @@ public class Product {
         this.parent = parent;
     }
 
-    public ArrayList<Score> getAllSubmittedScores() {
-        return allSubmittedScores;
+    public String getParentStr() {
+        return parentStr;
     }
 
-    public void setAllSubmittedScores(ArrayList<Score> allSubmittedScores) {
-        this.allSubmittedScores = allSubmittedScores;
+    public void setParentStr(String parentStr) {
+        this.parentStr = parentStr;
+    }
+
+    public HashMap<String, String> getSpecs() {
+        return specs;
+    }
+
+    public void setSpecs(HashMap<String, String> specs) {
+        this.specs = specs;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ArrayList<Review> getAllReviews() {
@@ -120,83 +174,49 @@ public class Product {
         this.allReviews = allReviews;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public ArrayList<Score> getAllScores() {
+        return allScores;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setAllScores(ArrayList<Score> allScores) {
+        this.allScores = allScores;
     }
 
-    public void addScore(Score score){
-        this.allSubmittedScores.add(score);
+    public double getAverageMark() {
+        return averageMark;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", brand='" + brand + '\'' +
-                ", specifications=" + specifications +
-                ", Description='" + Description + '\'' +
-                ", id=" + id +
-                ", remainingItems=" + remainingItems +
-                ", allSellers=" + allSellers +
-                ", parent=" + parent +
-                ", allSubmittedScores=" + allSubmittedScores +
-                ", allReviews=" + allReviews +
-                ", categoryName='" + categoryName + '\'' +
-                '}';
+    public void setAverageMark(double averageMark) {
+        this.averageMark = averageMark;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return id == product.id &&
-                remainingItems == product.remainingItems &&
-                name.equals(product.name) &&
-                brand.equals(product.brand) &&
-                Objects.equals(specifications, product.specifications) &&
-                Objects.equals(Description, product.Description) &&
-                Objects.equals(allSellers, product.allSellers) &&
-                Objects.equals(parent, product.parent) &&
-                Objects.equals(allSubmittedScores, product.allSubmittedScores) &&
-                Objects.equals(allReviews, product.allReviews) &&
-                Objects.equals(categoryName, product.categoryName);
+    public Date getDate() {
+        return date;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, brand, specifications, Description, id, remainingItems, allSellers, parent, allSubmittedScores, allReviews, categoryName);
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Review getReview(Review review) {
-        for (Review allReview : allReviews) {
-            if (review.equals(review))
-                return review;
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    public Review getReview(Review review) throws Exception {
+        for (Review review1 : allReviews) {
+            if (review1.equals(review))
+                return review1;
         }
-        return null;
+        throw new Exception("Review not found");
     }
 
-    public ArrayList<String> getAllSellers() {
-        return allSellers;
+    public ArrayList<String> getBuyers() {
+        return buyers;
     }
 
-    public int getNumberOfViews() {
-        return numberOfViews;
-    }
 
-    public void setNumberOfViews(int numberOfViews) {
-        this.numberOfViews = numberOfViews;
-    }
-
-    public String getSellersInfo() {
-        String var100 = "";
-        for (String s : allSellers) {
-            var100 += ((Seller) DataCenter.getInstance().getAccountByName(s)).getProductInfo(name).getQuantityString();
-        }
-        return var100;
-    }
 }

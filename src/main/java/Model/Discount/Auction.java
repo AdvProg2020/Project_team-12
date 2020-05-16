@@ -10,67 +10,43 @@ import java.util.Objects;
 
 public class Auction extends Discount {
     @Expose(serialize = false,deserialize = false)
-    private ArrayList<Product> allIncludedProducts;
+    private ArrayList<Product> allProducts = new ArrayList<>();
     @Expose
-    private Status status;
+    private Status status = Status.CONSTRUCTING;
     @Expose
-    private String sellerUsername;
-    public Auction(Date start, Date end, double percent, int id, ArrayList<Product> allIncludedProducts, Status status, String sellerUsername) {
-        super(start, end, percent, id);
-        this.allIncludedProducts = allIncludedProducts;
-        this.status = status;
-        this.sellerUsername = sellerUsername;
+    private String seller;
+
+    public Auction(Date start, Date end, double percent, String ID, ArrayList<Product> allProducts, String seller) {
+        super(start, end, percent, ID);
+        this.allProducts = allProducts;
+        this.seller = seller;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Auction auction = (Auction) o;
-        return Objects.equals(allIncludedProducts, auction.allIncludedProducts) &&
-                status == auction.status;
+    public ArrayList<Product> getAllProducts() {
+        return allProducts;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), allIncludedProducts, status);
-    }
-
-    public ArrayList<Product> getAllIncludedProducts() {
-        return allIncludedProducts;
+    public void setAllProducts(ArrayList<Product> allProducts) {
+        this.allProducts = allProducts;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setAllIncludedProducts(ArrayList<Product> allIncludedProducts) {
-        this.allIncludedProducts = allIncludedProducts;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getSellerUsername() {
-        return sellerUsername;
+    public String getSeller() {
+        return seller;
     }
 
-    public void setSellerUsername(String sellerUsername) {
-        this.sellerUsername = sellerUsername;
+    public void setSeller(String seller) {
+        this.seller = seller;
     }
 
-    @Override
-    public String toString() {
-        return "Auction{" +
-                "allIncludedProducts=" + allIncludedProducts +
-                ", status=" + status +
-                ", sellerUsername='" + sellerUsername + '\'' +
-                ", start=" + start +
-                ", end=" + end +
-                ", percent=" + percent +
-                ", id=" + id +
-                '}';
+    public void removeProduct(Product product) {
+        allProducts.remove(product);
     }
 }

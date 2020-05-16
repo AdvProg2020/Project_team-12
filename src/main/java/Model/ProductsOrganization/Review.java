@@ -6,52 +6,41 @@ import java.util.Objects;
 
 public class Review {
     @Expose
-    private String description;
+    private String title;
     @Expose
-    private Status status;
+    private String contents;
+    @Expose
+    private ReviewStatus status = ReviewStatus.TO_BE_CONFIRMED;
     @Expose
     private boolean isBuyer;
-    public Review(String description, Status status, boolean isBuyer) {
-        this.description = description;
-        this.status = status;
+
+    public Review(String title, String contents, boolean isBuyer) {
+        this.title = title;
+        this.contents = contents;
         this.isBuyer = isBuyer;
     }
 
-    @Override
-    public String toString() {
-        return "";
+    public String getTitle() {
+        return title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return isBuyer == review.isBuyer &&
-                Objects.equals(description, review.description) &&
-                status == review.status;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(description, status, isBuyer);
+    public String getContents() {
+        return contents;
     }
 
-    public enum Status {TO_BE_CONFIRMED, CONFIRMED, UNCONFIRMED}
-
-    public String getDescription() {
-        return description;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Status getStatus() {
+    public ReviewStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ReviewStatus status) {
         this.status = status;
     }
 

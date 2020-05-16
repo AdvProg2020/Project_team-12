@@ -2,7 +2,6 @@ package Model.Account;
 
 import Model.Log.SellLog;
 import Model.ProductsOrganization.Product;
-import Model.ProductsOrganization.ProductInfo;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -15,13 +14,13 @@ public class Seller extends Account implements CanRequest{
     @Expose
     private ArrayList<SellLog> sellLogs = new ArrayList<>();
     @Expose
-    private ArrayList<ProductInfo> allProducts = new ArrayList<>();
+    private ArrayList<Product> allProducts = new ArrayList<>();
     @Expose
     private ArrayList<Integer> activeRequestsId = new ArrayList<>();
     @Expose
     private ArrayList<String> solvedRequests = new ArrayList<>();
     @Expose
-    private ArrayList<Integer> auctionsId = new ArrayList<>();
+    private ArrayList<String> auctionsId = new ArrayList<>();
 
     public Seller(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password, String companyInformation) {
         super(username, firstName, lastName, emailAddress, phoneNumber, password);
@@ -33,9 +32,6 @@ public class Seller extends Account implements CanRequest{
 
     }
 
-    public ArrayList<ProductInfo> getAllProducts() {
-        return allProducts;
-    }
 
     @Override
     public String toString() {
@@ -70,19 +66,32 @@ public class Seller extends Account implements CanRequest{
         return sellLogs;
     }
 
-    public ArrayList<Integer> getAuctionsId() {
+    public void setCompanyInformation(String companyInformation) {
+        this.companyInformation = companyInformation;
+    }
+
+    public void setSellLogs(ArrayList<SellLog> sellLogs) {
+        this.sellLogs = sellLogs;
+    }
+
+    public ArrayList<Product> getAllProducts() {
+        return allProducts;
+    }
+
+    public void setAllProducts(ArrayList<Product> allProducts) {
+        this.allProducts = allProducts;
+    }
+
+    public void setActiveRequestsId(ArrayList<Integer> activeRequestsId) {
+        this.activeRequestsId = activeRequestsId;
+    }
+
+    public ArrayList<String> getAuctionsId() {
         return auctionsId;
     }
 
-    public void setAuctionsId(ArrayList<Integer> auctionsId) {
+    public void setAuctionsId(ArrayList<String> auctionsId) {
         this.auctionsId = auctionsId;
-    }
-
-    public void deleteProductInfo(Product product){
-        for (ProductInfo productInfo : allProducts) {
-            if (productInfo.getPName().equals(product.getName()))
-                allProducts.remove(productInfo);
-        }
     }
 
     public boolean isAccountTypeAccepted() {
@@ -93,20 +102,7 @@ public class Seller extends Account implements CanRequest{
         this.accountTypeAccepted = accountTypeAccepted;
     }
 
-    public ProductInfo getProductInfo(String name) {
-        for (ProductInfo product : allProducts) {
-            if (product.getPName().equals(name))
-                return product;
-        }
-        return null;
-    }
 
-    public ProductInfo getProductInfo(int productId) {
-        for (ProductInfo product : allProducts) {
-            if (product.getPName().equals(product))
-                return product;
-        }
-        return null;
-    }
+
 }
 
