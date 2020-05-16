@@ -41,7 +41,7 @@ public class CommandProcessor {
 
     public static CommandProcessor getInstance() {
         if (Instance == null) {
-            Instance = MainMenuCP.getInstance();
+            Instance = new CommandProcessor(null);
             Primitive = Instance;
         }
         return Instance;
@@ -321,7 +321,7 @@ public class CommandProcessor {
 
     public PurchaseLog getOrderById(String orderId) throws Exception {
         for (PurchaseLog order : getCustomerOrdersHistory()) {
-            if (Integer.toString(order.getId()).equals(orderId))
+            if (order.getId().equals(orderId))
                 return order;
         }
         throw new CustomerExceptions("there is no order with this id");

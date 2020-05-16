@@ -53,6 +53,14 @@ public class DataCenter {
         initRequests();
     }
 
+    public static String getNewSellID() {
+        return "1";
+    }
+
+    public static String getNewPurchaseID() {
+        return "1";
+    }
+
     private void initProducts() {
         productsByName = new HashMap<>();
         for (Account value : accountsByUsername.values()) {

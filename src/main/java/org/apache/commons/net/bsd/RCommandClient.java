@@ -17,9 +17,13 @@
 
 package org.apache.commons.net.bsd;
 
+
+import org.apache.commons.net.io.SocketInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
+
 
 /***
  * RCommandClient is very similar to
@@ -77,8 +81,7 @@ import java.net.*;
  * @see RLoginClient
  ***/
 
-public class RCommandClient extends RExecClient
-{
+public class RCommandClient extends RExecClient {
     /***
      * The default rshell port.  Set to 514 in BSD Unix.
      ***/
@@ -96,11 +99,18 @@ public class RCommandClient extends RExecClient
      ***/
     public static final int MAX_CLIENT_PORT = 1023;
 
+    /***
+     * The default RCommandClient constructor.  Initializes the
+     * default port to <code> DEFAULT_PORT </code>.
+     ***/
+    public RCommandClient() {
+        setDefaultPort(DEFAULT_PORT);
+    }
+
     // Overrides method in RExecClient in order to implement proper
     // port number limitations.
     @Override
-    InputStream _createErrorStream() throws IOException
-    {
+    InputStream _createErrorStream() throws IOException {
         int localPort;
         ServerSocket server;
         Socket socket;
@@ -108,16 +118,12 @@ public class RCommandClient extends RExecClient
         localPort = MAX_CLIENT_PORT;
         server = null; // Keep compiler from barfing
 
-        for (localPort = MAX_CLIENT_PORT; localPort >= MIN_CLIENT_PORT; --localPort)
-        {
-            try
-            {
+        for (localPort = MAX_CLIENT_PORT; localPort >= MIN_CLIENT_PORT; --localPort) {
+            try {
                 server = _serverSocketFactory_.createServerSocket(localPort, 1,
-                         getLocalAddress());
+                        getLocalAddress());
                 break; // got a socket
-            }
-            catch (SocketException e)
-            {
+            } catch (SocketException e) {
                 continue;
             }
         }
@@ -133,26 +139,15 @@ public class RCommandClient extends RExecClient
         socket = server.accept();
         server.close();
 
-        if (isRemoteVerificationEnabled() && !verifyRemote(socket))
-        {
+        if (isRemoteVerificationEnabled() && !verifyRemote(socket)) {
             socket.close();
             throw new IOException(
-                "Security violation: unexpected connection attempt by " +
-                socket.getInetAddress().getHostAddress());
+                    "Security violation: unexpected connection attempt by " +
+                            socket.getInetAddress().getHostAddress());
         }
 
         return (new SocketInputStream(socket, socket.getInputStream()));
     }
-
-    /***
-     * The default RCommandClient constructor.  Initializes the
-     * default port to <code> DEFAULT_PORT </code>.
-     ***/
-    public RCommandClient()
-    {
-        setDefaultPort(DEFAULT_PORT);
-    }
-
 
     /***
      * Opens a Socket connected to a remote host at the specified port and
@@ -171,24 +166,18 @@ public class RCommandClient extends RExecClient
      *  derived from it.
      ***/
     public void connect(InetAddress host, int port, InetAddress localAddr)
-    throws SocketException, BindException, IOException
-    {
+            throws SocketException, BindException, IOException {
         int localPort;
 
         localPort = MAX_CLIENT_PORT;
 
-        for (localPort = MAX_CLIENT_PORT; localPort >= MIN_CLIENT_PORT; --localPort)
-        {
-            try
-            {
+        for (localPort = MAX_CLIENT_PORT; localPort >= MIN_CLIENT_PORT; --localPort) {
+            try {
                 _socket_ =
-                    _socketFactory_.createSocket(host, port, localAddr, localPort);
-            }
-            catch (BindException be) {
+                        _socketFactory_.createSocket(host, port, localAddr, localPort);
+            } catch (BindException be) {
                 continue;
-            }
-            catch (SocketException e)
-            {
+            } catch (SocketException e) {
                 continue;
             }
             break;
@@ -200,7 +189,6 @@ public class RCommandClient extends RExecClient
 
         _connectAction_();
     }
-
 
 
     /***
@@ -220,8 +208,7 @@ public class RCommandClient extends RExecClient
      ***/
     @Override
     public void connect(InetAddress host, int port)
-    throws SocketException, IOException
-    {
+            throws SocketException, IOException {
         connect(host, port, InetAddress.getLocalHost());
     }
 
@@ -244,8 +231,7 @@ public class RCommandClient extends RExecClient
      ***/
     @Override
     public void connect(String hostname, int port)
-    throws SocketException, IOException, UnknownHostException
-    {
+            throws SocketException, IOException, UnknownHostException {
         connect(InetAddress.getByName(hostname), port, InetAddress.getLocalHost());
     }
 
@@ -267,8 +253,7 @@ public class RCommandClient extends RExecClient
      *  derived from it.
      ***/
     public void connect(String hostname, int port, InetAddress localAddr)
-    throws SocketException, IOException
-    {
+            throws SocketException, IOException {
         connect(InetAddress.getByName(hostname), port, localAddr);
     }
 
@@ -296,8 +281,7 @@ public class RCommandClient extends RExecClient
     @Override
     public void connect(InetAddress host, int port,
                         InetAddress localAddr, int localPort)
-    throws SocketException, IOException, IllegalArgumentException
-    {
+            throws SocketException, IOException, IllegalArgumentException {
         if (localPort < MIN_CLIENT_PORT || localPort > MAX_CLIENT_PORT) {
             throw new IllegalArgumentException("Invalid port number " + localPort);
         }
@@ -329,8 +313,7 @@ public class RCommandClient extends RExecClient
     @Override
     public void connect(String hostname, int port,
                         InetAddress localAddr, int localPort)
-    throws SocketException, IOException, IllegalArgumentException, UnknownHostException
-    {
+            throws SocketException, IOException, IllegalArgumentException, UnknownHostException {
         if (localPort < MIN_CLIENT_PORT || localPort > MAX_CLIENT_PORT) {
             throw new IllegalArgumentException("Invalid port number " + localPort);
         }
@@ -376,8 +359,7 @@ public class RCommandClient extends RExecClient
      ***/
     public void rcommand(String localUsername, String remoteUsername,
                          String command, boolean separateErrorStream)
-    throws IOException
-    {
+            throws IOException {
         rexec(localUsername, remoteUsername, command, separateErrorStream);
     }
 
@@ -392,8 +374,7 @@ public class RCommandClient extends RExecClient
      ***/
     public void rcommand(String localUsername, String remoteUsername,
                          String command)
-    throws IOException
-    {
+            throws IOException {
         rcommand(localUsername, remoteUsername, command, false);
     }
 

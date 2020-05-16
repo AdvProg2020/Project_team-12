@@ -48,7 +48,7 @@ public class SellerProfile extends Profile {
             public void show() {
                 System.out.println(this.getName());
                 System.out.println("commands\n1. back\n\n");
-                System.out.println(CommandProcessor.getCompanyInfo());
+                System.out.println(CommandProcessor.getInstance().getCompanyInfo());
             }
 
             @Override
@@ -67,8 +67,8 @@ public class SellerProfile extends Profile {
             public void show() {
                 System.out.println(this.getName());
                 System.out.println("commands\n1. back\n\n");
-                for (int i = 1; i <= CommandProcessor.getSalesHistory().size(); i++)
-                    System.out.println(i + ". " + CommandProcessor.getSalesHistory().get(i - 1));
+                for (int i = 1; i <= CommandProcessor.getInstance().getSalesHistory().size(); i++)
+                    System.out.println(i + ". " + CommandProcessor.getInstance().getSalesHistory().get(i - 1));
             }
 
             @Override

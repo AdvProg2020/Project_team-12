@@ -7,9 +7,11 @@ import java.util.Date;
 public abstract class Log {
     @Expose
     private Date date;
-
-    public Log( Date date) {
+    @Expose
+    private String id;
+    public Log(Date date, String id) {
         this.date = date;
+        this.id = id;
     }
 
 
@@ -19,5 +21,13 @@ public abstract class Log {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

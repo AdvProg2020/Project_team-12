@@ -1,5 +1,6 @@
 package Model.Log;
 
+import Controller.DataBase.DataCenter;
 import Model.ProductsOrganization.ProductOnLog;
 import com.google.gson.annotations.Expose;
 
@@ -17,7 +18,7 @@ public class PurchaseLog extends Log {
     private PurchaseStatus status = PurchaseStatus.TO_BE_DELIVERED;
 
     public PurchaseLog(Date date, double payedCredit, double finalPrice, ArrayList<ProductOnLog> allPurchasedProducts) {
-        super(date);
+        super(date, DataCenter.getNewPurchaseID());
         this.payedCredit = payedCredit;
         this.finalPrice = finalPrice;
         this.allPurchasedProducts = allPurchasedProducts;

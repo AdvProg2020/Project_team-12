@@ -1,5 +1,6 @@
 package Model.Log;
 
+import Controller.DataBase.DataCenter;
 import Model.ProductsOrganization.ProductOnLog;
 import com.google.gson.annotations.Expose;
 
@@ -17,7 +18,7 @@ public class SellLog extends Log {
     private SellStatus status = SellStatus.TO_BE_SENT;
 
     public SellLog(Date date, double receivedCredit, double decreasedPriceAtAuction, ArrayList<ProductOnLog> allSoldProducts) {
-        super(date);
+        super(date, DataCenter.getNewSellID());
         this.receivedCredit = receivedCredit;
         this.decreasedPriceAtAuction = decreasedPriceAtAuction;
         this.allSoldProducts = allSoldProducts;
