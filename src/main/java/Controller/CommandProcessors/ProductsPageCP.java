@@ -12,14 +12,15 @@ public class ProductsPageCP extends CommandProcessor {
     private static CommandProcessor Instance;
     private ArrayList<Category> allCategories;
     private ArrayList<Product> allProducts;
-    private ArrayList<Filter> allFilters;
-    private Category currentCategory;
     private Filter filter;
     private Sort sort;
 
-    public ProductsPageCP(ArrayList<Category> allCategories) {
-        // TODO: get these from data center:
-        this.allCategories = allCategories;
+    public ProductsPageCP() {
+        /* TODO: get these from data center:
+        this.allCategories = ;
+        this.allProducts = ;
+        this.filter = new Filter(null);
+        this.sort = new Sort(); */
     }
 
     // Command: view categories
@@ -41,6 +42,8 @@ public class ProductsPageCP extends CommandProcessor {
     }
     public void filterBySelectedFeatures(String name, ArrayList<String> selectedValues) {
         filter.filterBySelectedFeatures(name, selectedValues);
+        if (name.equals("Category"))
+            filter.setCurrentCategory(getCategoryByName(selectedValues.get(0)));
     }
     public void filterByRange(String name, double minValue, double maxValue) {
         filter.filterByRange(name, minValue, maxValue);
@@ -83,18 +86,21 @@ public class ProductsPageCP extends CommandProcessor {
     }
 
     // Command: show products
-    public ArrayList<String> getProductsNames() {
-        ArrayList<Product> products = getSortedProducts();
-        ArrayList<String> productsNames = new ArrayList<>();
-        for (Product product : products)
-            productsNames.add(product.getName());
-        return productsNames;
+    public ArrayList<Product> getProducts() {
+        return getSortedProducts();
     }
     public ArrayList<Product> getSortedProducts() {
         return sort.getSortedProducts(getFilteredProducts());
     }
     public ArrayList<Product> getFilteredProducts() {
         return filter.getFilteredProducts(allProducts);
+    }
+
+    public Category getCategoryByName(String name) {
+        for (Category category : allCategories)
+            if (category.getName().equals(name))
+                return category;
+        return null;
     }
 }
 

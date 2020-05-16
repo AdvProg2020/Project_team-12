@@ -37,11 +37,15 @@ public class Filter {
 
     public void filterBySelectedFeatures(String name, ArrayList<String> selectedValues) {
         SelectiveFilter filter = new SelectiveFilter(name, selectedValues);
+        if (canDisableFilter(name))
+            disableFilter(name);
         allFilters.add(filter);
     }
 
     public void filterByRange(String name, double minValue, double maxValue) {
         RangeFilter filter = new RangeFilter(name, minValue, maxValue);
+        if (canDisableFilter(name))
+            disableFilter(name);
         allFilters.add(filter);
     }
 
@@ -83,5 +87,9 @@ public class Filter {
             if (filter.getName().equals(name))
                 return filter;
         return null;
+    }
+
+    public void setCurrentCategory(Category currentCategory) {
+        this.currentCategory = currentCategory;
     }
 }

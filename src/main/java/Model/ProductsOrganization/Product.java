@@ -1,18 +1,22 @@
 package Model.ProductsOrganization;
 
+import Model.Status;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Product {
     private String ID;
-    private ProductStatus status;
+    private Status status;
     private String name;
     private String brand;
     private double price;
+    private double discountPercentInAuction;
     private String seller;
     private int remainingItems;
     private Category parent;
+    private String parentStr;
     private HashMap<String, String> specs;
     private String description;
     private ArrayList<Review> allReviews;
@@ -38,11 +42,11 @@ public class Product {
         this.ID = ID;
     }
 
-    public ProductStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(ProductStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -70,6 +74,14 @@ public class Product {
         this.price = price;
     }
 
+    public double getDiscountPercentInAuction() {
+        return discountPercentInAuction;
+    }
+
+    public void setDiscountPercentInAuction(double discountPercentInAuction) {
+        this.discountPercentInAuction = discountPercentInAuction;
+    }
+
     public String getSeller() {
         return seller;
     }
@@ -92,6 +104,14 @@ public class Product {
 
     public void setParent(Category parent) {
         this.parent = parent;
+    }
+
+    public String getParentStr() {
+        return parentStr;
+    }
+
+    public void setParentStr(String parentStr) {
+        this.parentStr = parentStr;
     }
 
     public HashMap<String, String> getSpecs() {
