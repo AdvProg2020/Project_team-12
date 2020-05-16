@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cart {
-    //private ArrayList<Product> products;
+    private ArrayList<Product> products1;
     private HashMap<Product, Seller> traders;
     private ArrayList<ProductInCart> products;
     private Customer owner;
@@ -16,13 +16,13 @@ public class Cart {
 
     public Cart(Customer owner) {
         this.owner = owner;
-        products = new ArrayList<>();
+        products = new ArrayList<ProductInCart>();
         traders = new HashMap<Product, Seller>();
     }
 
     public Double getPayAmount() {
         Double price = Double.valueOf(0);
-        for (Product product : this.products) {
+        for (Product product : this.products1) {
             price += product.getPrice();
         }
         return price;
@@ -34,10 +34,6 @@ public class Cart {
 
     public ArrayList<ProductInCart> getProducts() {
         return products;
-    }
-
-    public void setProducts(ArrayList<ProductInCart> products) {
-        this.products = products;
     }
 
     public Customer getOwner() {
@@ -117,7 +113,7 @@ public class Cart {
         this.receiverInfo = receiverInfo;
     }
 
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(ArrayList<ProductInCart> products) {
         this.products = products;
     }
 

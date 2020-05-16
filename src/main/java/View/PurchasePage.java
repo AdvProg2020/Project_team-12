@@ -131,7 +131,7 @@ public class PurchasePage extends Menu {
             //decrease product with id commandDetails[1]
             return this;
         } else if (command.equals(commands.get(4))) {
-            //show total price
+            System.out.println(commandProcessor.getPaymentAmount());
             return this;
         } else if (command.equals(commands.get(5))) {
             return submenus.get(1);

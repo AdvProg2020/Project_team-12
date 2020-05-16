@@ -106,6 +106,10 @@ public class CommandProcessor {
         }
     }
 
+    public static Account getLoggedInAccount() {
+        return loggedInAccount;
+    }
+
     public static Cart getCart() {
         return cart;
     }
@@ -265,12 +269,12 @@ public class CommandProcessor {
     }
 
     //seller
-    public String getCompanyInfo() {
-        return ((Seller) this.loggedInAccount).getCompanyInformation();
+    public static String getCompanyInfo() {
+        return ((Seller) loggedInAccount).getCompanyInformation();
     }
 
-    public ArrayList<SellLog> getSalesHistory() {
-        return ((Seller) this.loggedInAccount).getSellLogs();
+    public static ArrayList<SellLog> getSalesHistory() {
+        return ((Seller) loggedInAccount).getSellLogs();
     }
 
     public ArrayList<ProductInfo> getAllSellerProducts() {
@@ -378,7 +382,7 @@ public class CommandProcessor {
         else {
 
             Seller[] sellers = (Seller[]) cart.getTraders().values().toArray();
-            SellLog sellLog = new SellLog()
+            //SellLog sellLog = new SellLog()
             //add trade logs
             //reduce customer credit
             //increase seller credit
