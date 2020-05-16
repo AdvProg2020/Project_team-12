@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ProductInfo {
+
+    @Expose
+    private String SellerUserName;
     @Expose
     private int quantity;
     @Expose
@@ -22,7 +25,8 @@ public class ProductInfo {
     @Expose
     private Double averageScore;
 
-    public ProductInfo(int quantity, double price, Product product) {
+    public ProductInfo(String sellerUserName, int quantity, double price, Product product) {
+        SellerUserName = sellerUserName;
         this.quantity = quantity;
         this.price = price;
         this.product = product;
@@ -32,10 +36,6 @@ public class ProductInfo {
             averageScore += score.getScore();
         }
         averageScore /= product.getAllSubmittedScores().size();
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public int getQuantity() {
@@ -78,6 +78,10 @@ public class ProductInfo {
         return product;
     }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     public ArrayList<String> getBuyers() {
         return buyers;
     }
@@ -88,13 +92,20 @@ public class ProductInfo {
 
     @Override
     public String toString() {
-        return "ProductInfo{" +
-                "quantity=" + quantity +
-                ", price=" + price +
-                ", product name='" + PName + '\'' +
-                ", status=" + status +
-                ", product=" + product +
-                ", average score=" + averageScore +
-                '}';
+        return "Product name:" + PName
+                + "  Price:" + price
+                +"  Description: " + product.getDescription();
+    }
+
+    public String getSellerUserName() {
+        return SellerUserName;
+    }
+
+    public void setSellerUserName(String sellerUserName) {
+        SellerUserName = sellerUserName;
+    }
+
+    public String  getQuantityString() {
+        return "Seller:"+getSellerUserName()+"  Quantity:"+quantity;
     }
 }

@@ -76,7 +76,7 @@ public class RegisterPanel extends Menu {
                 if (role.equals("seller")) {
                     String companyInfo = getCompanyInformation();
                 }
-                CommandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
+                CommandProcessor.getInstance().createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
                 return getGrandFatherMenu();
             }
 

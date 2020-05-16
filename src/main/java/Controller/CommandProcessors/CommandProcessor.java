@@ -31,11 +31,10 @@ import java.util.Set;
 public class CommandProcessor {
     protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
-    private static CommandProcessor Parent;
-    private static Account loggedInAccount = null;
-    private static DataCenter dataCenter = DataCenter.getInstance();
-    private static Cart cart;
-
+    private CommandProcessor Parent;
+    private static Account loggedInAccount;
+    private DataCenter dataCenter;
+    private static Cart cart = new Cart(null);
     public CommandProcessor(CommandProcessor parent) {
         Parent = parent;
         this.loggedInAccount = null;
@@ -107,6 +106,14 @@ public class CommandProcessor {
         }
     }
 
+    public static Cart getCart() {
+        return cart;
+    }
+
+    public static void setCart(Cart cart) {
+        CommandProcessor.cart = cart;
+    }
+
     public String getProfileType() {
         if (loggedInAccount instanceof Customer)
             return "customer";
@@ -122,7 +129,7 @@ public class CommandProcessor {
         this.loggedInAccount = loggedInAccount;
     }
 
-    public static void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
+    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
         Account newAccount;
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
@@ -258,12 +265,12 @@ public class CommandProcessor {
     }
 
     //seller
-    public static String getCompanyInfo() {
-        return ((Seller) loggedInAccount).getCompanyInformation();
+    public String getCompanyInfo() {
+        return ((Seller) this.loggedInAccount).getCompanyInformation();
     }
 
-    public static ArrayList<SellLog> getSalesHistory() {
-        return ((Seller) loggedInAccount).getSellLogs();
+    public ArrayList<SellLog> getSalesHistory() {
+        return ((Seller) this.loggedInAccount).getSellLogs();
     }
 
     public ArrayList<ProductInfo> getAllSellerProducts() {
@@ -306,6 +313,7 @@ public class CommandProcessor {
             dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
         } else
             dataCenter.deleteProductInfo(productInfo, this.loggedInAccount.getUsername());
+
     }
 
     public String getSellerBalance() {

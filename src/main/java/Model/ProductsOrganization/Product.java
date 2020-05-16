@@ -1,5 +1,7 @@
 package Model.ProductsOrganization;
 
+import Controller.DataBase.DataCenter;
+import Model.Account.Seller;
 import Model.Status;
 import com.google.gson.annotations.Expose;
 
@@ -8,6 +10,9 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Product {
+
+    @Expose
+    private int numberOfViews = 0;
     @Expose
     private String name;
     @Expose
@@ -177,5 +182,21 @@ public class Product {
 
     public ArrayList<String> getAllSellers() {
         return allSellers;
+    }
+
+    public int getNumberOfViews() {
+        return numberOfViews;
+    }
+
+    public void setNumberOfViews(int numberOfViews) {
+        this.numberOfViews = numberOfViews;
+    }
+
+    public String getSellersInfo() {
+        String var100 = "";
+        for (String s : allSellers) {
+            var100 += ((Seller) DataCenter.getInstance().getAccountByName(s)).getProductInfo(name).getQuantityString();
+        }
+        return var100;
     }
 }

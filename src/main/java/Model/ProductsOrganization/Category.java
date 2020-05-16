@@ -3,6 +3,7 @@ package Model.ProductsOrganization;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Category {
@@ -10,12 +11,15 @@ public class Category {
     private String name;
     @Expose
     private String categoryPath;
+    @Expose
+    private ArrayList<String> attributes;
     private Category parent;
     private HashMap<String, Category> subCategories = new HashMap<>();
-    private HashMap<String, Product> includedPRoducts = new HashMap<>();
+    private HashMap<String, Product> includedProducts = new HashMap<>();
 
-    public Category(String name, Category parent) {
+    public Category(String name, ArrayList<String> attributes, Category parent) {
         this.name = name;
+        this.attributes = attributes;
         this.parent = parent;
     }
 
@@ -70,12 +74,12 @@ public class Category {
         this.subCategories = subCategories;
     }
 
-    public HashMap<String, Product> getIncludedPRoducts() {
-        return includedPRoducts;
+    public HashMap<String, Product> getIncludedProducts() {
+        return includedProducts;
     }
 
-    public void setIncludedPRoducts(HashMap<String, Product> includedPRoducts) {
-        this.includedPRoducts = includedPRoducts;
+    public void setIncludedProducts(HashMap<String, Product> includedProducts) {
+        this.includedProducts = includedProducts;
     }
 
     public String getCategoryPath() {

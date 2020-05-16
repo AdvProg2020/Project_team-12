@@ -1,7 +1,5 @@
 package Controller.CommandProcessors;
 
-import View.MainMenu;
-
 public class AuctionsPageCP extends CommandProcessor  {
     private static CommandProcessor Instance;
 

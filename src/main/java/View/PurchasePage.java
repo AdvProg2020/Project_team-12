@@ -124,6 +124,7 @@ public class PurchasePage extends Menu {
         } else if (command.matches(commands.get(2))) {
             String[] commandDetails = command.split("\\s");
             //increase product with id commandDetails[1]
+            //at firs a list af all seller for this product should be shown to user the method is available in cart.
             return this;
         } else if (command.matches(commands.get(3))) {
             String[] commandDetails = command.split("\\s");
