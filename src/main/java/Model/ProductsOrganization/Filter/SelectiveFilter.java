@@ -1,17 +1,17 @@
 package Model.ProductsOrganization.Filter;
 
-import Model.Account.Seller;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 
 import java.util.ArrayList;
 
-public class SelectiveFilter implements Filter {
+public class SelectiveFilter implements Filterable {
     private String name;
-    private ArrayList<String> selectedValues = new ArrayList<>();
+    private ArrayList<String> selectedValues;
 
     public SelectiveFilter(String name, ArrayList<String> selectedValues) {
         this.name = name;
+        this.selectedValues = new ArrayList<>();
         this.selectedValues.addAll(selectedValues);
     }
 
@@ -30,10 +30,7 @@ public class SelectiveFilter implements Filter {
             case "Brand":
                 return selectedValues.contains(product.getBrand());
             case "Seller":
-                for (String seller : product.getAllSellers())
-                    if (selectedValues.contains(seller))
-                        return true;
-                return false;
+                return selectedValues.contains(product.getSeller());
             case "Availability":
                 return product.getRemainingItems() > 0;
             default:
@@ -45,7 +42,6 @@ public class SelectiveFilter implements Filter {
         }
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -54,7 +50,7 @@ public class SelectiveFilter implements Filter {
     public String toString() {
         String string = name + ":";
         for (String value : selectedValues)
-            string += " " + value;
+            string += (" " + value);
         return string;
     }
 }

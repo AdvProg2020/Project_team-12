@@ -2,7 +2,7 @@ package Model.ProductsOrganization.Filter;
 
 import Model.ProductsOrganization.Product;
 
-public class RangeFilter implements Filter {
+public class RangeFilter implements Filterable {
     private String name;
     private double minValue;
     private double maxValue;
@@ -14,25 +14,26 @@ public class RangeFilter implements Filter {
     }
 
     public boolean canPassFilter(Product product) {
-        if (name.equals("Price")) {
-            double price = product.getPrice();
-            return (price >= minValue) && (price <= maxValue);
-        } else {
-            if (product.getSpecs().containsKey(name)) {
-                String value = product.getSpecs().get(name);
-                try {
-                    int intValue = Integer.parseInt(value);
-                    return (intValue >= minValue) && (intValue <= maxValue);
+        switch (name) {
+            case "Price":
+                double price = product.getPrice();
+                return (price >= minValue) && (price <= maxValue);
+            default:
+                if (product.getSpecs().containsKey(name)) {
+                    String value = product.getSpecs().get(name);
+                    try {
+                        double doubleValue = Double.parseDouble(value);
+                        return (doubleValue >= minValue) && (doubleValue <= maxValue);
+                    }
+                    catch (Exception e) {
+                        return false;
+                    }
                 }
-                catch (Exception e) {
-                    return false;
-                }
-            }
-            return false;
+                return false;
         }
+
     }
 
-    @Override
     public String getName() {
         return name;
     }

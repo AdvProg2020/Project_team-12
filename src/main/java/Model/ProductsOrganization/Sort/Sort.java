@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Sort {
-    private String sortType;
+    private String sortType = "Most viewed";
 
     // Command: show available sorts
     public ArrayList<String> getAvailableSorts() {
@@ -37,8 +37,7 @@ public class Sort {
         sortType = "Most viewed";
     }
 
-    public ArrayList<Product> getSortedProducts(ArrayList<Product> allProducts) {
-        ArrayList<Product> products = allProducts;
+    public ArrayList<Product> getSortedProducts(ArrayList<Product> products) {
         switch(sortType) {
             case "Most viewed":
                 Collections.sort(products, new SortByView());

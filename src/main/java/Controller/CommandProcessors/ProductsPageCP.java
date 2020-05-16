@@ -3,8 +3,6 @@ package Controller.CommandProcessors;
 import Controller.CommandProcessor;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Filter.Filter;
-import Model.ProductsOrganization.Filter.RangeFilter;
-import Model.ProductsOrganization.Filter.SelectiveFilter;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Sort.*;
 
@@ -16,7 +14,13 @@ public class ProductsPageCP extends CommandProcessor {
     private ArrayList<Product> allProducts;
     private ArrayList<Filter> allFilters;
     private Category currentCategory;
+    private Filter filter;
     private Sort sort;
+
+    public ProductsPageCP(ArrayList<Category> allCategories) {
+        // TODO: get these from data center:
+        this.allCategories = allCategories;
+    }
 
     // Command: view categories
     public ArrayList<String> getAllCategories() {
@@ -28,47 +32,31 @@ public class ProductsPageCP extends CommandProcessor {
 
     // Command: show available filters
     public ArrayList<String> getAvailableFilters() {
-        ArrayList<String> availableFilters = new ArrayList<>();
-        availableFilters.add("Category");
-        availableFilters.add("Name");
-        availableFilters.add("Brand");
-        availableFilters.add("Seller");
-        availableFilters.add("Availability");
-        availableFilters.add("Price");
-        if (currentCategory != null)
-            availableFilters.addAll(currentCategory.getFeatures());
-        return availableFilters;
+        return filter.getAvailableFilters();
     }
 
     // Command: filter [an available filter]
     public boolean canFilter(String name) {
-        return getAvailableFilters().contains(name);
+        return filter.canFilter(name);
     }
     public void filterBySelectedFeatures(String name, ArrayList<String> selectedValues) {
-        SelectiveFilter filter = new SelectiveFilter(name, selectedValues);
-        allFilters.add(filter);
+        filter.filterBySelectedFeatures(name, selectedValues);
     }
-    public void filterByRange(String name, int minValue, int maxValue) {
-        RangeFilter filter = new RangeFilter(name, minValue, maxValue);
-        allFilters.add(filter);
+    public void filterByRange(String name, double minValue, double maxValue) {
+        filter.filterByRange(name, minValue, maxValue);
     }
 
     // Command: current filters
     public ArrayList<String> getCurrentFilters() {
-        ArrayList<String> currentFilters = new ArrayList<>();
-        for (Filter filter : allFilters)
-            currentFilters.add(filter.toString());
-        return currentFilters;
+        return filter.getCurrentFilters();
     }
 
     // Command: disable filter [a selected filter]
     public boolean canDisableFilter(String name) {
-        Filter filter = getFilterByName(name);
-        return filter != null;
+        return filter.canDisableFilter(name);
     }
     public void disableFilter(String name) {
-        Filter filter = getFilterByName(name);
-        allFilters.remove(filter);
+        filter.disableFilter(name);
     }
 
     // Command: show available sorts
@@ -106,27 +94,7 @@ public class ProductsPageCP extends CommandProcessor {
         return sort.getSortedProducts(getFilteredProducts());
     }
     public ArrayList<Product> getFilteredProducts() {
-        ArrayList<Product> products = new ArrayList<>();
-        for (Product product : allProducts) {
-            boolean canPassFilter = true;
-            for (Filter filter : allFilters) {
-                if (!filter.canPassFilter(product)) {
-                    canPassFilter = false;
-                    break;
-                }
-            }
-            if (canPassFilter)
-                products.add(product);
-        }
-        return products;
-    }
-
-    // Additional methods
-    public Filter getFilterByName(String name) {
-        for (Filter filter : allFilters)
-            if (filter.getName().equals(name))
-                return filter;
-        return null;
+        return filter.getFilteredProducts(allProducts);
     }
 }
 
