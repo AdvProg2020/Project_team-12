@@ -25,7 +25,29 @@ public class SellLog extends Log {
         return "SellLog{}";
     }
 
+    public void setAllSoldProducts(ArrayList<ProductOnLog> allSoldProducts) {
+        this.allSoldProducts = allSoldProducts;
+    }
 
+    public void setReceivedCredit(int receivedCredit) {
+        this.receivedCredit = receivedCredit;
+    }
+
+    public void setDecreasedPriceAtAuction(int decreasedPriceAtAuction) {
+        this.decreasedPriceAtAuction = decreasedPriceAtAuction;
+    }
+
+    public int getReceivedCredit() {
+        return receivedCredit;
+    }
+
+    public int getDecreasedPriceAtAuction() {
+        return decreasedPriceAtAuction;
+    }
+
+    public ArrayList<ProductOnLog> getAllSoldProducts() {
+        return allSoldProducts;
+    }
 
     private enum Status {SENT, TO_BE_SENT}
 }

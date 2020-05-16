@@ -12,6 +12,7 @@ import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
 import Model.Log.PurchaseLog;
 import Model.Log.SellLog;
+import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.ProductInfo;
 import Model.ProductsOrganization.Score;
@@ -30,9 +31,10 @@ import java.util.Set;
 public class CommandProcessor {
     protected static CommandProcessor Instance;
     private static CommandProcessor Primitive;
-    private CommandProcessor Parent;
-    private Account loggedInAccount;
-    private DataCenter dataCenter;
+    private static CommandProcessor Parent;
+    private static Account loggedInAccount = null;
+    private static DataCenter dataCenter = DataCenter.getInstance();
+    private static Cart cart;
 
     public CommandProcessor(CommandProcessor parent) {
         Parent = parent;
@@ -120,7 +122,7 @@ public class CommandProcessor {
         this.loggedInAccount = loggedInAccount;
     }
 
-    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
+    public static void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
         Account newAccount;
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
@@ -256,12 +258,12 @@ public class CommandProcessor {
     }
 
     //seller
-    public String getCompanyInfo() {
-        return ((Seller) this.loggedInAccount).getCompanyInformation();
+    public static String getCompanyInfo() {
+        return ((Seller) loggedInAccount).getCompanyInformation();
     }
 
-    public ArrayList<SellLog> getSalesHistory() {
-        return ((Seller) this.loggedInAccount).getSellLogs();
+    public static ArrayList<SellLog> getSalesHistory() {
+        return ((Seller) loggedInAccount).getSellLogs();
     }
 
     public ArrayList<ProductInfo> getAllSellerProducts() {
@@ -340,6 +342,42 @@ public class CommandProcessor {
         product.addScore(newScore);
         dataCenter.saveProduct(product);
     }
+
+    //customer end
+
+    //cart
+
+    public boolean checkDiscountCode(String code) throws Exception {
+        DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
+        for (Account account : discountCode.getAllAllowedAccounts()) {
+            if (account.equals(this.loggedInAccount))
+                return true;
+        }
+        return false;
+    }
+
+    public void setReceiverInfo(String receiverInfo){
+        cart.setReceiverInfo(receiverInfo);
+    }
+
+    public Double getPaymentAmount(){
+        return cart.getPayAmount();
+    }
+
+    public void buy() throws Exception{
+        if (loggedInAccount.getCredit() < getPaymentAmount())
+            throw new CustomerExceptions("you don't have enough credit");
+        else {
+
+            Seller[] sellers = (Seller[]) cart.getTraders().values().toArray();
+            SellLog sellLog = new SellLog()
+            //add trade logs
+            //reduce customer credit
+            //increase seller credit
+            cart.restart();
+        }
+    }
+
 
     public CommandProcessor getParent() {
         return Parent;

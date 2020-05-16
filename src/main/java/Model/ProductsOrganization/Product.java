@@ -30,6 +30,9 @@ public class Product {
     private ArrayList<Review> allReviews;
     @Expose
     private String categoryName;
+    @Expose
+    private Double price;
+
     public Product(int id, Status status, String name, String brand, int remainingItems, HashMap<String, String> specifications, String description, Category parent) {
         this.id = id;
         this.name = name;
@@ -74,6 +77,14 @@ public class Product {
 
     public String getDescription() {
         return Description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public void setDescription(String description) {

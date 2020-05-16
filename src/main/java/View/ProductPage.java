@@ -7,13 +7,12 @@ import java.util.HashMap;
 
 public class ProductPage extends Menu {
     String productId;
+
     public ProductPage(Menu parentMenu, String productId) {
         super("Product Page", parentMenu);
         this.productId = productId;
         submenus = new HashMap<Integer, Menu>();
         submenus.put(1, getDigestMenu());
-        //attributes
-        //compare
         submenus.put(2, getCommentsMenu());
         submenus.put(3, new RegisterPanel(this));
         setCommands();

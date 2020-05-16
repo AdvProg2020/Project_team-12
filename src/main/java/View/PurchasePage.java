@@ -1,5 +1,7 @@
 package View;
 
+import Controller.CommandProcessors.CommandProcessor;
+import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
 
@@ -7,6 +9,7 @@ import java.util.HashMap;
 
 public class PurchasePage extends Menu {
     private static PurchasePage instance;
+    CommandProcessor commandProcessor = CommandProcessor.getInstance();
 
     public PurchasePage(Menu parentMenu) {
         super("Cart", parentMenu);
@@ -42,35 +45,41 @@ public class PurchasePage extends Menu {
                 System.out.println(this.getName());
             }
 
-            private void getReceiverInformation() {
+            private void getReceiverInformation() throws Exception {
                 System.out.println("Receiver Information");
+                String receiverInfo = "";
                 String receiverName = getField("receiver name", "(\\w)+");
                 String receiverLastName = getField("receiver last name", "(\\w)+");
                 String receiverPhoneNumber = getField("phone number", "(\\d)+");
                 String receiverAddress = getField("address", ".+");
+                receiverInfo += "name : " + receiverName + "\nlast name : " + receiverLastName + "\nphone number : " + receiverPhoneNumber + "\naddress : " + receiverAddress;
                 String command = getField("<<next>> or <<back>>", "(next|back)");
                 if (command.equals("back")) {
+                    commandProcessor.setReceiverInfo(receiverInfo);
                     return;
                 } else if (command.equals("next")) {
+                    commandProcessor.setReceiverInfo(receiverInfo);
                     getDiscountCode();
                 }
             }
 
-            private void getDiscountCode() {
+            private void getDiscountCode() throws Exception {
                 System.out.println("enter discount code or write <<nothing>> instead");
                 String code = getField("discount code", "\\S+");
                 if (code.equals("nothing")) {
                     getPaymentInformation();
                 } else {
-                    //check if code is invalid call getDiscountCode
-                    //else call getPaymentInformation
-                    getPaymentInformation();
+                    if (!commandProcessor.checkDiscountCode(code)) {
+                        System.err.println("invalid discount code for this account");
+                        getDiscountCode();
+                    } else
+                        getPaymentInformation();
                 }
             }
 
-            private void getPaymentInformation() {
+            private void getPaymentInformation() throws Exception {
                 System.out.println("payment");
-                //show total price and details
+                System.out.println("total price :" + commandProcessor.getPaymentAmount());
                 String command = getField("<<finish>> or <<back>>", "(finish|back)");
                 if (command.equals("finish")) {
                     //check if trade can be completed
