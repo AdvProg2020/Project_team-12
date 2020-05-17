@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class MainMenu extends Menu {
     private Profile profile;
     private Profile defaultProfile = new Profile(this);
+    MainMenuCP commandProcessor = (MainMenuCP) CommandProcessor.getInstance();
 
     public MainMenu() {
          super("Main Menu", null);

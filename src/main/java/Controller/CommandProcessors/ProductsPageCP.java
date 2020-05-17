@@ -146,6 +146,10 @@ public class ProductsPageCP extends CommandProcessor {
             throw new CustomerExceptions("filter doesn't exist");
         return filter.checkRangeFilters(name);
     }
+
+    public boolean doesProductExist(String id){
+        return dataCenter.doesProductExist(id);
+    }
 }
 
 

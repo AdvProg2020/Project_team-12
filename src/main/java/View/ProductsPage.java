@@ -6,6 +6,7 @@ import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductsPage extends Menu {
@@ -73,9 +74,12 @@ public class ProductsPage extends Menu {
                         String minimumValue = getField("minimum value", "(\\d+)\\.(\\d+)$");
                         String maximumValue = getField("maximum value", "(\\d+)\\.(\\d+)$");
                         commandProcessor.filterByRange(commandDetails[2], Double.parseDouble(minimumValue), Double.parseDouble(maximumValue));
-                    } else //TODO:filter
-
-                        return this;
+                    } else {
+                        ArrayList<String> filterValues = new ArrayList<String>();
+                        getSelectedOptions(filterValues);
+                        commandProcessor.filterBySelectedFeatures(commandDetails[2], filterValues);
+                    }
+                    return this;
                 } else if (command.equals(commands.get(2))) {
                     for (int i = 1; i <= commandProcessor.getCurrentFilters().size(); i++)
                         System.out.println(i + ". " + commandProcessor.getCurrentFilters().get(i - 1));
@@ -93,6 +97,17 @@ public class ProductsPage extends Menu {
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
+            }
+
+            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) {
+                System.out.println("add specification to filter (at least one)");
+                String value = getField("value", "\\S+");
+                filterValues.add(value);
+                System.out.println("type <back> to continue or <next> to add more specifications");
+                String command = getField("<next> or <back>", "(next|back)$");
+                if (command.equals("next"))
+                    getSelectedOptions(filterValues);
+                return filterValues;
             }
         };
     }
@@ -173,13 +188,16 @@ public class ProductsPage extends Menu {
         } else if (command.equals(commands.get(2))) {
             return submenus.get(2);
         } else if (command.equals(commands.get(3))) {
-            //show products using current filters and sort
+            for (int i = 1; i <= commandProcessor.getProducts().size(); i++)
+                System.out.println(i + ". " + commandProcessor.getProducts().get(i - 1));
             return this;
         } else if (command.matches(commands.get(4))) {
             String[] commandDetails = command.split("\\s");
-            //check if product with this id exists
+            if (!commandProcessor.doesProductExist(commandDetails[2]))
+                throw new CustomerExceptions("product with this id doesn't exist");
             return new ProductPage(this, commandDetails[2]);
         } else if (command.equals(commands.get(5))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(6))) {
             return this;

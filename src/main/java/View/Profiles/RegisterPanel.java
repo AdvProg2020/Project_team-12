@@ -1,6 +1,7 @@
 package View.Profiles;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.RegisterPanelCP;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 import View.Menu;
@@ -12,7 +13,8 @@ import java.util.regex.Pattern;
 public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
-    CommandProcessor commandProcessor = CommandProcessor.getInstance();
+    RegisterPanelCP commandProcessor = (RegisterPanelCP) CommandProcessor.getInstance();
+
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
         submenus = new HashMap<Integer, Menu>();
@@ -76,7 +78,7 @@ public class RegisterPanel extends Menu {
                 if (role.equals("seller")) {
                     String companyInfo = getCompanyInformation();
                 }
-                CommandProcessor.getInstance().createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
+                commandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
                 return getGrandFatherMenu();
             }
 
@@ -126,8 +128,10 @@ public class RegisterPanel extends Menu {
             setUsername(commandDetails[3]);
             return submenus.get(2);
         } else if (command.equals(this.commands.get(2))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(this.commands.get(3))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(this.commands.get(4))) {
             return this;

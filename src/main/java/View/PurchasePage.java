@@ -1,6 +1,7 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 
 public class PurchasePage extends Menu {
     private static PurchasePage instance;
-    CommandProcessor commandProcessor = CommandProcessor.getInstance();
+    PurchasePageCP commandProcessor = (PurchasePageCP) CommandProcessor.getInstance();
 
     public PurchasePage(Menu parentMenu) {
         super("Cart", parentMenu);
@@ -67,22 +68,23 @@ public class PurchasePage extends Menu {
                 System.out.println("enter discount code or write <<nothing>> instead");
                 String code = getField("discount code", "\\S+");
                 if (code.equals("nothing")) {
-                    getPaymentInformation();
+                    getPaymentInformation(code);
                 } else {
                     if (!commandProcessor.checkDiscountCode(code)) {
                         System.err.println("invalid discount code for this account");
                         getDiscountCode();
                     } else
-                        getPaymentInformation();
+                        getPaymentInformation(code);
+                    return;
                 }
             }
 
-            private void getPaymentInformation() throws Exception {
+            private void getPaymentInformation(String discountCode) throws Exception {
                 System.out.println("payment");
                 System.out.println("total price :" + commandProcessor.getPaymentAmount());
                 String command = getField("<<finish>> or <<back>>", "(finish|back)");
                 if (command.equals("finish")) {
-                    //check if trade can be completed
+                    commandProcessor.buy(discountCode);
                     return;
                 } else {
                     getDiscountCode();
@@ -116,22 +118,23 @@ public class PurchasePage extends Menu {
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            //show products in cart
+            commandProcessor.showProductsInCart();
+            //TODO:why is it void??
             return this;
         } else if (command.matches(commands.get(1))) {
             String[] commandDetails = command.split("\\s");
             return new ProductPage(this, commandDetails[1]);
         } else if (command.matches(commands.get(2))) {
             String[] commandDetails = command.split("\\s");
-            //increase product with id commandDetails[1]
-            //at firs a list af all seller for this product should be shown to user the method is available in cart.
+            commandProcessor.increaseProduct(commandDetails[1]);
             return this;
         } else if (command.matches(commands.get(3))) {
             String[] commandDetails = command.split("\\s");
-            //decrease product with id commandDetails[1]
+            commandProcessor.decreaseProductWithID(commandDetails[1]);
             return this;
         } else if (command.equals(commands.get(4))) {
-            //show total price
+            commandProcessor.showTotalPrice();
+            //TODO:why is it void ?? :(
             return this;
         } else if (command.equals(commands.get(5))) {
             return submenus.get(1);

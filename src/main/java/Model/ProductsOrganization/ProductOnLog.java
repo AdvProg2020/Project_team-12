@@ -35,6 +35,10 @@ public class ProductOnLog {
         return Objects.hash(name, price, sellerOrBuyer);
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getQuantity() {
         return quantity;
     }

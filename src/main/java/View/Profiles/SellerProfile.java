@@ -44,8 +44,7 @@ public class SellerProfile extends Profile {
         commands.add("offs");
     }
 
-    public HashMap<String, String> getSpecifications() {
-        HashMap<String, String> specifications = new HashMap<String, String>();
+    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) {
         System.out.println("add specifications to your product (at least one)");
         String specificationTitle = getField("new specification title", "\\S+");
         String specificationValue = getField("specification value", "\\S+");
@@ -53,7 +52,7 @@ public class SellerProfile extends Profile {
         System.out.println("type <back> to continue or <next> to add more specifications");
         String command = getField("<next> or <back>", "(next|back)$");
         if (command.equals("next"))
-            getSpecifications();
+            getSpecifications(specifications);
         return specifications;
     }
 
@@ -139,7 +138,8 @@ public class SellerProfile extends Profile {
                     String price = getField("price", "(\\d+)\\.(\\d+)$");
                     String remainingItems = getField("remaining items", "(\\d+)$");
                     String description = getField("description", "\\S+");
-                    HashMap<String, String> specifications = getSpecifications();
+                    HashMap<String, String> specifications = new HashMap<String, String>();
+                    getSpecifications(specifications);
                     commandProcessor.addProduct(name, brand, price, remainingItems, description, specifications);
                     return this;
                 } else if (command.equals(commands.get(3))) {
@@ -168,7 +168,8 @@ public class SellerProfile extends Profile {
                 String price = getField("price", "(\\d+)\\.(\\d+)$");
                 String remainingItems = getField("remaining items", "(\\d+)$");
                 String description = getField("description", "\\S+");
-                HashMap<String, String> specifications = getSpecifications();
+                HashMap<String, String> specifications = new HashMap<String, String>();
+                getSpecifications(specifications);
                 commandProcessor.addProduct(name, brand, price, remainingItems, description, specifications);
                 return this.parentMenu;
             }
@@ -306,6 +307,7 @@ public class SellerProfile extends Profile {
             commandProcessor.getSellerBalance();
             return this;
         } else if (command.equals(commands.get(9))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(10))) {
             return this;

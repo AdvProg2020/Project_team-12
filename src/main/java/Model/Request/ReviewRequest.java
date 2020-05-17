@@ -11,14 +11,12 @@ import java.util.Objects;
 
 public class ReviewRequest extends Request {
     private Review review;
-    private String senderUsername;
     private String  pId;
     private boolean accepted;
 
-    public ReviewRequest(String sender, int id, String text, boolean active, Review review, String senderUsername, String pId) {
-        super(sender, id, text, active);
+    public ReviewRequest(String sender, int id, boolean active, Review review, String pId) {
+        super(sender, id, active);
         this.review = review;
-        this.senderUsername = senderUsername;
         this.pId = pId;
     }
 
@@ -34,9 +32,9 @@ public class ReviewRequest extends Request {
     }
 
     public void deleteRequest() throws IOException {
-        ((CanRequest)DataCenter.getInstance().getAccountByName(senderUsername)).deleteRequestWithId(this.getId());
-        ((CanRequest)DataCenter.getInstance().getAccountByName(senderUsername)).getSolvedRequests().add(this.toString());
-        DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUsername));
+        ((CanRequest)DataCenter.getInstance().getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
+        ((CanRequest)DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
+        DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));
         DataCenter.getInstance().deleteRequestWithId(id);
     }
 
@@ -59,12 +57,12 @@ public class ReviewRequest extends Request {
         ReviewRequest that = (ReviewRequest) o;
         return pId == that.pId &&
                 Objects.equals(review, that.review) &&
-                Objects.equals(senderUsername, that.senderUsername);
+                Objects.equals(senderUserName, that.senderUserName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), review, senderUsername, pId);
+        return Objects.hash(super.hashCode(), review, senderUserName, pId);
     }
 
     @Override

@@ -106,6 +106,7 @@ public class CustomerProfile extends Profile {
                 System.out.println(i + ". " + commandProcessor.getCustomerDiscountCodes().get(i - 1).toString());
             return this;
         } else if (command.equals(commands.get(5))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(6))) {
             return this;

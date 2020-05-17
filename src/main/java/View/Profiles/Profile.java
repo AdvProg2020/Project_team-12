@@ -91,7 +91,7 @@ public class Profile extends Menu {
                     CommandProcessor.getInstance().editPersonalInfo(commandDetails[1], newFieldValue);
                     return this;
                 } else if (command.equals(commands.get(1))) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(2))) {
                     showCommands();
                     return this;

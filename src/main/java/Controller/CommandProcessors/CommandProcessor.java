@@ -13,6 +13,8 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Score;
+import Model.Request.Request;
+import Model.Request.SellerRequest;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.ProductExceptions;
@@ -126,42 +128,6 @@ public class CommandProcessor {
 
     public void setLoggedInAccount(Account loggedInAccount) {
         this.loggedInAccount = loggedInAccount;
-    }
-
-    public void createAccount(String username, String role, String password, String name, String lastName, String phoneNumber, String emailAddress, String companyInfo) throws Exception {
-        Account newAccount;
-        if (role.equals("customer")) {
-            newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
-            dataCenter.saveAccount((Customer) newAccount);
-        } else if (role.equals("seller")) {
-            newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
-            //send a request to manager
-        }
-    }
-
-    public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
-        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
-        dataCenter.saveAccount(manager);
-    }
-
-    public void login(String username, String password) throws Exception {
-        setLoggedInAccount(dataCenter.getAccountByName(username));
-        if (!checkPassword(password)) {
-            setLoggedInAccount(null);
-            throw new RegisterPanelException("incorrect password");
-        }
-    }
-
-    public boolean doesUsernameExists(String username) {
-        return dataCenter.userExistWithUsername(username);
-    }
-
-
-    public boolean checkPassword(String password) {
-        if (this.loggedInAccount.getPassword().equals(password))
-            return true;
-        else
-            return false;
     }
 
     public String getPersonalInfo() {

@@ -141,4 +141,8 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
             throw new CustomerExceptions("filter doesn't exist");
         return filter.checkRangeFilters(name);
     }
+
+    public boolean doesProductExist(String id){
+        return dataCenter.doesProductExist(id);
+    }
 }

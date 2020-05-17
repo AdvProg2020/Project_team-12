@@ -1,9 +1,14 @@
 package Controller.CommandProcessors;
 
 import Controller.DataBase.DataCenter;
+import Model.Account.Customer;
+import Model.Log.PurchaseLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.Product;
+import Model.ProductsOrganization.ProductOnLog;
 import Model.ProductsOrganization.Review;
+import Model.Request.Request;
+import Model.Request.ReviewRequest;
 import View.ProductsPage;
 
 import java.util.ArrayList;
@@ -37,9 +42,9 @@ public class ProductPageCP extends CommandProcessor{
     // Use: selectedProduct.getAverageMark();
 
     // Command: Add comment
-    public void addComment(String title, String content) {
-        selectedProduct.getAllReviews().add(new Review( title, content,true));
-    }
+    /*public void addComment(String title, String content) {
+        selectedProduct.getAllReviews().add(new Review( title, content,true));//TODO:what the hell is this??
+    }*/
 
     public Product getSelectedProduct() {
         return selectedProduct;
@@ -56,6 +61,26 @@ public class ProductPageCP extends CommandProcessor{
 
     public Product getProductById(String id){
         return dataCenter.getProductById(id);
+    }
+
+    public boolean hasUserBoughtThisProduct(){
+        if (!(getLoggedInAccount() instanceof Customer))
+            return false;
+        for (PurchaseLog buyLog : ((Customer) getLoggedInAccount()).getBuyLogs()) {
+            for (ProductOnLog purchasedProduct : buyLog.getAllPurchasedProducts()) {
+                if(purchasedProduct.getName().equals(selectedProduct.getName()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void addReview(String title , String content) throws Exception{
+        Review review = new Review(title,content,hasUserBoughtThisProduct());
+        Request request = new ReviewRequest(getLoggedInAccount().getUsername(),dataCenter.getAllUnsolvedRequests().size()+1,false,review,selectedProduct.getID());
+        //TODO: id generator
+        dataCenter.addRequest(request);
+        dataCenter.saveRequest(request);
     }
 
 }

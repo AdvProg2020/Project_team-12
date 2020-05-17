@@ -49,7 +49,7 @@ public class ProductPage extends Menu {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get product's info and show
+                System.out.println(commandProcessor.getSelectedProduct().toString());
                 showCommands();
             }
 
@@ -103,9 +103,9 @@ public class ProductPage extends Menu {
             public Menu getCommand() throws Exception {
                 String command = scanner.nextLine();
                 if (command.equals(commands.get(0))) {
-                    getField("title", ".+");
-                    getField("content", ".+");
-                    //add comment
+                    String title = getField("title", ".+");
+                    String content = getField("content", ".+");
+                    commandProcessor.addReview(title,content);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     return this.parentMenu;
@@ -144,6 +144,7 @@ public class ProductPage extends Menu {
         } else if (command.equals(commands.get(3))) {
             return submenus.get(2);
         } else if (command.equals(commands.get(4))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(5))) {
             return this;

@@ -344,6 +344,7 @@ public class ManagerProfile extends Profile {
         } else if (command.equals(commands.get(6))) {
             return submenus.get(10);
         } else if (command.equals(commands.get(7))) {
+            CommandProcessor.back();
             return this.parentMenu;
         } else if (command.equals(commands.get(8))) {
             return this;

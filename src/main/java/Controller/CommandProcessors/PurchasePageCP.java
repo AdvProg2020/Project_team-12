@@ -8,11 +8,14 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.ProductOnLog;
 import View.Exceptions.CustomerExceptions;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PurchasePageCP extends CommandProcessor {
+    private final int MINIMUM_PAYMENT_TO_GET_REWARD = 100000;
+    private final int PERCENTAGE_OF_REWARD = 5;
     private static CommandProcessor Instance;
 
     protected PurchasePageCP() {
@@ -72,6 +75,9 @@ public class PurchasePageCP extends CommandProcessor {
         for (Cart.ProductInCart productInCart : sellers.keySet()) {
             productOnLogs.add(new ProductOnLog(productInCart.getProduct().getName(), productInCart.getPrice(), productInCart.getProduct().getSeller(), productInCart.getQuantity()));
         }
+        if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
+            finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
+        }
         PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
         Cart.getInstance().getOwner().getBuyLogs().add(purchaseLog);
@@ -92,6 +98,9 @@ public class PurchasePageCP extends CommandProcessor {
         ArrayList<ProductOnLog> productOnLogs = new ArrayList<>();
         for (Cart.ProductInCart productInCart : sellers.keySet()) {
             productOnLogs.add(new ProductOnLog(productInCart.getProduct().getName(), productInCart.getPrice(), productInCart.getProduct().getSeller(), productInCart.getQuantity()));
+        }
+        if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
+            finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
         }
         PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
