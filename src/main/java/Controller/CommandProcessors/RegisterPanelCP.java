@@ -46,6 +46,7 @@ public class RegisterPanelCP extends CommandProcessor {
         }else if ((dataCenter.getAccountByName(username) instanceof Seller &&
                 !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())){
             setLoggedInAccount(null);
+            //TODO:exception should be handled.
             throw new RegisterPanelException("your account is being checked by manager.");
         }
 
