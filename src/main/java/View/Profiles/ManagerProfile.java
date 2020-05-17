@@ -1,6 +1,7 @@
 package View.Profiles;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
 import Model.Discount.DiscountCode;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class ManagerProfile extends Profile {
     Profile profile;
-    CommandProcessor commandProcessor = CommandProcessor.getInstance();
+    ProfileCP commandProcessor = (ProfileCP) CommandProcessor.getInstance();
     public ManagerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
         this.profile = profile;

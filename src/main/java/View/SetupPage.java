@@ -1,6 +1,9 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
+import Controller.DataBase.DataCenter;
+import Model.Account.Manager;
 
 import java.util.Scanner;
 
@@ -26,7 +29,14 @@ public class SetupPage {
             String command = scanner.nextLine();
             if (command.equals("1") | command.equals("setup")) {
                 //TODO:Register first manager, it need a method which has not been created yet
-
+                String username = getField("username", "\\S+");
+                String password = getField("password", "\\S+");
+                String firstName = getField("first name", "\\w+");
+                String lastName = getField("last name", "\\w+");
+                String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
+                String phoneNumber = getField("phone number", "(\\d+)$");
+                Manager manager = new Manager(username,firstName, lastName, emailAddress, phoneNumber, password);
+                DataCenter.getInstance().saveAccount(manager);
             } else if (command.equals("2") | command.equals("exit")) {
                 System.exit(0);
             } else {
@@ -36,5 +46,15 @@ public class SetupPage {
             System.err.println(e.getMessage());
             run();
         }
+    }
+    public static String getField(String fieldName, String regex) {
+        System.out.println("Enter "+fieldName);
+        Scanner scanner = InputUtility.getInstance();
+        String fieldValue = scanner.nextLine();
+        if (!fieldName.matches(regex)){
+            System.err.println("wrong patten");
+            getField(fieldName, regex);
+        }
+        return fieldValue;
     }
 }

@@ -327,6 +327,7 @@ public class DataCenter {
         } else {
             saveDiscount((DiscountCode) discount);
         }
+        addDiscount(discount);
     }
 
     public void saveDiscount(Auction auction) throws IOException {
@@ -364,6 +365,7 @@ public class DataCenter {
         JsonFileWriter writer = new JsonFileWriter();
         category.setCategoryPath(category.createCategoryStringPath(category));
         writer.write(category, generateCategoryFilePath(category.getName()));
+        addCategory(category);
     }
 
     private void addSavedAccount(Account account) {

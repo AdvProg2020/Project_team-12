@@ -38,10 +38,7 @@ public class RegisterPanelCP extends CommandProcessor {
         }
     }
 
-    public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
-        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
-        dataCenter.saveAccount(manager);
-    }
+
 
     public void login(String username, String password) throws Exception {
         setLoggedInAccount(dataCenter.getAccountByName(username));

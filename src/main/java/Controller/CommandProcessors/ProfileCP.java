@@ -1,6 +1,7 @@
 package Controller.CommandProcessors;
 
 import Model.Account.Customer;
+import Model.Account.Manager;
 import Model.Account.Seller;
 import Model.Discount.Auction;
 import Model.Discount.DiscountCode;
@@ -152,5 +153,10 @@ public class ProfileCP  extends CommandProcessor {
         dataCenter.saveDiscount(auction);//TODO:is this needed here ??
         dataCenter.saveAccount(seller);
         dataCenter.saveRequest(request);
+    }
+
+    public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
+        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
+        dataCenter.saveAccount(manager);
     }
 }
