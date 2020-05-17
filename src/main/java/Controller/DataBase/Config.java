@@ -22,7 +22,12 @@ public class Config {
     private final String requestsPath;
     @Expose
     private final String categoriesPath;
-
+    @Expose
+    private int purchaseID;
+    @Expose
+    private int sellID;
+    @Expose
+    private int requestsId;
 
     public Config() {
         accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
@@ -30,7 +35,9 @@ public class Config {
         discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
         requestsPath = "Resources/Requests";
         categoriesPath = "Resources/Categories";
-
+        purchaseID = 0;
+        sellID=0;
+        requestsId = 0;
     }
 
     public static Config getInstance() {
@@ -78,6 +85,15 @@ public class Config {
         return categoriesPath;
     }
 
+    public int getRequestsId() {
+        return requestsId;
+    }
+
+    public void setRequestsId(int requestsId) {
+        this.requestsId = requestsId;
+        saveConfig();
+    }
+
     public enum AccountsPath {
         CUSTOMER(0), SELLER(1), MANAGER(2);
         private int num;
@@ -104,5 +120,31 @@ public class Config {
         }
     }
 
+    public int getPurchaseID() {
+        return purchaseID;
+    }
 
+    public void setPurchaseID(int purchaseID) {
+        this.purchaseID = purchaseID;
+        saveConfig();
+    }
+
+    public int getSellID() {
+        return sellID;
+
+    }
+
+    public void setSellID(int sellID) {
+        this.sellID = sellID;
+        saveConfig();
+    }
+
+    private void saveConfig() {
+        JsonFileWriter writer = new JsonFileWriter();
+        try {
+            writer.write(Config.getInstance(),Config.configPath,Config.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
