@@ -2,6 +2,7 @@ package View.Profiles;
 
 import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -10,7 +11,11 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
+    static ProfileCP commandProcessor;
+    public static void setCommandProcessor(ProfileCP cp){
+        commandProcessor = cp;
 
+    }
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
         submenus = new HashMap<Integer, Menu>();
@@ -64,7 +69,7 @@ public class Profile extends Menu {
     protected Menu getPersonalInfoMenu() {
         return new Menu("Personal Info", this) {
             public void setCommands() {
-                commands.add("edit (password|first name|last name|email address|phone number)$");
+                commands.add("edit (password|firstName|lastName|emailAddress|phoneNumber)$");
                 commands.add("back");
                 commands.add("help");
             }

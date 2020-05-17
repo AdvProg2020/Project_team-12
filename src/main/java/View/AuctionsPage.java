@@ -3,6 +3,7 @@ package View;
 import Controller.CommandProcessors.AuctionsPageCP;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProductsPageCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import Model.Discount.Auction;
 import Model.ProductsOrganization.Product;
 import View.Exceptions.CustomerExceptions;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AuctionsPage extends Menu {
-    AuctionsPageCP commandProcessor = (AuctionsPageCP) (CommandProcessor.getInstance());
+   static AuctionsPageCP commandProcessor ;
 
     public AuctionsPage(Menu parentMenu) {
         super("Auctions Page", parentMenu);
@@ -23,6 +24,10 @@ public class AuctionsPage extends Menu {
         submenus.put(3, new RegisterPanel(this));
         //show product
         setCommands();
+    }
+    public static void setCommandProcessor(AuctionsPageCP cp){
+        commandProcessor = cp;
+
     }
 
     protected Menu getGrandFatherMenu() {

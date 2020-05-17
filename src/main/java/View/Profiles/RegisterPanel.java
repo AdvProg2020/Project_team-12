@@ -1,6 +1,8 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
 import Controller.CommandProcessors.RegisterPanelCP;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
@@ -13,7 +15,11 @@ import java.util.regex.Pattern;
 public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
-    RegisterPanelCP commandProcessor = (RegisterPanelCP) CommandProcessor.getInstance();
+    static RegisterPanelCP commandProcessor ;
+    public static void setCommandProcessor(RegisterPanelCP cp){
+        commandProcessor = cp;
+
+    }
 
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
@@ -33,9 +39,9 @@ public class RegisterPanel extends Menu {
     }
 
     public void show() {
-        for (int i = 1; i <= commands.size(); i++) {
+        /*for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
-        }
+        }*/
         System.out.println("commands\n1. create account [type] [username]\n2. login [username]\n3. logout\n4. back\n5. help");
     }
 
@@ -123,15 +129,20 @@ public class RegisterPanel extends Menu {
             return submenus.get(1);
         } else if (command.matches(this.commands.get(1))) {
             String[] commandDetails = command.split("\\s");
-            if (!commandProcessor.doesUsernameExists(commandDetails[3]))
+            if (!commandProcessor.doesUsernameExists(commandDetails[1]))
                 throw new RegisterPanelException("username doesn't exist");
-            setUsername(commandDetails[3]);
+            setUsername(commandDetails[1]);
             return submenus.get(2);
         } else if (command.equals(this.commands.get(2))) {
             CommandProcessor.back();
+            CommandProcessor.setLoggedInAccount(null);
             return this.parentMenu;
         } else if (command.equals(this.commands.get(3))) {
             CommandProcessor.back();
+            if (this.parentMenu instanceof CustomerProfile ||this.parentMenu instanceof SellerProfile||this.parentMenu instanceof ManagerProfile){
+                CommandProcessor.goToSubCommandProcessor(CPS.ProfileCP.getId());
+                return new Profile(this);
+            }
             return this.parentMenu;
         } else if (command.equals(this.commands.get(4))) {
             return this;

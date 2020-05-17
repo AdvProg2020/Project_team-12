@@ -512,13 +512,14 @@ public class DataCenter {
     }
 
     private boolean deleteAccount(Customer customer) {
-        File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "Customer"));
+        File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
+        file.exists();
         return file.delete() && accountsByUsername.remove(customer.getUsername(), customer);
     }
 
     private boolean deleteAccount(Seller seller) throws IOException, BadRequestException {
-        File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "Manager"));
+        File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "seller"));
         seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
         for (Model.ProductsOrganization.Product product : seller.getAllProducts()) {
             productsByName.remove(product.getName());
@@ -544,7 +545,7 @@ public class DataCenter {
 
 
     private boolean deleteAccount(Manager manager) {
-        File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "Seller"));
+        File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "manager"));
         return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
     }
 

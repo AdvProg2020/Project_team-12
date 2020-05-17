@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class CustomerProfile extends Profile {
     Profile profile;
-    ProfileCP commandProcessor = (ProfileCP)CommandProcessor.getInstance();
 
     public CustomerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);

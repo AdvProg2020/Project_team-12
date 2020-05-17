@@ -36,7 +36,7 @@ public abstract class Menu {
     public String getField(String fieldName,String regex) {
         System.out.println("Enter "+fieldName);
         String fieldValue = scanner.nextLine();
-        if (!fieldName.matches(regex)){
+        if (!fieldValue.matches(regex)){
             System.err.println("wrong patten");
             getField(fieldName, regex);
         }

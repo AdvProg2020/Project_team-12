@@ -1,21 +1,26 @@
 package View;
 
+import Controller.CommandProcessors.CPS;
+import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.MainMenuCP;
+import Model.Account.Account;
+import Model.Account.Customer;
+import Model.Account.Seller;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.*;
-import View.Profiles.RegisterPanel;
-import Controller.CommandProcessors.*;
 
 import java.util.HashMap;
 
 public class MainMenu extends Menu {
-    private Profile profile;
-    private Profile defaultProfile = new Profile(this);
-    MainMenuCP commandProcessor = (MainMenuCP) CommandProcessor.getInstance();
+    static MainMenuCP commandProcessor;
+    ;
+    private Profile profile = new Profile(this);
+    private Profile defaultProfile;
 
     public MainMenu() {
-         super("Main Menu", null);
+        super("Main Menu", null);
         submenus = new HashMap();
-        submenus.put(1, this.profile);
+        submenus.put(1, this.defaultProfile);
         submenus.put(2, new ProductsPage(this));
         submenus.put(3, new AuctionsPage(this));
         submenus.put(4, PurchasePage.getInstance(this));
@@ -24,8 +29,9 @@ public class MainMenu extends Menu {
         setCommands();
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public static void setCommandProcessor(MainMenuCP cp) {
+        commandProcessor = cp;
+
     }
 
     private void setCommands() {
@@ -38,9 +44,10 @@ public class MainMenu extends Menu {
         commands.add("exit");
     }
 
-
     @Override
     public void show() {
+        if (CommandProcessor.getLoggedInAccount() != null)
+            setDefaultProfile(CommandProcessor.getLoggedInAccount());
         System.out.println(this.getName() + "\ncommands\n");
         for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
@@ -81,5 +88,24 @@ public class MainMenu extends Menu {
             return null;
         }
         throw new InvalidCommandException("invalid command");
+    }
+
+    public void setDefaultProfile(Account account) {
+        if (account instanceof Customer)
+            defaultProfile = new CustomerProfile(getProfile(), this);
+        else if (account instanceof Seller)
+            defaultProfile = new SellerProfile(getProfile(), this);
+        else
+            defaultProfile = new ManagerProfile(getProfile(), this);
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.defaultProfile = profile;
+        submenus.remove(1);
+        submenus.put(1,profile);
     }
 }

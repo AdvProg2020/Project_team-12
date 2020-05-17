@@ -3,13 +3,14 @@ package View;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProductPageCP;
 import Controller.CommandProcessors.ProductsPageCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
 
 import java.util.HashMap;
 
 public class ProductPage extends Menu {
-    ProductPageCP commandProcessor = (ProductPageCP) CommandProcessor.getInstance();
+    static ProductPageCP commandProcessor;
     String productId;
 
     public ProductPage(Menu parentMenu, String productId) {
@@ -21,7 +22,10 @@ public class ProductPage extends Menu {
         submenus.put(3, new RegisterPanel(this));
         setCommands();
     }
+    public static void setCommandProcessor(ProductPageCP cp){
+        commandProcessor = cp;
 
+    }
     public String getProductId() {
         return productId;
     }

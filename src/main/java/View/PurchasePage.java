@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class PurchasePage extends Menu {
     private static PurchasePage instance;
-    PurchasePageCP commandProcessor = (PurchasePageCP) CommandProcessor.getInstance();
+    static PurchasePageCP commandProcessor ;
 
     public PurchasePage(Menu parentMenu) {
         super("Cart", parentMenu);
@@ -26,7 +26,10 @@ public class PurchasePage extends Menu {
         }
         return instance;
     }
+    public static void setCommandProcessor(PurchasePageCP cp){
+        commandProcessor = cp;
 
+    }
     private void setCommands() {
         commands.add("show products");
         commands.add("view (\\d+)$");

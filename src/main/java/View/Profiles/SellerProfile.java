@@ -2,6 +2,7 @@ package View.Profiles;
 
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
 
 public class SellerProfile extends Profile {
     Profile profile;
-    ProfileCP commandProcessor = (ProfileCP) (CommandProcessor.getInstance());
+
 
     public SellerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);

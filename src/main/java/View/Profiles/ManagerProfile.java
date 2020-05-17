@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ManagerProfile extends Profile {
     Profile profile;
-    ProfileCP commandProcessor = (ProfileCP) CommandProcessor.getInstance();
+
     public ManagerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
         this.profile = profile;
@@ -55,9 +55,10 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                String[] allAccountsInfo = (String[]) commandProcessor.getAllAccountsInfo().toArray();
-                for (int i = 1; i <= allAccountsInfo.length; i++) {
-                    System.out.println(i + ". " + allAccountsInfo[i - 1]);
+                ArrayList<String> allAccountsInfo = new ArrayList<>();
+                allAccountsInfo.addAll(commandProcessor.getAllAccountsInfo());
+                for (int i = 0; i < allAccountsInfo.size(); i++) {
+                    System.out.println((i+1) + ". " + allAccountsInfo.get(i ));
                 }
                 System.out.println("\n");
                 showCommands();

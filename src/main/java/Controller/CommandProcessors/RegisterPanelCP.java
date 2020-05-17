@@ -2,7 +2,6 @@ package Controller.CommandProcessors;
 
 import Model.Account.Account;
 import Model.Account.Customer;
-import Model.Account.Manager;
 import Model.Account.Seller;
 import Model.Request.Request;
 import Model.Request.SellerRequest;
@@ -39,14 +38,15 @@ public class RegisterPanelCP extends CommandProcessor {
     }
 
 
-
     public void login(String username, String password) throws Exception {
         setLoggedInAccount(dataCenter.getAccountByName(username));
         if (!checkPassword(password)) {
             setLoggedInAccount(null);
             throw new RegisterPanelException("incorrect password");
         }
+
     }
+
 
     public boolean doesUsernameExists(String username) {
         return dataCenter.userExistWithUsername(username);

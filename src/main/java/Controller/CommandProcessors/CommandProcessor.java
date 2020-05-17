@@ -6,19 +6,17 @@ import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
 import Model.Account.Seller;
-import Model.Discount.Auction;
 import Model.Discount.DiscountCode;
-import Model.Log.PurchaseLog;
-import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
-import Model.ProductsOrganization.Product;
-import Model.ProductsOrganization.Score;
-import Model.Request.Request;
-import Model.Request.SellerRequest;
-import View.Exceptions.CustomerExceptions;
+import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.ProductExceptions;
 import View.Exceptions.RegisterPanelException;
+import View.MainMenu;
+import View.ProductsPage;
+import View.Profiles.Profile;
+import View.Profiles.RegisterPanel;
+import View.PurchasePage;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -37,7 +35,6 @@ public class CommandProcessor {
 
     protected CommandProcessor(CommandProcessor parent) {
         Parent = parent;
-        this.loggedInAccount = null;
         this.dataCenter = DataCenter.getInstance();
     }
 
@@ -55,9 +52,7 @@ public class CommandProcessor {
 
     public static boolean managerExists() {
         File file = new File(Config.getInstance().getAccountsPath()[Config.AccountsPath.MANAGER.getNum()]);
-        if (!file.exists() || file.listFiles().length == 0)
-            return false;
-        return true;
+        return file.exists() && file.listFiles().length != 0;
     }
 
     public static CommandProcessor getPrimitive() {
@@ -78,27 +73,33 @@ public class CommandProcessor {
             case 1:
                 AuctionsPageCP.getInstance().setParent(Instance);
                 Instance = AuctionsPageCP.getInstance();
+                AuctionsPage.setCommandProcessor((AuctionsPageCP) Instance);
                 break;
             case 2:
                 MainMenuCP.getInstance().setParent(Instance);
                 Instance = MainMenuCP.getInstance();
+                MainMenu.setCommandProcessor((MainMenuCP) Instance);
                 break;
 
             case 4:
                 ProductsPageCP.getInstance().setParent(Instance);
                 Instance = ProductsPageCP.getInstance();
+                ProductsPage.setCommandProcessor((ProductsPageCP) Instance);
                 break;
             case 5:
                 ProfileCP.getInstance().setParent(Instance);
                 Instance = ProfileCP.getInstance();
+                Profile.setCommandProcessor((ProfileCP) Instance);
                 break;
             case 6:
                 PurchasePageCP.getInstance().setParent(Instance);
                 Instance = PurchasePageCP.getInstance();
+                PurchasePage.setCommandProcessor((PurchasePageCP) Instance);
                 break;
             case 7:
                 RegisterPanelCP.getInstance().setParent(Instance);
                 Instance = RegisterPanelCP.getInstance();
+                RegisterPanel.setCommandProcessor((RegisterPanelCP) Instance);
                 break;
         }
     }
@@ -126,8 +127,8 @@ public class CommandProcessor {
             return "not logged in";
     }
 
-    public void setLoggedInAccount(Account loggedInAccount) {
-        this.loggedInAccount = loggedInAccount;
+    public static void setLoggedInAccount(Account loggedInAccount) {
+        CommandProcessor.loggedInAccount = loggedInAccount;
     }
 
     public String getPersonalInfo() {
@@ -140,25 +141,25 @@ public class CommandProcessor {
     }
 
     public void editPersonalInfo(String field, String newValue) throws Exception {
-        if ((field.equals("first name") || field.equals("last name")) && !newValue.matches("\\w+")) {
+        if ((field.equals("firstName") || field.equals("lastName")) && !newValue.matches("\\w+")) {
             throw new InvalidCommandException("illegal field input");
-        } else if (field.equals("phone number") && !newValue.matches("(\\d+)$")) {
+        } else if (field.equals("phoneNumber") && !newValue.matches("(\\d+)$")) {
             throw new InvalidCommandException("invalid field input");
-        } else if (field.equals("email address") && !newValue.matches("(\\w+)@(\\w+)\\.(\\w+)$")) {
+        } else if (field.equals("emailAddress") && !newValue.matches("(\\w+)@(\\w+)\\.(\\w+)$")) {
             throw new InvalidCommandException("invalid field input");
         } else if (field.equals("password") && !newValue.matches("\\S+")) {
             throw new InvalidCommandException("invalid field input");
         }
-        if (field.equals("first name"))
-            this.loggedInAccount.setFirstName(newValue);
-        else if (field.equals("last name"))
-            this.loggedInAccount.setLastName(newValue);
-        else if (field.equals("phone number"))
-            this.loggedInAccount.setPhoneNumber(newValue);
-        else if (field.equals("email address"))
-            this.loggedInAccount.setEmailAddress(newValue);
+        if (field.equals("firstName"))
+            loggedInAccount.setFirstName(newValue);
+        else if (field.equals("lastName"))
+            loggedInAccount.setLastName(newValue);
+        else if (field.equals("phoneNumber"))
+            loggedInAccount.setPhoneNumber(newValue);
+        else if (field.equals("emailAddress"))
+            loggedInAccount.setEmailAddress(newValue);
         else if (field.equals("password"))
-            this.loggedInAccount.setPassword(newValue);
+            loggedInAccount.setPassword(newValue);
         dataCenter.saveAccount(loggedInAccount);
     }
 
@@ -234,7 +235,7 @@ public class CommandProcessor {
     public boolean checkDiscountCode(String code) throws Exception {
         DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
         for (Account account : discountCode.getAllAllowedAccounts()) {
-            if (account.equals(this.loggedInAccount))
+            if (account.equals(loggedInAccount))
                 return true;
         }
         return false;
@@ -260,4 +261,5 @@ public class CommandProcessor {
     public void setParent(CommandProcessor parent) {
         Parent = parent;
     }
+
 }

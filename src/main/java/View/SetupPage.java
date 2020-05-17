@@ -1,10 +1,11 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
-import Controller.CommandProcessors.ProfileCP;
 import Controller.DataBase.DataCenter;
 import Model.Account.Manager;
+import Model.ProductsOrganization.Filter.Filter;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class SetupPage {
@@ -34,7 +35,7 @@ public class SetupPage {
                 String lastName = getField("last name", "\\w+");
                 String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
                 String phoneNumber = getField("phone number", "(\\d+)$");
-                Manager manager = new Manager(username,firstName, lastName, emailAddress, phoneNumber, password);
+                Manager manager = new Manager(username, firstName, lastName, emailAddress, phoneNumber, password);
                 DataCenter.getInstance().saveAccount(manager);
             } else if (command.equals("2") | command.equals("exit")) {
                 System.exit(0);
@@ -46,11 +47,12 @@ public class SetupPage {
             run();
         }
     }
+
     public static String getField(String fieldName, String regex) {
-        System.out.println("Enter "+fieldName);
+        System.out.println("Enter " + fieldName);
         Scanner scanner = InputUtility.getInstance();
         String fieldValue = scanner.nextLine();
-        if (!fieldName.matches(regex)){
+        if (!fieldValue.matches(regex)) {
             System.err.println("wrong patten");
             getField(fieldName, regex);
         }

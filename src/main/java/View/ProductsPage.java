@@ -1,7 +1,9 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProductPageCP;
 import Controller.CommandProcessors.ProductsPageCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductsPage extends Menu {
-    ProductsPageCP commandProcessor = (ProductsPageCP) (CommandProcessor.getInstance());
+    static ProductsPageCP commandProcessor ;
 
     public ProductsPage(Menu parentMenu) {
         super("Product Page", parentMenu);
@@ -20,7 +22,10 @@ public class ProductsPage extends Menu {
         submenus.put(3, new RegisterPanel(this));
         setCommands();
     }
+    public static void setCommandProcessor(ProductsPageCP cp){
+        commandProcessor = cp;
 
+    }
     protected Menu getGrandFatherMenu() {
         return this.parentMenu;
     }
@@ -195,6 +200,7 @@ public class ProductsPage extends Menu {
             String[] commandDetails = command.split("\\s");
             if (!commandProcessor.doesProductExist(commandDetails[2]))
                 throw new CustomerExceptions("product with this id doesn't exist");
+            commandProcessor.goToProduct(commandDetails[2]);
             return new ProductPage(this, commandDetails[2]);
         } else if (command.equals(commands.get(5))) {
             CommandProcessor.back();
