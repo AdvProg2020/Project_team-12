@@ -28,7 +28,6 @@ public class SetupPage {
             Scanner scanner = InputUtility.getInstance();
             String command = scanner.nextLine();
             if (command.equals("1") | command.equals("setup")) {
-                //TODO:Register first manager, it need a method which has not been created yet
                 String username = getField("username", "\\S+");
                 String password = getField("password", "\\S+");
                 String firstName = getField("first name", "\\w+");
