@@ -84,6 +84,7 @@ public class DataCenter {
         if (!file.exists())
             file.mkdir();
         File[] files = file.listFiles();
+        if(files!=null)
         Arrays.stream(files).map((file1) -> {
             try {
                 return reader.read(file1, Category.class);

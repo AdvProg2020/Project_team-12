@@ -120,7 +120,7 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
         return null;
     }
 
-    public ArrayList<Filter> getAllFilters() {
+    public ArrayList<Filter > getAllFilters() {
         return allFilters;
     }
 

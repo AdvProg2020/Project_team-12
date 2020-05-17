@@ -26,14 +26,9 @@ public class SetupPage {
             String command = scanner.nextLine();
             if (command.equals("1") | command.equals("setup")) {
                 //TODO:Register first manager, it need a method which has not been created yet
-                /*File file = new File("D:\\Codes(java)\\Project\\src\\main\\resources\\accounts");
-                if (file.mkdir()) {
-                    //register first manager
-                } else {
-                    System.out.println("something went wrong please try later");
-                }*/
+
             } else if (command.equals("2") | command.equals("exit")) {
-                return;
+                System.exit(0);
             } else {
                 throw new Exception("invalid command");
             }

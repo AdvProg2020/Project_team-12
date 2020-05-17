@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PurchasePageCP extends CommandProcessor {
-    private final int MINIMUM_PAYMENT_TO_GET_REWARD = 100000;
+    private final int MINIMUM_PAYMENT_TO_GET_REWARD = 1000000;
     private final int PERCENTAGE_OF_REWARD = 5;
     private static CommandProcessor Instance;
 
@@ -94,7 +94,7 @@ public class PurchasePageCP extends CommandProcessor {
             buyWithoutDiscountCode();
             return;
         }
-        HashMap<Cart.ProductInCart, Seller> sellers = getTraders();
+        HashMap <Cart.ProductInCart, Seller> sellers = getTraders();
         ArrayList<ProductOnLog> productOnLogs = new ArrayList<>();
         for (Cart.ProductInCart productInCart : sellers.keySet()) {
             productOnLogs.add(new ProductOnLog(productInCart.getProduct().getName(), productInCart.getPrice(), productInCart.getProduct().getSeller(), productInCart.getQuantity()));
