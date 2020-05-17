@@ -74,6 +74,7 @@ public class DataCenter {
         if (Instance == null) {
             Instance = new DataCenter();
         }
+        System.gc();
         return Instance;
     }
 
@@ -515,6 +516,7 @@ public class DataCenter {
         File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
         file.exists();
+        System.gc();
         return file.delete() && accountsByUsername.remove(customer.getUsername(), customer);
     }
 
