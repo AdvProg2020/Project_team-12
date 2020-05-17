@@ -143,6 +143,7 @@ public class DataCenter {
     }
 
     public void deleteRequestWithId(int id) {
+        System.gc();
         for (Request request : requests) {
             if (request.getId() == id) {
                 requests.remove(request);
@@ -493,6 +494,7 @@ public class DataCenter {
     }
 
     public boolean deleteAccount(String username) throws BadRequestException, IOException {
+        System.gc();
         Account account = accountsByUsername.get(username);
         for (DiscountCode discountCode : account.getAllDiscountCodes()) {
             deleteAccountFromDiscountCode(discountCode, account.getUsername());
@@ -509,10 +511,12 @@ public class DataCenter {
     }
 
     private void deleteAccountFromDiscountCode(DiscountCode discountCode, String username) {
+        System.gc();
         discountCode.getAllAllowedAccounts().remove(username);
     }
 
     private boolean deleteAccount(Customer customer) {
+        System.gc();
         File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer"));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
         file.exists();
@@ -521,6 +525,7 @@ public class DataCenter {
     }
 
     private boolean deleteAccount(Seller seller) throws IOException, BadRequestException {
+        System.gc();
         File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "seller"));
         seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
         for (Model.ProductsOrganization.Product product : seller.getAllProducts()) {
@@ -534,6 +539,7 @@ public class DataCenter {
     }
 
     public void deleteAuctionWithId(String id) {
+        System.gc();
         try {
             discounts.remove(getAuctionWithId(id));
             File file = new File(generateAuctionFilePath(id));
@@ -547,11 +553,13 @@ public class DataCenter {
 
 
     private boolean deleteAccount(Manager manager) {
+        System.gc();
         File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "manager"));
         return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
     }
 
     public boolean deleteProduct(Model.ProductsOrganization.Product product) throws IOException, BadRequestException {
+        System.gc();
         ((Seller)getAccountByName(product.getSeller())).getAllProducts().remove(product);
         for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {
             getAuctionWithId(s).removeProduct(product);
@@ -561,6 +569,7 @@ public class DataCenter {
 
 
     public boolean deleteDiscountCode(DiscountCode discountCode) throws IOException {
+        System.gc();
         for (Account account : discountCode.getAllAllowedAccounts()) {
             account.getAllDiscountCodes().remove(discountCode);
             saveAccount(account);
@@ -570,6 +579,7 @@ public class DataCenter {
     }
 
     public boolean deleteCategory(Category category) throws IOException {
+        System.gc();
         for (Model.ProductsOrganization.Product product : category.getAllProductsInside().values()) {
             product.setParent(category.getParent());
         }
