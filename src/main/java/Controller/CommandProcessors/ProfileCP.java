@@ -1,5 +1,6 @@
 package Controller.CommandProcessors;
 
+import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
 import Model.Account.Seller;
@@ -156,7 +157,7 @@ public class ProfileCP  extends CommandProcessor {
     }
 
     public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
-        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
+        Account manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
         dataCenter.saveAccount(manager);
     }
 }
