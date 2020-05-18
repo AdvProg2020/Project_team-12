@@ -23,7 +23,8 @@ public class AuctionRequest extends Request implements DeclineHasCause{
             DataCenter.getInstance().getAuctionWithId(auctionId).setStatus(Status.ACCEPTED);
             deleteRequest();
         } catch (Exception var1) {
-            throw new Exception("Request could not been accepted", new Throwable("couldn't find auction "));
+            System.out.println(var1.getMessage());
+            throw new Exception("Request could not been accepted", new Throwable("couldn't find auction"));
         }
     }
 

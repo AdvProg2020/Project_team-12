@@ -321,7 +321,7 @@ public class ManagerProfile extends Profile {
                         throw new CustomerExceptions("category with this name doesn't exist");
                     commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
-                } else if (command.equals(commands.get(1)) || command.equals("2")) {
+                } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
                     String categoryName = getField("category name", "\\w+");
                     String parentCategoryName = getField("parent category name", "\\w+");
@@ -331,7 +331,7 @@ public class ManagerProfile extends Profile {
                         throw new CustomerExceptions("category with this name exists");
                     commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
-                } else if (command.equals(commands.get(2)) || command.equals("3")) {
+                } else if (command.matches(commands.get(2)) ) {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.removeCategory(commandDetails[1]);
                     return this;

@@ -43,6 +43,8 @@ public class Seller extends Account implements CanRequest{
                 '}';
     }
 
+
+
     public String getCompanyInformation() {
         return companyInformation;
     }

@@ -184,12 +184,14 @@ public class AuctionsPage extends Menu {
             else
                 System.out.println(i + ". " + commands.get(i - 1));
         }
-        for (int i = 1; i <= commandProcessor.getProductsInAuction().size(); i++) {
-            Auction[] auctions = (Auction[]) commandProcessor.getProductsInAuction().values().toArray();
-            System.out.println(auctions[i - 1].toString());
+        for (int i = 1; commandProcessor.getProductsInAuction() != null && i <= commandProcessor.getProductsInAuction().size(); i++) {
+            //Auction[] auctions = (Auction[]) commandProcessor.getProductsInAuction().values().toArray();
+            ArrayList<Auction> auctions = new ArrayList<Auction>();
+            auctions.addAll(commandProcessor.getProductsInAuction().values());
+            System.out.println(auctions.get(i - 1).toString());
             System.out.println("<<products>>");
-            for (int j = 1; j <= auctions[i - 1].getAllProducts().size(); j++) {
-                System.out.println(auctions[i - 1].getAllProducts().get(j - 1).toString());
+            for (int j = 1; j <= auctions.get(i - 1).getAllProducts().size(); j++) {
+                System.out.println(auctions.get(i - 1).getAllProducts().get(j - 1).toString());
             }
         }
     }
