@@ -1,10 +1,10 @@
 package View.Profiles;
 
 import Controller.CommandProcessors.CommandProcessor;
-import Controller.CommandProcessors.ProfileCP;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
 import Model.Request.Request;
+import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.InputUtility;
 import View.Menu;
@@ -61,7 +61,7 @@ public class ManagerProfile extends Profile {
                 ArrayList<String> allAccountsInfo = new ArrayList<>();
                 allAccountsInfo.addAll(commandProcessor.getAllAccountsInfo());
                 for (int i = 0; i < allAccountsInfo.size(); i++) {
-                    System.out.println((i+1) + ". " + allAccountsInfo.get(i ));
+                    System.out.println((i + 1) + ". " + allAccountsInfo.get(i));
                 }
                 System.out.println("\n");
                 showCommands();
@@ -241,7 +241,7 @@ public class ManagerProfile extends Profile {
                 System.out.println(this.getName() + "\n");
                 ArrayList<Request> requests = commandProcessor.getRequests();
                 for (Request request : requests) {
-                    System.out.println(request.getId()+"\n");
+                    System.out.println(request.getId() + "\n");
                 }
                 showCommands();
             }
@@ -256,20 +256,20 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    commandProcessor.showRequestDetail(commandDetails[1]);
+                    System.out.println(commandProcessor.showRequestDetail(commandDetails[1]));
                     return this;
-                } else if (command.equals(commands.get(1))) {
+                } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.acceptRequest(commandDetails[1]);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
                     String cause;
-                    if(commandProcessor.checkRequestType(commandDetails[1])){
-                         cause = InputUtility.getInstance().nextLine();
-                         commandProcessor.declineRequest(commandDetails[1],cause);
-                    }else
-                    commandProcessor.declineRequest(commandDetails[1]);
+                    if (commandProcessor.checkRequestType(commandDetails[1])) {
+                        cause = InputUtility.getInstance().nextLine();
+                        commandProcessor.declineRequest(commandDetails[1], cause);
+                    } else
+                        commandProcessor.declineRequest(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -313,15 +313,27 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling edit category by commandDetails[1]
+                    String categoryName = getField("category name", "\\w+");
+                    String parentCategoryName = getField("parent category name", "\\w+");
+                    ArrayList<String> specifications = new ArrayList<String>();
+                    specifications = getSpecifications(specifications);
+                    if (!commandProcessor.doesCategoryExistsWithThisName(commandDetails[1]))
+                        throw new CustomerExceptions("category with this name doesn't exist");
+                    commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling add category method by commandDetails[1]
+                    String categoryName = getField("category name", "\\w+");
+                    String parentCategoryName = getField("parent category name", "\\w+");
+                    ArrayList<String> specifications = new ArrayList<String>();
+                    specifications = getSpecifications(specifications);
+                    if (commandProcessor.doesCategoryExistsWithThisName(commandDetails[1]))
+                        throw new CustomerExceptions("category with this name exists");
+                    commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling remove category commandDetails[1]
+                    commandProcessor.removeCategory(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -330,6 +342,17 @@ public class ManagerProfile extends Profile {
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
+            }
+
+            public ArrayList<String> getSpecifications(ArrayList<String> specifications) throws Exception {
+                System.out.println("add specifications to your category (at least one)");
+                String specificationTitle = getField("new specification title", "\\S+");
+                specifications.add(specificationTitle);
+                System.out.println("type <back> to continue or <next> to add more specifications");
+                String command = getField("<next> or <back>", "(next|back)$");
+                if (command.equals("next"))
+                    getSpecifications(specifications);
+                return specifications;
             }
         };
     }

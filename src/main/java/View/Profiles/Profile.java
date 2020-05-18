@@ -3,6 +3,7 @@ package View.Profiles;
 import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
+import Model.Account.Customer;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;

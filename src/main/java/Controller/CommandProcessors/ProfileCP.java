@@ -15,22 +15,22 @@ import Model.ProductsOrganization.Score;
 import Model.Request.*;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.ProductExceptions;
+import org.apache.commons.net.telnet.EchoOptionHandler;
 
-import javax.crypto.spec.DESedeKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class ProfileCP  extends CommandProcessor {
+public class ProfileCP extends CommandProcessor {
     private static CommandProcessor Instance;
 
     protected ProfileCP() {
         super(MainMenuCP.getInstance());
     }
 
-    public static CommandProcessor getInstance(){
+    public static CommandProcessor getInstance() {
         if (Instance == null)
             Instance = new ProfileCP();
         return Instance;
@@ -118,13 +118,13 @@ public class ProfileCP  extends CommandProcessor {
         dataCenter.saveAccount(dataCenter.getAccountByName(product.getSeller()));
     }
 
-    public void addProduct(String name, String brand, String price, String remainingItems, String description, HashMap<String,String> specifications) throws Exception{
-        Seller seller = (Seller)getLoggedInAccount();
-        Product product = new Product(name, seller.getUsername(),Integer.parseInt(remainingItems),
-                Double.parseDouble(price),brand,specifications,description,Integer.toString(dataCenter.getAllProducts().size()),dataCenter.getDate());
+    public void addProduct(String name, String brand, String price, String remainingItems, String description, HashMap<String, String> specifications) throws Exception {
+        Seller seller = (Seller) getLoggedInAccount();
+        Product product = new Product(name, seller.getUsername(), Integer.parseInt(remainingItems),
+                Double.parseDouble(price), brand, specifications, description, Integer.toString(dataCenter.getAllProducts().size()), dataCenter.getDate());
         //TODO: Id generator should be written
         Request request = new ProductRequest(seller.getUsername(),
-                dataCenter.getAllUnsolvedRequests().size()+1,false,product.getID());
+                dataCenter.getAllUnsolvedRequests().size() + 1, false, product.getID());
         seller.addProduct(product);
         seller.addRequest(request);
         dataCenter.addProduct(product);
@@ -133,20 +133,20 @@ public class ProfileCP  extends CommandProcessor {
         dataCenter.saveRequest(request);
     }
 
-    public ArrayList<Category> getCategories(){
+    public ArrayList<Category> getCategories() {
         return dataCenter.getCategories();
     }
 
-    public void addAuction(String startingDate, String lastDate, String percent, String id,ArrayList<String> products) throws Exception{
-        Seller seller = (Seller)getLoggedInAccount();
+    public void addAuction(String startingDate, String lastDate, String percent, String id, ArrayList<String> products) throws Exception {
+        Seller seller = (Seller) getLoggedInAccount();
         DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
         ArrayList<Product> auctionProducts = new ArrayList<Product>();
         for (String productId : products) {
             auctionProducts.add(dataCenter.getProductById(productId));
         }
-        Auction auction = new Auction(format.parse(startingDate), format.parse(lastDate),Double.parseDouble(percent),id,auctionProducts,seller.getUsername());
+        Auction auction = new Auction(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent), id, auctionProducts, seller.getUsername());
         //TODO: Id generator should be written
-        Request request = new AuctionRequest(seller.getUsername(),dataCenter.getAllUnsolvedRequests().size()+1,false,auction.getID());
+        Request request = new AuctionRequest(seller.getUsername(), dataCenter.getAllUnsolvedRequests().size() + 1, false, auction.getID());
         seller.addAuctionId(id);
         seller.addRequest(request);
         dataCenter.addRequest(request);
@@ -165,23 +165,54 @@ public class ProfileCP  extends CommandProcessor {
         return dataCenter.getAllUnsolvedRequests();
     }
 
-    public String  showRequestDetail(String commandDetail) throws Exception {
-         return dataCenter.getRequestWithId(commandDetail).showDetails();
+    public String showRequestDetail(String commandDetail) throws Exception {
+        return dataCenter.getRequestWithId(commandDetail).showDetails();
     }
 
     public void acceptRequest(String commandDetail) throws Exception {
-        dataCenter.getRequestWithId(commandDetail).acceptRequest();
+         dataCenter.getRequestWithId(commandDetail).acceptRequest();
     }
 
     public void declineRequest(String commandDetail) throws Exception {
-        ((NoCauseDecline)dataCenter.getRequestWithId(commandDetail)).declineRequest();
+        ((NoCauseDecline) dataCenter.getRequestWithId(commandDetail)).declineRequest();
     }
 
     public void declineRequest(String commandDetail, String cause) throws Exception {
-        ((DeclineHasCause)dataCenter.getRequestWithId(commandDetail)).declineRequest(cause);
+        ((DeclineHasCause) dataCenter.getRequestWithId(commandDetail)).declineRequest(cause);
     }
 
     public boolean checkRequestType(String commandDetail) throws Exception {
         return dataCenter.getRequestWithId(commandDetail) instanceof DeclineHasCause;
+    }
+
+    public void addCategory(String categoryName, String parentCategoryName, ArrayList<String> specifications) throws Exception {
+        Category parentCategory = null;
+        for (Category category : dataCenter.getCategories()) {
+            if (category.getName().equals(parentCategoryName))
+                parentCategory = category;
+        }
+        if (parentCategory == null)
+            throw new CustomerExceptions("parent category doesn't exist");
+        Category newCategory = new Category(categoryName, specifications, parentCategory);
+        dataCenter.saveCategory(newCategory);
+    }
+
+    public boolean doesCategoryExistsWithThisName(String name) {
+        for (Category category : dataCenter.getCategories()) {
+            if (category.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public void removeCategory(String categoryName) throws Exception {
+        if (!doesCategoryExistsWithThisName(categoryName))
+            throw new CustomerExceptions("category with this name doesn't exist");
+        Category categoryToBeDeleted = null;
+        for (Category category : dataCenter.getCategories()) {
+            if (category.getName().equals(categoryName))
+                categoryToBeDeleted = category;
+        }
+        dataCenter.deleteCategory(categoryToBeDeleted);
     }
 }

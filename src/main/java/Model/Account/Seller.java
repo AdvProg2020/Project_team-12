@@ -48,7 +48,7 @@ public class Seller extends Account implements CanRequest{
     }
 
     public void deleteRequestWithId(int id){
-        activeRequestsId.remove(id);
+        activeRequestsId.remove(id-1);
     }
 
     public ArrayList<String> getSolvedRequests() {

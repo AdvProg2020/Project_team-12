@@ -45,7 +45,7 @@ public class SellerProfile extends Profile {
         commands.add("offs");
     }
 
-    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) {
+    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) throws Exception{
         System.out.println("add specifications to your product (at least one)");
         String specificationTitle = getField("new specification title", "\\S+");
         String specificationValue = getField("specification value", "\\S+");
@@ -257,7 +257,7 @@ public class SellerProfile extends Profile {
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getAuctionProducts() {
+            public ArrayList<String> getAuctionProducts() throws Exception{
                 ArrayList<String> products = new ArrayList<String>();
                 System.out.println("enter the id of products that you wanna add to auction (at least one)");
                 String id = getField("id", "\\S+");

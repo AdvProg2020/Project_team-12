@@ -2,6 +2,7 @@ package View;
 
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.DataBase.DataCenter;
+import View.Exceptions.CustomerExceptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +34,16 @@ public abstract class Menu {
 
     public abstract Menu getCommand() throws Exception;
 
-    public String getField(String fieldName,String regex) {
+    public String getField(String fieldName,String regex) throws Exception{
         System.out.println("Enter "+fieldName);
         String fieldValue = scanner.nextLine();
         if (!fieldValue.matches(regex)){
             System.err.println("wrong patten");
-            getField(fieldName, regex);
+            System.out.println("enter <back> to return or <next> to reenter");
+            String command = getField("<next> or <back>",("(next|back)"));
+            if (command.equals("back"))
+                throw new CustomerExceptions("exited successfully");
+            fieldValue = getField(fieldName, regex);
         }
         return fieldValue;
     }
@@ -55,6 +60,7 @@ public abstract class Menu {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
             show();
             run();
         }

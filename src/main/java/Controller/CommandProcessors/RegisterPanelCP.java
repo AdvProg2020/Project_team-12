@@ -25,14 +25,17 @@ public class RegisterPanelCP extends CommandProcessor {
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
             dataCenter.saveAccount((Customer) newAccount);
+            dataCenter.addAccount(newAccount);
         } else if (role.equals("seller")) {
             newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             dataCenter.addAccount(newAccount);
             Request request = new SellerRequest(dataCenter.getAllUnsolvedRequests().size() + 1, false, newAccount.getUsername());
             //TODO:id generator
+            ((Seller) newAccount).addRequest(request);
             dataCenter.addRequest(request);
             dataCenter.saveRequest(request);
             dataCenter.saveAccount(newAccount);
+            dataCenter.addAccount(newAccount);//TODO:is this needed??
             //TODO:inspect this method
         }
     }
@@ -43,13 +46,11 @@ public class RegisterPanelCP extends CommandProcessor {
         if (!checkPassword(password)) {
             setLoggedInAccount(null);
             throw new RegisterPanelException("incorrect password");
-        }else if ((dataCenter.getAccountByName(username) instanceof Seller &&
-                !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())){
+        } else if ((dataCenter.getAccountByName(username) instanceof Seller &&
+                !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())) {
             setLoggedInAccount(null);
-            //TODO:exception should be handled.
             throw new RegisterPanelException("your account is being checked by manager.");
         }
-
     }
 
 

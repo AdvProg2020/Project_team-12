@@ -104,7 +104,7 @@ public class ProductsPage extends Menu {
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) {
+            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) throws Exception{
                 System.out.println("add specification to filter (at least one)");
                 String value = getField("value", "\\S+");
                 filterValues.add(value);
