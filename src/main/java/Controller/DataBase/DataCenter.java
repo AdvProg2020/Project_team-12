@@ -679,8 +679,8 @@ public class DataCenter {
 
     private Integer checkId(Integer tmp, ArrayList<Integer> activeRequestsId) {
         if (activeRequestsId.contains(tmp))
-            tmp++;
-        return checkId(tmp, activeRequestsId);
+            return checkId(tmp+1, activeRequestsId);
+        return tmp;
     }
 
 }
