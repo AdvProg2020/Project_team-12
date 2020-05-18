@@ -1,6 +1,7 @@
 package Controller.CommandProcessors;
 
 import Model.Account.Account;
+import Model.Account.CanRequest;
 import Model.Account.Customer;
 import Model.Account.Seller;
 import Model.Request.Request;
@@ -29,13 +30,11 @@ public class RegisterPanelCP extends CommandProcessor {
         } else if (role.equals("seller")) {
             newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             dataCenter.addAccount(newAccount);
-            Request request = new SellerRequest(dataCenter.getAllUnsolvedRequests().size() + 1, false, newAccount.getUsername());
+            Request request = new SellerRequest(dataCenter.requestIDGenerator((CanRequest) newAccount), false, newAccount.getUsername());
             //TODO:id generator
-            ((Seller) newAccount).addRequest(request);
             dataCenter.addRequest(request);
             dataCenter.saveRequest(request);
             dataCenter.saveAccount(newAccount);
-            dataCenter.addAccount(newAccount);//TODO:is this needed??
             //TODO:inspect this method
         }
     }
@@ -46,11 +45,13 @@ public class RegisterPanelCP extends CommandProcessor {
         if (!checkPassword(password)) {
             setLoggedInAccount(null);
             throw new RegisterPanelException("incorrect password");
-        } else if ((dataCenter.getAccountByName(username) instanceof Seller &&
-                !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())) {
+        }else if ((dataCenter.getAccountByName(username) instanceof Seller &&
+                !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())){
             setLoggedInAccount(null);
+            //TODO:exception should be handled.
             throw new RegisterPanelException("your account is being checked by manager.");
         }
+
     }
 
 

@@ -262,6 +262,8 @@ public class SellerProfile extends Profile {
                 System.out.println("enter the id of products that you wanna add to auction (at least one)");
                 String id = getField("id", "\\S+");
                 //TODO: give me the regex of id generator
+                //TODO:PR_anyCharacter ->16 characters overall*/
+                //See RandomIDGenerator generateProductID;
                 products.add(id);
                 System.out.println("type <back> to continue or <next> to add more products");
                 String command = getField("<next> or <back>", "(next|back)$");

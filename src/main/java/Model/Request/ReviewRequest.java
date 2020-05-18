@@ -32,7 +32,7 @@ public class ReviewRequest extends Request implements NoCauseDecline{
             throw new Exception("Review not found in product");
     }
 
-    public void deleteRequest() throws IOException {
+    public void deleteRequest() throws Exception {
         ((CanRequest)DataCenter.getInstance().getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
         ((CanRequest)DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));

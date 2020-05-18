@@ -58,10 +58,14 @@ public class SellerRequest extends Request implements NoCauseDecline{
 
     @Override
     public String toString() {
-        return String.format("Request with id:" + id + "\n"
-                + "\n related to acceptance of seller" +
-                " profile for further actions has been %s", ((Seller) DataCenter
-                .getInstance().getAccountByName(senderUserName))
-                .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+        try {
+            return String.format("Request with id:" + id
+                    + "related to acceptance of seller" +
+                    " profile for further actions has been %s", ((Seller) DataCenter
+                    .getInstance().getAccountByName(senderUserName))
+                    .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+        } catch (Exception exception) {
+            return "";
+        }
     }
 }

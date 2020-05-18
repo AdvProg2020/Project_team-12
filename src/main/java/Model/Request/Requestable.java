@@ -5,6 +5,6 @@ import java.io.IOException;
 public interface Requestable {
     void acceptRequest() throws Exception;
 
-    void deleteRequest() throws IOException;
+    void deleteRequest() throws Exception;
 
 }
