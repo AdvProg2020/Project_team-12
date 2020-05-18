@@ -82,7 +82,7 @@ public class ProductPageCP extends CommandProcessor{
 }
 
 //digest (Done)
-//⇒ add to cart (TODO)
+//⇒ add to cart
 //⇒ select seller [seller_username] (Removed)
 //attributes (Done)
 //compare [productID]
