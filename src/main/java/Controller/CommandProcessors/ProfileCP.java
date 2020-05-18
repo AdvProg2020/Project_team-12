@@ -1,6 +1,5 @@
 package Controller.CommandProcessors;
 
-import Controller.DataBase.DataCenter;
 import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
@@ -15,9 +14,7 @@ import Model.ProductsOrganization.Score;
 import Model.Request.*;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.ProductExceptions;
-import org.apache.commons.net.telnet.EchoOptionHandler;
 
-import javax.crypto.spec.DESedeKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,7 +84,7 @@ public class ProfileCP extends CommandProcessor {
     }
 
     public String getSellerBalance() {
-        return Double.toString(((Seller) getLoggedInAccount()).getCredit());
+        return Double.toString(getLoggedInAccount().getCredit());
     }
 
     public ArrayList<PurchaseLog> getCustomerOrdersHistory() {
@@ -103,11 +100,11 @@ public class ProfileCP extends CommandProcessor {
     }
 
     public String getCustomerBalance() {
-        return Double.toString(((Customer) getLoggedInAccount()).getCredit());
+        return Double.toString(getLoggedInAccount().getCredit());
     }
 
     public ArrayList<DiscountCode> getCustomerDiscountCodes() {
-        return ((Customer) getLoggedInAccount()).getAllDiscountCodes();
+        return getLoggedInAccount().getAllDiscountCodes();
     }
 
     public void rate(String productId, String score) throws Exception {
