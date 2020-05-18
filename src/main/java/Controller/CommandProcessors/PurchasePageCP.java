@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PurchasePageCP extends CommandProcessor {
+    private static CommandProcessor Instance;
     private final int MINIMUM_PAYMENT_TO_GET_REWARD = 1000000;
     private final int PERCENTAGE_OF_REWARD = 5;
-    private static CommandProcessor Instance;
 
     protected PurchasePageCP() {
         super(MainMenuCP.getInstance());
@@ -77,7 +77,7 @@ public class PurchasePageCP extends CommandProcessor {
         if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
             finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
         }
-        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
+        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), getCart().getOwner(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
         Cart.getInstance().getOwner().getBuyLogs().add(purchaseLog);
     }
@@ -93,7 +93,7 @@ public class PurchasePageCP extends CommandProcessor {
             buyWithoutDiscountCode();
             return;
         }
-        HashMap <Cart.ProductInCart, Seller> sellers = getTraders();
+        HashMap<Cart.ProductInCart, Seller> sellers = getTraders();
         ArrayList<ProductOnLog> productOnLogs = new ArrayList<>();
         for (Cart.ProductInCart productInCart : sellers.keySet()) {
             productOnLogs.add(new ProductOnLog(productInCart.getProduct().getName(), productInCart.getPrice(), productInCart.getProduct().getSeller(), productInCart.getQuantity()));
@@ -101,7 +101,7 @@ public class PurchasePageCP extends CommandProcessor {
         if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
             finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
         }
-        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
+        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), getCart().getOwner(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
         Cart.getInstance().getOwner().getBuyLogs().add(purchaseLog);
     }
@@ -122,7 +122,7 @@ public class PurchasePageCP extends CommandProcessor {
                     sellers.remove(productsInCart[j]);
                 }
             productsInCart = (Cart.ProductInCart[]) sellers.keySet().toArray();
-            seller.getSellLogs().add(new SellLog(DataCenter.getInstance().getDate(), receivedPrice, decreasedPrice, productsOnLog));
+            seller.getSellLogs().add(new SellLog(DataCenter.getInstance().getDate(), seller, receivedPrice, decreasedPrice, productsOnLog));
             seller.setCredit(seller.getCredit() + receivedPrice);
         }
     }
