@@ -135,7 +135,7 @@ public class CommandProcessor {
         return loggedInAccount.getPersonalInfo();
     }
 
-    public String getPersonalInfo(String username) {
+    public String getPersonalInfo(String username) throws Exception {
         Account account = dataCenter.getAccountByName(username);
         return account.getPersonalInfo();
     }

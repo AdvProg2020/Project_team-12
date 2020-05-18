@@ -183,13 +183,14 @@ public class DataCenter {
             requests.add(request);
     }
 
-    public void deleteRequestWithId(int id) {
+    public void deleteRequestWithId(Integer id) {
         System.gc();
         for (Request request : requests) {
             if (request.getId() == id) {
                 requests.remove(request);
                 File file = new File(generateRequestsFilePath(id));
                 file.delete();
+                return;
             }
         }
     }
@@ -416,8 +417,11 @@ public class DataCenter {
         return var10000 + ".category.json";
     }
 
-    public Account getAccountByName(String name) {
+    public Account getAccountByName(String name) throws Exception {
+        if (accountsByUsername.get(name)!= null)
         return accountsByUsername.get(name);
+        else
+            throw new Exception("this user doesnt exists.");
     }
 
     public boolean userExistWithUsername(String username) {
@@ -534,6 +538,12 @@ public class DataCenter {
         for (String s : seller.getAuctionsId()) {
             deleteAuctionWithId(s);
         }
+        for (Integer integer : seller.getActiveRequestsId()) {
+            try {
+                getRequestWithId(integer.toString()).deleteRequest();
+            } catch (Exception exception) {
+            }
+        }
         seller.getAuctionsId().forEach(this::deleteAuctionWithId);
         return accountsByUsername.remove(seller.getUsername(), seller);
     }
@@ -557,7 +567,7 @@ public class DataCenter {
         return accountsByUsername.remove(manager.getUsername(), manager);
     }
 
-    public boolean deleteProduct(Model.ProductsOrganization.Product product) throws IOException, BadRequestException {
+    public boolean deleteProduct(Model.ProductsOrganization.Product product) throws Exception {
         System.gc();
         ((Seller) getAccountByName(product.getSeller())).getAllProducts().remove(product);
         for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {

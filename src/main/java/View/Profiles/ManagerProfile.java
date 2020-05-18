@@ -256,13 +256,13 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    commandProcessor.showRequestDetail(commandDetails[1]);
+                    System.out.println(commandProcessor.showRequestDetail(commandDetails[1]));
                     return this;
-                } else if (command.equals(commands.get(1))) {
+                } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.acceptRequest(commandDetails[1]);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
                     String cause;
                     if(commandProcessor.checkRequestType(commandDetails[1])){

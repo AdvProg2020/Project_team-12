@@ -31,7 +31,7 @@ public class Customer extends Account implements CanRequest{
 
 
 
-    public void deleteRequestWithId(int id){
+    public void deleteRequestWithId(Integer id){
         activeRequestsId.remove(id);
     }
     public ArrayList<String> getSolvedRequests() {

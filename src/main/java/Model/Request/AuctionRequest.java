@@ -28,7 +28,7 @@ public class AuctionRequest extends Request implements DeclineHasCause{
     }
 
     @Override
-    public void deleteRequest() throws IOException {
+    public void deleteRequest() throws Exception {
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));

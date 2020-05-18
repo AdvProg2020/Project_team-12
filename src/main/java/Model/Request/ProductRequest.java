@@ -18,14 +18,14 @@ public class ProductRequest extends Request implements DeclineHasCause{
     }
 
     @Override
-    public void acceptRequest() throws IOException {
+    public void acceptRequest() throws Exception {
         DataCenter dataCenter = DataCenter.getInstance();
         dataCenter.getProductById(product).setStatus(Status.ACCEPTED);
         deleteRequest();
     }
 
     @Override
-    public void deleteRequest() throws IOException {
+    public void deleteRequest() throws Exception {
         DataCenter dataCenter = DataCenter.getInstance();
         ((Seller) dataCenter.getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
         ((Seller) dataCenter.getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());

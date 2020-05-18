@@ -3,7 +3,7 @@ package Model.Account;
 import java.util.ArrayList;
 
 public interface CanRequest {
-    public void deleteRequestWithId(int id);
+    public void deleteRequestWithId(Integer id);
 
     public ArrayList<String> getSolvedRequests();
 

@@ -46,8 +46,7 @@ public class Seller extends Account implements CanRequest{
     public String getCompanyInformation() {
         return companyInformation;
     }
-
-    public void deleteRequestWithId(int id){
+    public void deleteRequestWithId(Integer id){
         activeRequestsId.remove(id);
     }
 

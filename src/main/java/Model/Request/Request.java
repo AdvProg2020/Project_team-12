@@ -43,7 +43,7 @@ public abstract class Request implements Requestable {
         return id;
     }
 
-    public abstract String showDetails() throws BadRequestException;
+    public abstract String showDetails() throws Exception;
 
 
 }

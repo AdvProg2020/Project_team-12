@@ -26,7 +26,7 @@ public class SellerRequest extends Request implements NoCauseDecline{
     }
 
     @Override
-    public void deleteRequest() throws IOException {
+    public void deleteRequest() throws Exception {
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));
@@ -48,9 +48,9 @@ public class SellerRequest extends Request implements NoCauseDecline{
     }
 
     @Override
-    public String showDetails() throws BadRequestException {
+    public String showDetails() throws Exception {
         return String.format("Request with id:" + id
-                + "related to acceptance of seller" +
+                + " related to acceptance of seller" +
                 " profile for further actions."+ ((Seller) DataCenter
                 .getInstance().getAccountByName(senderUserName))
                 .toString());
@@ -58,10 +58,14 @@ public class SellerRequest extends Request implements NoCauseDecline{
 
     @Override
     public String toString() {
-        return String.format("Request with id:" + id
-                + "related to acceptance of seller" +
-                " profile for further actions has been %s", ((Seller) DataCenter
-                .getInstance().getAccountByName(senderUserName))
-                .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+        try {
+            return String.format("Request with id:" + id
+                    + "related to acceptance of seller" +
+                    " profile for further actions has been %s", ((Seller) DataCenter
+                    .getInstance().getAccountByName(senderUserName))
+                    .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+        } catch (Exception exception) {
+            return "";
+        }
     }
 }

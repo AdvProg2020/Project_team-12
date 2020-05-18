@@ -29,6 +29,7 @@ public class RegisterPanelCP extends CommandProcessor {
             newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             dataCenter.addAccount(newAccount);
             Request request = new SellerRequest(dataCenter.getAllUnsolvedRequests().size() + 1, false, newAccount.getUsername());
+             ((Seller) newAccount).addRequest(request);
             //TODO:id generator
             dataCenter.addRequest(request);
             dataCenter.saveRequest(request);
