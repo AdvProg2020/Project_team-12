@@ -14,8 +14,8 @@ import java.util.HashMap;
 public class MainMenu extends Menu {
     static MainMenuCP commandProcessor;
     ;
-    private Profile profile = new Profile(this);
-    private Profile defaultProfile;
+    private Profile profile;
+    private Profile defaultProfile = new Profile(this);
 
     public MainMenu() {
         super("Main Menu", null);
@@ -106,6 +106,6 @@ public class MainMenu extends Menu {
     public void setProfile(Profile profile) {
         this.defaultProfile = profile;
         submenus.remove(1);
-        submenus.put(1,profile);
+        submenus.put(1, profile);
     }
 }

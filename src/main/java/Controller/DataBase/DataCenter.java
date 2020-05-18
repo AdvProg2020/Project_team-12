@@ -635,7 +635,9 @@ public class DataCenter {
     }
 
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
-        return (ArrayList<Model.ProductsOrganization.Product>) productsByName.values();
+        ArrayList<Product> var = new ArrayList<>();
+        var.addAll(productsByName.values());
+        return  var;
     }
 
     public Set<String> getAllProducts() {
@@ -648,7 +650,9 @@ public class DataCenter {
     }
 
     public ArrayList<Category> getCategories() {
-        return (ArrayList<Category>) categories.values();
+        ArrayList<Category> var = new ArrayList<>();
+        var.addAll(categories.values());
+        return var;
     }
 
     public Date getDate() {
