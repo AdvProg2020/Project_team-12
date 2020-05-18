@@ -65,6 +65,8 @@ public class CommandProcessor {
     }
 
     public static void back() {
+        /*if (Instance == null)
+            Instance = MainMenuCP.getInstance();*/
         Instance = Instance.getParent();
     }
 

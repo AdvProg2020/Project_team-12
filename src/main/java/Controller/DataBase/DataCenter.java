@@ -624,9 +624,10 @@ public class DataCenter {
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
         ArrayList<Product> var = new ArrayList<>();
         var.addAll(productsByName.values());
-        for (Product product : var) {
-            if (product.getStatus().equals(Status.CONSTRUCTING)||product.getStatus().equals(Status.EDITING))
-                var.remove(product);
+        for (int i = 0; i < var.size();i++ ) {
+            if (var.get(i).getStatus().equals(Status.CONSTRUCTING)||var.get(i).getStatus().equals(Status.EDITING)){
+                var.remove(var.get(i));
+            i--;}
         }
         return var;
     }

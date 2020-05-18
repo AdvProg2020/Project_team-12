@@ -89,6 +89,8 @@ public class PurchasePage extends Menu {
                 System.out.println("total price :" + commandProcessor.getPaymentAmount());
                 String command = getField("<<finish>> or <<back>>", "(finish|back)");
                 if (command.equals("finish")) {
+                    if (CommandProcessor.getCart().getOwner() == null)
+                        //TODO:LOG in account
                     commandProcessor.buy(discountCode);
                     return;
                 } else {
