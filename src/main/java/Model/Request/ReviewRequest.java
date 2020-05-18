@@ -1,6 +1,7 @@
 package Model.Request;
 
 
+import Controller.DataBase.BadRequestException;
 import Controller.DataBase.DataCenter;
 import Model.Account.CanRequest;
 import Model.ProductsOrganization.Review;
@@ -9,7 +10,7 @@ import Model.ProductsOrganization.ReviewStatus;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ReviewRequest extends Request {
+public class ReviewRequest extends Request implements NoCauseDecline{
     private Review review;
     private String  pId;
     private boolean accepted;
@@ -63,6 +64,12 @@ public class ReviewRequest extends Request {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), review, senderUserName, pId);
+    }
+
+    @Override
+    public String showDetails() throws BadRequestException {
+        return String.format("Request with Code" + id+
+                "and related to review " +review.toString());
     }
 
     @Override

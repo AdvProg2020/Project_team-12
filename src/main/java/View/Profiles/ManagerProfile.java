@@ -3,7 +3,10 @@ package View.Profiles;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
 import Model.Discount.DiscountCode;
+import Model.ProductsOrganization.Category;
+import Model.Request.Request;
 import View.Exceptions.InvalidCommandException;
+import View.InputUtility;
 import View.Menu;
 
 import java.util.ArrayList;
@@ -236,7 +239,10 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get requests info and show
+                ArrayList<Request> requests = commandProcessor.getRequests();
+                for (Request request : requests) {
+                    System.out.println(request.getId()+"\n");
+                }
                 showCommands();
             }
 
@@ -250,15 +256,20 @@ public class ManagerProfile extends Profile {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling show request method by commandDetails[1]
+                    commandProcessor.showRequestDetail(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling accept request method by commandDetails[1]
+                    commandProcessor.acceptRequest(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
-                    //calling decline request method by commandDetails[1]
+                    String cause;
+                    if(commandProcessor.checkRequestType(commandDetails[1])){
+                         cause = InputUtility.getInstance().nextLine();
+                         commandProcessor.declineRequest(commandDetails[1],cause);
+                    }else
+                    commandProcessor.declineRequest(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -285,7 +296,10 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                //get categories info and show
+                ArrayList<Category> categories = commandProcessor.getCategories();
+                for (Category category : categories) {
+                    System.out.println(category.toString());
+                }
                 showCommands();
             }
 

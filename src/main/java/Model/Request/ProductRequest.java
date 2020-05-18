@@ -1,5 +1,6 @@
 package Model.Request;
 
+import Controller.DataBase.BadRequestException;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 import Model.Status;
@@ -7,7 +8,7 @@ import Model.Status;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ProductRequest extends Request {
+public class ProductRequest extends Request implements DeclineHasCause{
     private String product;
     private String message;
 
@@ -43,7 +44,7 @@ public class ProductRequest extends Request {
     @Override
     public String toString() {
         return "Request with id" + id +
-                "related to product" + DataCenter.getInstance().getProductById(product) +
+                "related to product" + DataCenter.getInstance().getProductById(product).toString() +
                 "has been accepted";
     }
 
@@ -62,4 +63,12 @@ public class ProductRequest extends Request {
     public int hashCode() {
         return Objects.hash(super.hashCode(), product, senderUserName, message);
     }
+
+    @Override
+    public String showDetails() throws BadRequestException {
+        return "Request with id" + id +
+                "related to product" + DataCenter.getInstance().getProductById(product).toString() ;
+    }
+
+
 }

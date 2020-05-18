@@ -668,5 +668,13 @@ public class DataCenter {
         long returnTime = timeInfo.getReturnTime();
         return new Date(returnTime);
     }
+
+    public Request getRequestWithId(String commandDetail) throws Exception {
+        for (Request request : getAllUnsolvedRequests()) {
+            if (request.getId()==Integer.parseInt(commandDetail))
+                return request;
+        }
+        throw new Exception("Request not found");
+    }
 }
 

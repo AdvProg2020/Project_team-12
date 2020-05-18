@@ -1,12 +1,13 @@
 package Model.Request;
 
+import Controller.DataBase.BadRequestException;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class SellerRequest extends Request {
+public class SellerRequest extends Request implements NoCauseDecline{
 
     public SellerRequest(int id, boolean active, String sellerUserName) {
         super(sellerUserName, id, active);
@@ -44,6 +45,15 @@ public class SellerRequest extends Request {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), senderUserName);
+    }
+
+    @Override
+    public String showDetails() throws BadRequestException {
+        return String.format("Request with id:" + id
+                + "related to acceptance of seller" +
+                " profile for further actions."+ ((Seller) DataCenter
+                .getInstance().getAccountByName(senderUserName))
+                .toString());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package Model.Request;
 
+import Controller.DataBase.BadRequestException;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 import Model.Status;
@@ -7,7 +8,7 @@ import Model.Status;
 import java.io.IOException;
 import java.util.Objects;
 
-public class AuctionRequest extends Request {
+public class AuctionRequest extends Request implements DeclineHasCause{
     private String auctionId;
     private String message;
 
@@ -65,5 +66,12 @@ public class AuctionRequest extends Request {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), auctionId, senderUserName, message);
+    }
+
+    @Override
+    public String showDetails() throws BadRequestException {
+        return "Request with Id " +id +
+                "related to auction with id" + auctionId +
+                " \n "+DataCenter.getInstance().getAuctionWithId(auctionId).toString();
     }
 }

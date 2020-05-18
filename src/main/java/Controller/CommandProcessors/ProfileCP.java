@@ -1,5 +1,6 @@
 package Controller.CommandProcessors;
 
+import Controller.DataBase.DataCenter;
 import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
@@ -11,12 +12,11 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Score;
-import Model.Request.AuctionRequest;
-import Model.Request.ProductRequest;
-import Model.Request.Request;
+import Model.Request.*;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.ProductExceptions;
 
+import javax.crypto.spec.DESedeKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -159,5 +159,29 @@ public class ProfileCP  extends CommandProcessor {
     public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
         Account manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
         dataCenter.saveAccount(manager);
+    }
+
+    public ArrayList<Request> getRequests() {
+        return dataCenter.getAllUnsolvedRequests();
+    }
+
+    public String  showRequestDetail(String commandDetail) throws Exception {
+         return dataCenter.getRequestWithId(commandDetail).showDetails();
+    }
+
+    public void acceptRequest(String commandDetail) throws Exception {
+        dataCenter.getRequestWithId(commandDetail).acceptRequest();
+    }
+
+    public void declineRequest(String commandDetail) throws Exception {
+        ((NoCauseDecline)dataCenter.getRequestWithId(commandDetail)).declineRequest();
+    }
+
+    public void declineRequest(String commandDetail, String cause) throws Exception {
+        ((DeclineHasCause)dataCenter.getRequestWithId(commandDetail)).declineRequest(cause);
+    }
+
+    public boolean checkRequestType(String commandDetail) throws Exception {
+        return dataCenter.getRequestWithId(commandDetail) instanceof DeclineHasCause;
     }
 }

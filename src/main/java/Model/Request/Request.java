@@ -1,10 +1,11 @@
 package Model.Request;
 
+import Controller.DataBase.BadRequestException;
 import com.google.gson.annotations.Expose;
 
 import java.util.Objects;
 
-public abstract class Request implements Requestable{
+public abstract class Request implements Requestable {
     @Expose
     protected int id;
     @Expose
@@ -41,4 +42,8 @@ public abstract class Request implements Requestable{
     public int getId() {
         return id;
     }
+
+    public abstract String showDetails() throws BadRequestException;
+
+
 }
