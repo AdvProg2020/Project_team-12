@@ -68,4 +68,14 @@ public class Customer extends Account implements CanRequest{
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "cart=" + cart +
+                ", buyLogs=" + buyLogs +
+                ", activeRequestsId=" + activeRequestsId +
+                ", solvedRequests=" + solvedRequests +
+                '}';
+    }
 }

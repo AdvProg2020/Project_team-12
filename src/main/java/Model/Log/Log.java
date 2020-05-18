@@ -30,4 +30,12 @@ public abstract class Log {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                "date=" + date +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

@@ -55,4 +55,14 @@ public abstract class Discount {
     }
 
     public abstract double calculatePrice(Double amount);
+
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "start=" + start +
+                ", end=" + end +
+                ", percent=" + percent +
+                ", ID='" + ID + '\'' +
+                '}';
+    }
 }
