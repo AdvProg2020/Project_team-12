@@ -70,7 +70,7 @@ public class CustomerProfile extends Profile {
                     System.out.println(commandProcessor.getOrderById(commandDetails[2]).toString());
                     return this;
                 } else if (command.equals(commands.get(2)) || command.equals("3")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     showCommands();
                     return this;

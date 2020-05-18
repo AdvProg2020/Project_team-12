@@ -221,5 +221,19 @@ public class Product {
         return buyers;
     }
 
-
+    @Override
+    public String toString() {
+        return "Product{" +
+                "views=" + views +
+                ", name='" + name + '\'' +
+                ", seller='" + seller + '\'' +
+                ", remainingItems=" + remainingItems +
+                ", price=" + price +
+                ", brand='" + brand + '\'' +
+                ", specs=" + specs +
+                ", description='" + description + '\'' +
+                ", ID='" + ID + '\'' +
+                ", averageMark=" + averageMark +
+                '}';
+    }
 }

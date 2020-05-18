@@ -34,16 +34,34 @@ public abstract class Menu {
 
     public abstract Menu getCommand() throws Exception;
 
-    public String getField(String fieldName,String regex) throws Exception{
-        System.out.println("Enter "+fieldName);
+    public String getField(String fieldName, String regex) throws Exception {
+        System.out.println("Enter " + fieldName);
         String fieldValue = scanner.nextLine();
-        if (!fieldValue.matches(regex)){
+        if (!fieldValue.matches(regex)) {
             System.err.println("wrong patten");
             System.out.println("enter <back> to return or <next> to reenter");
-            String command = getField("<next> or <back>",("(next|back)"));
+            String command = getAdditionalCommand();
+            /*String command = getField("<next> or <back>", ("(next|back)"));
+            //String command = scanner.nextLine();*/
             if (command.equals("back"))
                 throw new CustomerExceptions("exited successfully");
+            /*else if (!command.equals("next"))
+                System.err.println("invalid command");*/
             fieldValue = getField(fieldName, regex);
+        }
+        return fieldValue;
+    }
+
+    public String getAdditionalCommand() {
+        System.out.println("Enter <next> or <back>");
+        String fieldValue = scanner.nextLine();
+        if (fieldValue.equals("next"))
+            return fieldValue;
+        else if (fieldValue.equals("back"))
+            return fieldValue;
+        else {
+            System.err.println("wrong patten");
+            fieldValue = getAdditionalCommand();
         }
         return fieldValue;
     }
@@ -60,6 +78,7 @@ public abstract class Menu {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
             show();
             run();
         }

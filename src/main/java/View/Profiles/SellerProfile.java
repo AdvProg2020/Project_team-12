@@ -51,7 +51,7 @@ public class SellerProfile extends Profile {
         String specificationValue = getField("specification value", "\\S+");
         specifications.put(specificationTitle, specificationValue);
         System.out.println("type <back> to continue or <next> to add more specifications");
-        String command = getField("<next> or <back>", "(next|back)$");
+        String command = getAdditionalCommand();
         if (command.equals("next"))
             getSpecifications(specifications);
         return specifications;
@@ -136,7 +136,7 @@ public class SellerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     String name = getField("name", "(\\w+)$");
                     String brand = getField("brand", "(\\w+)$");
-                    String price = getField("price", "(\\d+)\\.(\\d+)$");
+                    String price = getField("price", "(\\d+\\.\\d+)$");
                     String remainingItems = getField("remaining items", "(\\d+)$");
                     String description = getField("description", "\\S+");
                     HashMap<String, String> specifications = new HashMap<String, String>();
@@ -144,7 +144,7 @@ public class SellerProfile extends Profile {
                     commandProcessor.editProduct(commandDetails[1], name, brand, price, remainingItems, description, specifications);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
@@ -165,7 +165,7 @@ public class SellerProfile extends Profile {
             public Menu getCommand() throws Exception {
                 String name = getField("name", "(\\w+)$");
                 String brand = getField("brand", "(\\w+)$");
-                String price = getField("price", "(\\d+)\\.(\\d+)$");
+                String price = getField("price", "(\\d+\\.\\d+)$");
                 String remainingItems = getField("remaining items", "(\\d+)$");
                 String description = getField("description", "\\S+");
                 HashMap<String, String> specifications = new HashMap<String, String>();
@@ -243,7 +243,7 @@ public class SellerProfile extends Profile {
                     commandProcessor.addAuction(startingDate, lastDate, percent, products);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;

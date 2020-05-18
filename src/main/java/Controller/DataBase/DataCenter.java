@@ -641,7 +641,8 @@ public class DataCenter {
         for (Product product : productsByName.values()) {
             args.add(product.getID());
         }
-        return RandomIDGenerator.generateProductID((String[]) args.toArray());
+        String[] result = {};
+        return RandomIDGenerator.generateProductID((String[]) args.toArray(result));
     }
 
     public ArrayList<Category> getCategories() {
@@ -679,7 +680,7 @@ public class DataCenter {
 
     private Integer checkId(Integer tmp, ArrayList<Integer> activeRequestsId) {
         if (activeRequestsId.contains(tmp))
-            return checkId(tmp+1, activeRequestsId);
+            return checkId(tmp + 1, activeRequestsId);
         return tmp;
     }
 

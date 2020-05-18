@@ -94,7 +94,7 @@ public class ManagerProfile extends Profile {
                     commandProcessor.createManagerAccount(username, password, firstName, lastName, phoneNumber, emailAddress);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
@@ -136,7 +136,7 @@ public class ManagerProfile extends Profile {
                     commandProcessor.deleteProduct(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(1)) || command.equals("2")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     showCommands();
                     return this;
@@ -215,7 +215,7 @@ public class ManagerProfile extends Profile {
                     commandProcessor.deleteDiscountCode(commandDetails[3]);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
@@ -272,7 +272,7 @@ public class ManagerProfile extends Profile {
                         commandProcessor.declineRequest(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
@@ -336,7 +336,7 @@ public class ManagerProfile extends Profile {
                     commandProcessor.removeCategory(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
