@@ -60,7 +60,6 @@ public abstract class Menu {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
             show();
             run();
         }
