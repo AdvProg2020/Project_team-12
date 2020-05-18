@@ -1,6 +1,7 @@
 package Controller.CommandProcessors;
 
 import Controller.DataBase.DataCenter;
+import Model.Account.CanRequest;
 import Model.Account.Customer;
 import Model.Log.PurchaseLog;
 import Model.ProductsOrganization.Cart;
@@ -23,7 +24,6 @@ public class ProductPageCP extends CommandProcessor{
     }
     protected ProductPageCP(String ID) {
         super(ProductsPageCP.getInstance());
-        //TODO: this.selectedProduct = getProductByID(ID);
         this.selectedProduct = DataCenter.getInstance().getProductById(ID);
     }
 
@@ -32,7 +32,6 @@ public class ProductPageCP extends CommandProcessor{
         return selectedProduct;
     }
 
-    // TODO: Command: add to cart
 
     // Command: compare (productID)
     // Use: DATA center : getProductByID
@@ -42,9 +41,6 @@ public class ProductPageCP extends CommandProcessor{
     // Use: selectedProduct.getAverageMark();
 
     // Command: Add comment
-    /*public void addComment(String title, String content) {
-        selectedProduct.getAllReviews().add(new Review( title, content,true));//TODO:what the hell is this??
-    }*/
 
     public Product getSelectedProduct() {
         return selectedProduct;
@@ -77,8 +73,8 @@ public class ProductPageCP extends CommandProcessor{
 
     public void addReview(String title , String content) throws Exception{
         Review review = new Review(title,content,hasUserBoughtThisProduct());
-        Request request = new ReviewRequest(getLoggedInAccount().getUsername(),dataCenter.getAllUnsolvedRequests().size()+1,false,review,selectedProduct.getID());
-        //TODO: id generator
+        Request request = new ReviewRequest(getLoggedInAccount().getUsername(),dataCenter.requestIDGenerator((CanRequest) getLoggedInAccount()),false,review,selectedProduct.getID());
+
         dataCenter.addRequest(request);
         dataCenter.saveRequest(request);
     }

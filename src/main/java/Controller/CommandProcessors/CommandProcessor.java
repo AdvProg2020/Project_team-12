@@ -201,7 +201,7 @@ public class CommandProcessor {
         }
         DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
         DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
-                dataCenter.getNewDiscountID() + 1, code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
+                dataCenter.getNewDiscountID(), code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
         dataCenter.saveDiscount(discountCode);
     }
 

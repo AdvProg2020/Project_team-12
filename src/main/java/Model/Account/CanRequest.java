@@ -8,4 +8,5 @@ public interface CanRequest {
     public ArrayList<String> getSolvedRequests();
 
     public void setSolvedRequests(ArrayList<String> solvedRequests);
+    public ArrayList<Integer> getActiveRequestsId();
 }

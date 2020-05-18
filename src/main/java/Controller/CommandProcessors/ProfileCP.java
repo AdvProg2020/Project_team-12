@@ -1,6 +1,5 @@
 package Controller.CommandProcessors;
 
-import Controller.DataBase.DataCenter;
 import Model.Account.Account;
 import Model.Account.Customer;
 import Model.Account.Manager;
@@ -16,7 +15,6 @@ import Model.Request.*;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.ProductExceptions;
 
-import javax.crypto.spec.DESedeKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -124,7 +122,7 @@ public class ProfileCP  extends CommandProcessor {
                 Double.parseDouble(price),brand,specifications,description,Integer.toString(dataCenter.getAllProducts().size()),dataCenter.getDate());
         //TODO: Id generator should be written
         Request request = new ProductRequest(seller.getUsername(),
-                dataCenter.getAllUnsolvedRequests().size()+1,false,product.getID());
+                dataCenter.requestIDGenerator(seller),false,product.getID());
         seller.addProduct(product);
         seller.addRequest(request);
         dataCenter.addProduct(product);
@@ -145,13 +143,12 @@ public class ProfileCP  extends CommandProcessor {
             auctionProducts.add(dataCenter.getProductById(productId));
         }
         Auction auction = new Auction(format.parse(startingDate), format.parse(lastDate),Double.parseDouble(percent),id,auctionProducts,seller.getUsername());
-        //TODO: Id generator should be written
-        Request request = new AuctionRequest(seller.getUsername(),dataCenter.getAllUnsolvedRequests().size()+1,false,auction.getID());
+        Request request = new AuctionRequest(seller.getUsername(),dataCenter.requestIDGenerator(seller),false,auction.getID());
         seller.addAuctionId(id);
         seller.addRequest(request);
         dataCenter.addRequest(request);
-        dataCenter.addDiscount(auction);//TODO:is this needed here ?? or after accept??
-        dataCenter.saveDiscount(auction);//TODO:is this needed here ??
+        dataCenter.addDiscount(auction);
+        dataCenter.saveDiscount(auction);
         dataCenter.saveAccount(seller);
         dataCenter.saveRequest(request);
     }

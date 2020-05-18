@@ -2,13 +2,12 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
-import Model.Account.Account;
-import Model.Account.Customer;
-import Model.Account.Manager;
-import Model.Account.Seller;
+import Model.Account.*;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
+import Model.Log.PurchaseLog;
+import Model.Log.SellLog;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.Request.*;
@@ -46,47 +45,6 @@ public class DataCenter {
     private ArrayList<Request> requests;
     private HashMap<String, Category> categories;
 
-    {/*private void initProducts() {
-        productsByName = new HashMap<>();
-        JsonFileReader reader = new JsonFileReader();
-        File productsDirectory = new File(Config.getInstance().getProductsPath());
-        if (!productsDirectory.exists())
-            productsDirectory.mkdir();
-        File[] productsFiles = productsDirectory.listFiles();
-        if (productsFiles != null) {
-            Arrays.stream(productsFiles).map((file) -> {
-                try {
-                    Product temp = reader.read(file, Product.class);
-                    String var100 = temp.getCategoryName();
-                    if (var100 != null && var100 != "") {
-                        temp.setParent(categories.get(var100));
-                        categories.get(var100).getAllProductsInside().put(temp.getName(), temp);
-                    }
-                    return temp;
-                } catch (FileNotFoundException var4) {
-                    return null;
-                }
-            }).forEach(this::addProduct);
-        }
-    }*/
-    }
-
-    {  /*public void saveProduct(Product product) throws IOException {
-        JsonFileWriter writer = new JsonFileWriter();
-        product.setCategoryName(product.getParent().getName());
-        writer.write(product, generateProductFilePath(product.getID()));
-        if (!productsByName.containsValue(product))
-            productsByName.put(product.getName(), product);
-    }*/
-    }
-
-    {/* private String generateProductFilePath(int id) {
-        String var10000 = Config.getInstance().getProductsPath() + "/" + id;
-        return var10000 + ".product.json";
-    }
-*/
-    }
-
     private DataCenter() {
         initCategories();
         initAccounts();
@@ -95,12 +53,28 @@ public class DataCenter {
         initRequests();
     }
 
-    public static String getNewSellID() {
-        return "1";
+    public static String getNewSellID(String sellerUserName) {
+        ArrayList<String> args = new ArrayList<>();
+        try {
+            for (SellLog log : ((Seller) getInstance().getAccountByName(sellerUserName)).getSellLogs()) {
+                args.add(log.getId());
+            }
+        } catch (Exception exception) {
+        } finally {
+            return RandomIDGenerator.generateSellID((String[]) args.toArray());
+        }
     }
 
-    public static String getNewPurchaseID() {
-        return "1";
+    public static String getNewPurchaseID(String customerUsername) {
+        ArrayList<String> args = new ArrayList<>();
+        try {
+            for (PurchaseLog log : ((Customer) getInstance().getAccountByName(customerUsername)).getBuyLogs()) {
+                args.add(log.getId());
+            }
+        } catch (Exception exception) {
+        } finally {
+            return RandomIDGenerator.generateBuyID((String[]) args.toArray());
+        }
     }
 
     public static DataCenter getInstance() {
@@ -418,8 +392,8 @@ public class DataCenter {
     }
 
     public Account getAccountByName(String name) throws Exception {
-        if (accountsByUsername.get(name)!= null)
-        return accountsByUsername.get(name);
+        if (accountsByUsername.get(name) != null)
+            return accountsByUsername.get(name);
         else
             throw new Exception("this user doesnt exists.");
     }
@@ -525,7 +499,7 @@ public class DataCenter {
         Files.delete(Paths.get(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer")));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
         System.gc();
-        return  accountsByUsername.remove(customer.getUsername(), customer);
+        return accountsByUsername.remove(customer.getUsername(), customer);
     }
 
     private boolean deleteAccount(Seller seller) throws IOException, BadRequestException {
@@ -647,7 +621,7 @@ public class DataCenter {
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
         ArrayList<Product> var = new ArrayList<>();
         var.addAll(productsByName.values());
-        return  var;
+        return var;
     }
 
     public Set<String> getAllProducts() {
@@ -655,8 +629,19 @@ public class DataCenter {
     }
 
     public String getNewDiscountID() {
-        //TODO: should be written
-        return null;
+        ArrayList<String> args = new ArrayList<>();
+        for (Discount discount : discounts) {
+            args.add(discount.getID());
+        }
+        return RandomIDGenerator.discountIdGenerator((String[]) args.toArray());
+    }
+
+    public String getNewProductID() {
+        ArrayList<String> args = new ArrayList<>();
+        for (Product product : productsByName.values()) {
+            args.add(product.getID());
+        }
+        return RandomIDGenerator.generateProductID((String[]) args.toArray());
     }
 
     public ArrayList<Category> getCategories() {
@@ -681,10 +666,22 @@ public class DataCenter {
 
     public Request getRequestWithId(String commandDetail) throws Exception {
         for (Request request : getAllUnsolvedRequests()) {
-            if (request.getId()==Integer.parseInt(commandDetail))
+            if (request.getId() == Integer.parseInt(commandDetail))
                 return request;
         }
         throw new Exception("Request not found");
     }
+
+    public Integer requestIDGenerator(CanRequest account) {
+        Integer tmp = account.getActiveRequestsId().size() + 1;
+        return checkId(tmp, account.getActiveRequestsId());
+    }
+
+    private Integer checkId(Integer tmp, ArrayList<Integer> activeRequestsId) {
+        if (activeRequestsId.contains(tmp))
+            tmp++;
+        return checkId(tmp, activeRequestsId);
+    }
+
 }
 

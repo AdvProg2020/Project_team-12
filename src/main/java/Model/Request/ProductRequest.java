@@ -6,13 +6,14 @@ import Model.Account.Seller;
 import Model.Status;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Objects;
 
 public class ProductRequest extends Request implements DeclineHasCause{
     private String product;
     private String message;
 
-    public ProductRequest(String sender, int id, boolean active, String product) {
+    public ProductRequest(String sender, Integer id, boolean active, String product) {
         super(sender, id, active);
         this.product = product;
     }
