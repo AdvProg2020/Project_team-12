@@ -1,6 +1,5 @@
 package View;
 
-import Controller.CommandProcessors.CommandProcessor;
 import Controller.DataBase.DataCenter;
 import View.Exceptions.CustomerExceptions;
 
@@ -9,12 +8,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public abstract class Menu {
-    private String name;
     protected Menu parentMenu;
     protected HashMap<Integer, Menu> submenus;
     protected ArrayList<String> commands;
     protected Scanner scanner = InputUtility.getInstance();
     protected DataCenter dataCenter = DataCenter.getInstance();
+    private String name;
 
     public Menu(String name, Menu parentMenu) {
         this.name = name;
@@ -78,7 +77,6 @@ public abstract class Menu {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
             show();
             run();
         }

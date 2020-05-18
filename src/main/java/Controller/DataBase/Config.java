@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Config {
     @Expose
@@ -23,11 +24,7 @@ public class Config {
     @Expose
     private final String categoriesPath;
     @Expose
-    private int purchaseID;
-    @Expose
-    private int sellID;
-    @Expose
-    private int requestsId;
+    private ArrayList<String> requestsId= new ArrayList<>();
 
     public Config() {
         accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
@@ -35,9 +32,6 @@ public class Config {
         discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
         requestsPath = "Resources/Requests";
         categoriesPath = "Resources/Categories";
-        purchaseID = 0;
-        sellID=0;
-        requestsId = 0;
     }
 
     public static Config getInstance() {
@@ -85,14 +79,7 @@ public class Config {
         return categoriesPath;
     }
 
-    public int getRequestsId() {
-        return requestsId;
-    }
 
-    public void setRequestsId(int requestsId) {
-        this.requestsId = requestsId;
-        saveConfig();
-    }
 
     public enum AccountsPath {
         CUSTOMER(0), SELLER(1), MANAGER(2);
@@ -120,22 +107,16 @@ public class Config {
         }
     }
 
-    public int getPurchaseID() {
-        return purchaseID;
+    public ArrayList<String> getRequestsId() {
+        return requestsId;
     }
 
-    public void setPurchaseID(int purchaseID) {
-        this.purchaseID = purchaseID;
+    public void addRequestId(String s) {
+        this.requestsId.add(s);
         saveConfig();
     }
-
-    public int getSellID() {
-        return sellID;
-
-    }
-
-    public void setSellID(int sellID) {
-        this.sellID = sellID;
+    public void removeRequestId(String s) {
+        this.requestsId.remove(s);
         saveConfig();
     }
 

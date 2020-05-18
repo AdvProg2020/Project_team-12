@@ -81,4 +81,13 @@ public class RandomIDGenerator {
         }
         return outPut;
     }
+    public static String generateRequestID() {
+        String outPut = "REQ_" + generateRandomPassword(4);
+        for (String arg : Config.getInstance().getRequestsId()) {
+            if (arg.equals(outPut))
+                return generateRequestID();
+        }
+        Config.getInstance().addRequestId(outPut);
+        return outPut;
+    }
 }

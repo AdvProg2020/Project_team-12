@@ -1,18 +1,22 @@
 package Model.Request;
 
 import Controller.DataBase.BadRequestException;
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 import Model.Status;
+import com.google.gson.annotations.Expose;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class AuctionRequest extends Request implements DeclineHasCause{
+    @Expose
     private String auctionId;
+    @Expose
     private String message;
 
-    public AuctionRequest(String sender, int id, boolean active, String auctionId) {
+    public AuctionRequest(String sender, String id, boolean active, String auctionId) {
         super(sender, id, active);
         this.auctionId = auctionId;
     }
@@ -33,6 +37,7 @@ public class AuctionRequest extends Request implements DeclineHasCause{
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));
         DataCenter.getInstance().deleteRequestWithId(id);
+        Config.getInstance().removeRequestId(getId());
     }
 
 

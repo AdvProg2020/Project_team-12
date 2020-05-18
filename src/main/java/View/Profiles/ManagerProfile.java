@@ -228,9 +228,9 @@ public class ManagerProfile extends Profile {
     public Menu getRequestsMenu() {
         return new Menu("Requests", this) {
             public void setCommands() {
-                commands.add("details (\\d+)$");
-                commands.add("accept (\\d+)$");
-                commands.add("decline (\\d+)$");
+                commands.add("details REQ_(\\S+)$");
+                commands.add("accept REQ_(\\S+)$");
+                commands.add("decline REQ_(\\S+)$");
                 commands.add("back");
                 commands.add("help");
             }

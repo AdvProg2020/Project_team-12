@@ -17,7 +17,7 @@ public class Seller extends Account implements CanRequest{
     @Expose
     private ArrayList<Product> allProducts = new ArrayList<>();
     @Expose
-    private ArrayList<Integer> activeRequestsId = new ArrayList<>();
+    private ArrayList<String> activeRequestsId = new ArrayList<String>();
     @Expose
     private ArrayList<String> solvedRequests = new ArrayList<>();
     @Expose
@@ -47,7 +47,7 @@ public class Seller extends Account implements CanRequest{
         return companyInformation;
     }
 
-    public void deleteRequestWithId(Integer id){
+    public void deleteRequestWithId(String id){
         activeRequestsId.remove(id);
     }
 
@@ -59,7 +59,7 @@ public class Seller extends Account implements CanRequest{
         this.solvedRequests = solvedRequests;
     }
 
-    public ArrayList<Integer> getActiveRequestsId() {
+    public ArrayList<String> getActiveRequestsId() {
         return activeRequestsId;
     }
 
@@ -83,7 +83,7 @@ public class Seller extends Account implements CanRequest{
         this.allProducts = allProducts;
     }
 
-    public void setActiveRequestsId(ArrayList<Integer> activeRequestsId) {
+    public void setActiveRequestsId(ArrayList<String> activeRequestsId) {
         this.activeRequestsId = activeRequestsId;
     }
 

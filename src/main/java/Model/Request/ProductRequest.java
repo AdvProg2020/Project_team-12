@@ -1,19 +1,23 @@
 package Model.Request;
 
 import Controller.DataBase.BadRequestException;
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 import Model.Status;
+import com.google.gson.annotations.Expose;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 
 public class ProductRequest extends Request implements DeclineHasCause{
+    @Expose
     private String product;
+    @Expose
     private String message;
 
-    public ProductRequest(String sender, Integer id, boolean active, String product) {
+    public ProductRequest(String sender, String  id, boolean active, String product) {
         super(sender, id, active);
         this.product = product;
     }
@@ -32,6 +36,7 @@ public class ProductRequest extends Request implements DeclineHasCause{
         ((Seller) dataCenter.getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         dataCenter.saveAccount(dataCenter.getAccountByName(senderUserName));
         dataCenter.deleteRequestWithId(id);
+        Config.getInstance().removeRequestId(getId());
     }
 
 

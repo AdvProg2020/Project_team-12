@@ -7,7 +7,6 @@ import Model.ProductsOrganization.Cart;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Customer extends Account implements CanRequest{
     @Expose(serialize = false,deserialize = false)
@@ -15,7 +14,7 @@ public class Customer extends Account implements CanRequest{
     @Expose
     private ArrayList<PurchaseLog> buyLogs = new ArrayList<>();
     @Expose
-    private ArrayList<Integer> activeRequestsId = new ArrayList<>();
+    private ArrayList<String> activeRequestsId = new ArrayList<String>();
     @Expose
     private ArrayList<String> solvedRequests = new ArrayList<>();
     public Customer(String username, String firstName, String lastName, String emailAddress, String phoneNumber, String password) {
@@ -31,7 +30,7 @@ public class Customer extends Account implements CanRequest{
 
 
 
-    public void deleteRequestWithId(Integer id){
+    public void deleteRequestWithId(String id){
         activeRequestsId.remove(id);
     }
     public ArrayList<String> getSolvedRequests() {
@@ -42,11 +41,11 @@ public class Customer extends Account implements CanRequest{
         this.solvedRequests = solvedRequests;
     }
 
-    public ArrayList<Integer> getActiveRequestsId() {
+    public ArrayList<String> getActiveRequestsId() {
         return activeRequestsId;
     }
 
-    public void setActiveRequestsId(ArrayList<Integer> activeRequestsId) {
+    public void setActiveRequestsId(ArrayList<String> activeRequestsId) {
         this.activeRequestsId = activeRequestsId;
     }
 
