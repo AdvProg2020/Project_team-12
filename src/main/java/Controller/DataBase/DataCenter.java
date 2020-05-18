@@ -11,6 +11,7 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.Request.*;
+import Model.Status;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
@@ -159,10 +160,10 @@ public class DataCenter {
             requests.add(request);
     }
 
-    public void deleteRequestWithId(Integer id) {
+    public void deleteRequestWithId(String id) {
         System.gc();
         for (Request request : requests) {
-            if (request.getId() == id) {
+            if (request.getId().equals(id)) {
                 requests.remove(request);
                 File file = new File(generateRequestsFilePath(id));
                 file.delete();
@@ -383,7 +384,7 @@ public class DataCenter {
         return var10000 + ".discountcode.accounts.json";
     }
 
-    private String generateRequestsFilePath(int id) {
+    private String generateRequestsFilePath(String id) {
         String var10000 = Config.getInstance().getRequestsPath() + "/" + id;
         return var10000 + ".request.json";
     }
@@ -514,7 +515,7 @@ public class DataCenter {
         for (String s : seller.getAuctionsId()) {
             deleteAuctionWithId(s);
         }
-        for (Integer integer : seller.getActiveRequestsId()) {
+        for (String integer : seller.getActiveRequestsId()) {
             try {
                 getRequestWithId(integer.toString()).deleteRequest();
             } catch (Exception exception) {
@@ -623,6 +624,10 @@ public class DataCenter {
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
         ArrayList<Product> var = new ArrayList<>();
         var.addAll(productsByName.values());
+        for (Product product : var) {
+            if (product.getStatus().equals(Status.CONSTRUCTING)||product.getStatus().equals(Status.EDITING))
+                var.remove(product);
+        }
         return var;
     }
 
@@ -670,22 +675,17 @@ public class DataCenter {
 
     public Request getRequestWithId(String commandDetail) throws Exception {
         for (Request request : getAllUnsolvedRequests()) {
-            if (request.getId() == Integer.parseInt(commandDetail))
+            if (request.getId().equals(commandDetail))
                 return request;
         }
         throw new Exception("Request not found");
     }
 
-    public Integer requestIDGenerator(CanRequest account) {
-        Integer tmp = account.getActiveRequestsId().size() + 1;
-        return checkId(tmp, account.getActiveRequestsId());
+    public String requestIDGenerator(CanRequest account) {
+        return RandomIDGenerator.generateRequestID();
     }
 
-    private Integer checkId(Integer tmp, ArrayList<Integer> activeRequestsId) {
-        if (activeRequestsId.contains(tmp))
-            return checkId(tmp + 1, activeRequestsId);
-        return tmp;
-    }
+
 
 }
 

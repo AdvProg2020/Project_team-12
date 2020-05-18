@@ -41,6 +41,8 @@ public class RegisterPanelCP extends CommandProcessor {
 
 
     public void login(String username, String password) throws Exception {
+        if (getLoggedInAccount() != null)
+            throw new RegisterPanelException("already logged in!!");
         setLoggedInAccount(dataCenter.getAccountByName(username));
         if (!checkPassword(password)) {
             setLoggedInAccount(null);

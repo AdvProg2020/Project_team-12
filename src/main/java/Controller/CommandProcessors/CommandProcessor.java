@@ -178,6 +178,9 @@ public class CommandProcessor {
     public void deleteAccount(String username) throws Exception {
         if (!dataCenter.doesUsernameExist(username))
             throw new RegisterPanelException("username doesn't exist");
+        else if (loggedInAccount.getUsername().equals(username))
+            throw new RegisterPanelException("you can not delete yourself idiot.");
+        else
         if (!dataCenter.deleteAccount(username))
             throw new RegisterPanelException("can't delete this account");
     }

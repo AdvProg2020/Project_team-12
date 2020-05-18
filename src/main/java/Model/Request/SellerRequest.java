@@ -1,15 +1,14 @@
 package Model.Request;
 
-import Controller.DataBase.BadRequestException;
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class SellerRequest extends Request implements NoCauseDecline {
 
-    public SellerRequest(int id, boolean active, String sellerUserName) {
+    public SellerRequest(String id, boolean active, String sellerUserName) {
         super(sellerUserName, id, active);
     }
 
@@ -31,6 +30,7 @@ public class SellerRequest extends Request implements NoCauseDecline {
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));
         DataCenter.getInstance().deleteRequestWithId(id);
+        Config.getInstance().removeRequestId(getId());
     }
 
     @Override
