@@ -45,7 +45,7 @@ public class SellerProfile extends Profile {
         commands.add("offs");
     }
 
-    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) throws Exception{
+    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) throws Exception {
         System.out.println("add specifications to your product (at least one)");
         String specificationTitle = getField("new specification title", "\\S+");
         String specificationValue = getField("specification value", "\\S+");
@@ -141,7 +141,7 @@ public class SellerProfile extends Profile {
                     String description = getField("description", "\\S+");
                     HashMap<String, String> specifications = new HashMap<String, String>();
                     getSpecifications(specifications);
-                    commandProcessor.addProduct(name, brand, price, remainingItems, description, specifications);
+                    commandProcessor.editProduct(commandDetails[1], name, brand, price, remainingItems, description, specifications);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -163,7 +163,6 @@ public class SellerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
-                String id = getField("id", "(\\d+)$");
                 String name = getField("name", "(\\w+)$");
                 String brand = getField("brand", "(\\w+)$");
                 String price = getField("price", "(\\d+)\\.(\\d+)$");
@@ -233,20 +232,15 @@ public class SellerProfile extends Profile {
                     String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    String id = getField("auction id", "(\\d+)$");
-                    //String listOfUsers = getField("products' id and separate them by comma", "(\\w+,)+");
                     ArrayList<String> products = getAuctionProducts();
-                    commandProcessor.addAuction(startingDate, lastDate, percent, id, products);
+                    commandProcessor.editAuction(commandDetails[1], startingDate, lastDate, percent, products);
                     return this;
-                } else if (command.matches(commands.get(2))) {
-                    String[] commandDetails = command.split("\\s");
+                } else if (command.equals(commands.get(2))) {
                     String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    String id = getField("auction id", "(\\d+)$");
-                    //String listOfProducts = getField("products' id and separate them by comma", "(\\w+,)+");
                     ArrayList<String> products = getAuctionProducts();
-                    commandProcessor.addAuction(startingDate, lastDate, percent, id, products);
+                    commandProcessor.addAuction(startingDate, lastDate, percent, products);
                     return this;
                 } else if (command.equals(commands.get(3))) {
                     return getGrandFatherMenu();
@@ -257,7 +251,7 @@ public class SellerProfile extends Profile {
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getAuctionProducts() throws Exception{
+            public ArrayList<String> getAuctionProducts() throws Exception {
                 ArrayList<String> products = new ArrayList<String>();
                 System.out.println("enter the id of products that you wanna add to auction (at least one)");
                 String id = getField("id", "\\S+");

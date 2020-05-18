@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class ProfileCP  extends CommandProcessor {
+public class ProfileCP extends CommandProcessor {
     private static CommandProcessor Instance;
 
     protected ProfileCP() {
         super(MainMenuCP.getInstance());
     }
 
-    public static CommandProcessor getInstance(){
+    public static CommandProcessor getInstance() {
         if (Instance == null)
             Instance = new ProfileCP();
         return Instance;
@@ -122,8 +122,7 @@ public class ProfileCP  extends CommandProcessor {
     public void addProduct(String name, String brand, String price, String remainingItems, String description, HashMap<String, String> specifications) throws Exception {
         Seller seller = (Seller) getLoggedInAccount();
         Product product = new Product(name, seller.getUsername(), Integer.parseInt(remainingItems),
-                Double.parseDouble(price), brand, specifications, description, Integer.toString(dataCenter.getAllProducts().size()), dataCenter.getDate());
-        //TODO: Id generator should be written
+                Double.parseDouble(price), brand, specifications, description, dataCenter.getNewProductID(), dataCenter.getDate());
         Request request = new ProductRequest(seller.getUsername(),
                 dataCenter.requestIDGenerator(seller), false, product.getID());
         seller.addProduct(product);
@@ -134,25 +133,65 @@ public class ProfileCP  extends CommandProcessor {
         dataCenter.saveRequest(request);
     }
 
-    public ArrayList<Category> getCategories(){
+    public ArrayList<Category> getCategories() {
         return dataCenter.getCategories();
     }
 
-    public void addAuction(String startingDate, String lastDate, String percent, String id,ArrayList<String> products) throws Exception{
-        Seller seller = (Seller)getLoggedInAccount();
+    public void editProduct(String id, String name, String brand, String price, String remainingItems, String description, HashMap<String, String> specifications) throws Exception {
+        Seller seller = (Seller) getLoggedInAccount();
+        Product product = dataCenter.getProductById(id);
+        product.setName(name);
+        product.setBrand(brand);
+        product.setPrice(Double.parseDouble(price));
+        product.setRemainingItems(Integer.parseInt(remainingItems));
+        product.setDescription(description);
+        product.setSpecs(specifications);
+        Request request = new ProductRequest(seller.getUsername(),
+                dataCenter.requestIDGenerator(seller), false, product.getID());
+        seller.addProduct(product);
+        seller.addRequest(request);
+        dataCenter.addProduct(product);
+        dataCenter.addRequest(request);
+        dataCenter.saveAccount(seller);
+        dataCenter.saveRequest(request);
+    }
+
+    public void addAuction(String startingDate, String lastDate, String percent, ArrayList<String> products) throws Exception {
+        Seller seller = (Seller) getLoggedInAccount();
         DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
         ArrayList<Product> auctionProducts = new ArrayList<Product>();
         for (String productId : products) {
             auctionProducts.add(dataCenter.getProductById(productId));
         }
-        Auction auction = new Auction(format.parse(startingDate), format.parse(lastDate),Double.parseDouble(percent),id,auctionProducts,seller.getUsername());
-        //TODO: Id generator should be written
-        Request request = new AuctionRequest(seller.getUsername(),dataCenter.requestIDGenerator(seller),false,auction.getID());
-        seller.addAuctionId(id);
+        Auction auction = new Auction(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent), dataCenter.getNewDiscountID(), auctionProducts, seller.getUsername());
+        Request request = new AuctionRequest(seller.getUsername(), dataCenter.requestIDGenerator(seller), false, auction.getID());
+        seller.addAuctionId(auction.getID());
         seller.addRequest(request);
         dataCenter.addRequest(request);
-        dataCenter.addDiscount(auction);//TODO:is this needed here ?? or after accept??
-        dataCenter.saveDiscount(auction);//TODO:is this needed here ??
+        dataCenter.addDiscount(auction);
+        dataCenter.saveDiscount(auction);
+        dataCenter.saveAccount(seller);
+        dataCenter.saveRequest(request);
+    }
+
+    public void editAuction(String id, String startingDate, String lastDate, String percent, ArrayList<String> products) throws Exception {
+        Seller seller = (Seller) getLoggedInAccount();
+        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        ArrayList<Product> auctionProducts = new ArrayList<Product>();
+        for (String productId : products) {
+            auctionProducts.add(dataCenter.getProductById(productId));
+        }
+        Auction auction = dataCenter.getAuctionWithId(id);
+        auction.setStart(format.parse(startingDate));
+        auction.setEnd(format.parse(lastDate));
+        auction.setPercent(Double.parseDouble(percent));
+        auction.setAllProducts(auctionProducts);
+        Request request = new AuctionRequest(seller.getUsername(), dataCenter.requestIDGenerator(seller), false, auction.getID());
+        seller.addAuctionId(auction.getID());
+        seller.addRequest(request);
+        dataCenter.addRequest(request);
+        dataCenter.addDiscount(auction);
+        dataCenter.saveDiscount(auction);
         dataCenter.saveAccount(seller);
         dataCenter.saveRequest(request);
     }
@@ -166,8 +205,8 @@ public class ProfileCP  extends CommandProcessor {
         return dataCenter.getAllUnsolvedRequests();
     }
 
-    public String  showRequestDetail(String commandDetail) throws Exception {
-         return dataCenter.getRequestWithId(commandDetail).showDetails();
+    public String showRequestDetail(String commandDetail) throws Exception {
+        return dataCenter.getRequestWithId(commandDetail).showDetails();
     }
 
     public void acceptRequest(String commandDetail) throws Exception {
@@ -175,11 +214,11 @@ public class ProfileCP  extends CommandProcessor {
     }
 
     public void declineRequest(String commandDetail) throws Exception {
-        ((NoCauseDecline)dataCenter.getRequestWithId(commandDetail)).declineRequest();
+        ((NoCauseDecline) dataCenter.getRequestWithId(commandDetail)).declineRequest();
     }
 
     public void declineRequest(String commandDetail, String cause) throws Exception {
-        ((DeclineHasCause)dataCenter.getRequestWithId(commandDetail)).declineRequest(cause);
+        ((DeclineHasCause) dataCenter.getRequestWithId(commandDetail)).declineRequest(cause);
     }
 
     public boolean checkRequestType(String commandDetail) throws Exception {
