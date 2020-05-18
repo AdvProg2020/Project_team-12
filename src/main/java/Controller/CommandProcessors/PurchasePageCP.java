@@ -8,7 +8,6 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.ProductOnLog;
 import View.Exceptions.CustomerExceptions;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +27,8 @@ public class PurchasePageCP extends CommandProcessor {
         return Instance;
     }
 
-    public void showProductsInCart() {
-        System.out.println(CommandProcessor.getCart().toString());
+    public String showProductsInCart() {
+        return CommandProcessor.getCart().toString();
     }
 
     public void increaseProduct(String productID) throws Exception {
@@ -50,8 +49,8 @@ public class PurchasePageCP extends CommandProcessor {
 
     }
 
-    public void showTotalPrice() {
-        System.out.println(CommandProcessor.getCart().getPayAmount());
+    public Double showTotalPrice() {
+        return CommandProcessor.getCart().getPayAmount();
     }
 
     public void buy(String discountCodeId) throws Exception {

@@ -22,11 +22,6 @@ public class ProductsPageCP extends CommandProcessor {
 
     public ProductsPageCP() {
         super(MainMenuCP.getInstance());
-        /* TODO: get these from data center:
-        this.allCategories = ;
-        this.allProducts = ;
-        this.filter = new Filter(null);
-        this.sort = new Sort(); */
         this.allCategories = DataCenter.getInstance().getCategories();
         this.allProducts = DataCenter.getInstance().getAllProductsObject();
         this.filter = new Filter(null);
@@ -166,4 +161,3 @@ public class ProductsPageCP extends CommandProcessor {
 //⇒ current sort (Done)
 //⇒ disable sort (Done)
 //show products (Done)
-//TODO: show product [productId]//DONE

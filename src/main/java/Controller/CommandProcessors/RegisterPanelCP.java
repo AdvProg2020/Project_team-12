@@ -1,6 +1,7 @@
 package Controller.CommandProcessors;
 
 import Model.Account.Account;
+import Model.Account.CanRequest;
 import Model.Account.Customer;
 import Model.Account.Seller;
 import Model.Request.Request;
@@ -28,13 +29,12 @@ public class RegisterPanelCP extends CommandProcessor {
         } else if (role.equals("seller")) {
             newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             dataCenter.addAccount(newAccount);
-            Request request = new SellerRequest(dataCenter.getAllUnsolvedRequests().size() + 1, false, newAccount.getUsername());
+            Request request = new SellerRequest(dataCenter.requestIDGenerator((CanRequest) newAccount), false, newAccount.getUsername());
              ((Seller) newAccount).addRequest(request);
-            //TODO:id generator
             dataCenter.addRequest(request);
             dataCenter.saveRequest(request);
             dataCenter.saveAccount(newAccount);
-            //TODO:inspect this method
+
         }
     }
 

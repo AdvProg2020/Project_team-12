@@ -27,7 +27,7 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
     }
     public AuctionsPageCP() {
         super(MainMenuCP.getInstance());
-        /* TODO: get these from data center:*/
+
         this.allCategories = DataCenter.getInstance().getCategories();
         this.allProducts = new ArrayList<>();
         this.allFilters = new ArrayList<>();

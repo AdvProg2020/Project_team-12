@@ -120,7 +120,6 @@ public class ProfileCP  extends CommandProcessor {
         Seller seller = (Seller)getLoggedInAccount();
         Product product = new Product(name, seller.getUsername(),Integer.parseInt(remainingItems),
                 Double.parseDouble(price),brand,specifications,description,Integer.toString(dataCenter.getAllProducts().size()),dataCenter.getDate());
-        //TODO: Id generator should be written
         Request request = new ProductRequest(seller.getUsername(),
                 dataCenter.requestIDGenerator(seller),false,product.getID());
         seller.addProduct(product);

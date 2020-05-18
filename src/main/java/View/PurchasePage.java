@@ -121,8 +121,7 @@ public class PurchasePage extends Menu {
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
         if (command.equals(commands.get(0))) {
-            commandProcessor.showProductsInCart();
-            //TODO:why is it void??
+            System.out.println(commandProcessor.showProductsInCart());
             return this;
         } else if (command.matches(commands.get(1))) {
             String[] commandDetails = command.split("\\s");
@@ -136,8 +135,7 @@ public class PurchasePage extends Menu {
             commandProcessor.decreaseProductWithID(commandDetails[1]);
             return this;
         } else if (command.equals(commands.get(4))) {
-            commandProcessor.showTotalPrice();
-            //TODO:why is it void ?? :(
+            System.out.println(commandProcessor.showTotalPrice());
             return this;
         } else if (command.equals(commands.get(5))) {
             return submenus.get(1);
