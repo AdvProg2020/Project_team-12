@@ -22,10 +22,12 @@ public class ProductPage extends Menu {
         submenus.put(3, new RegisterPanel(this));
         setCommands();
     }
-    public static void setCommandProcessor(ProductPageCP cp){
+
+    public static void setCommandProcessor(ProductPageCP cp) {
         commandProcessor = cp;
 
     }
+
     public String getProductId() {
         return productId;
     }
@@ -33,7 +35,7 @@ public class ProductPage extends Menu {
     private void setCommands() {
         commands.add("digest");
         commands.add("attributes");
-        commands.add("compare (\\d+)$");
+        commands.add("compare PR_(\\S+)$");
         commands.add("comments");
         commands.add("back");
         commands.add("help");
@@ -64,16 +66,16 @@ public class ProductPage extends Menu {
             @Override
             public Menu getCommand() throws Exception {
                 String command = scanner.nextLine();
-                if (command.equals(commands.get(0))) {
+                if (command.equals(commands.get(0)) || command.equals("1")) {
                     commandProcessor.addToCart();
                     return this;
-                } else if (command.matches(commands.get(1))) {
+                } else if (command.matches(commands.get(1)) || command.equals("2")) {
                     String[] commandDetails = command.split("\\s");
                     //select seller by commandDetails[2]
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     return this.parentMenu;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
@@ -106,14 +108,14 @@ public class ProductPage extends Menu {
             @Override
             public Menu getCommand() throws Exception {
                 String command = scanner.nextLine();
-                if (command.equals(commands.get(0))) {
+                if (command.equals(commands.get(0)) || command.equals("1")) {
                     String title = getField("title", ".+");
                     String content = getField("content", ".+");
-                    commandProcessor.addReview(title,content);
+                    commandProcessor.addReview(title, content);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(1)) || command.equals("3")) {
                     return this.parentMenu;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(2)) || command.equals("4")) {
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
@@ -135,9 +137,9 @@ public class ProductPage extends Menu {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             System.out.println(commandProcessor.getSelectedProduct().toString());
             return this;
         } else if (command.matches(commands.get(2))) {
@@ -145,14 +147,14 @@ public class ProductPage extends Menu {
             System.out.println("<<product 1>>\n" + commandProcessor.getSelectedProduct().toString());
             System.out.println("<<product 2>>\n" + commandProcessor.getProductById(commandDetails[1]).toString());
             return this;
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             return submenus.get(2);
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             return this;
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

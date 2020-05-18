@@ -83,7 +83,7 @@ public class ManagerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.deleteAccount(commandDetails[2]);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     String username = getField("username", "\\S+");
                     String password = getField("password", "\\S+");
                     String firstName = getField("first name", "\\w+");
@@ -93,9 +93,9 @@ public class ManagerProfile extends Profile {
                     //adding other fields
                     commandProcessor.createManagerAccount(username, password, firstName, lastName, phoneNumber, emailAddress);
                     return this;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
@@ -107,7 +107,7 @@ public class ManagerProfile extends Profile {
     public Menu getManageProductsMenu() {
         return new Menu("Managing Products", this) {
             public void setCommands() {
-                commands.add("remove (\\d+)$");
+                commands.add("remove PR_(\\S+)$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -135,9 +135,9 @@ public class ManagerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.deleteProduct(commandDetails[1]);
                     return this;
-                } else if (command.equals(commands.get(1))) {
+                } else if (command.equals(commands.get(1)) || command.equals("2")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     showCommands();
                     return this;
                 }
@@ -171,9 +171,9 @@ public class ManagerProfile extends Profile {
     public Menu getDiscountCodesMenu() {
         return new Menu("Discount Codes", this) {
             public void setCommands() {
-                commands.add("view discount code (\\S+)$");
-                commands.add("edit discount code (\\S+)$");
-                commands.add("remove discount code (\\S+)$");
+                commands.add("view discount code AU_(\\S+)$");
+                commands.add("edit discount code AU_(\\S+)$");
+                commands.add("remove discount code AU_(\\S+)$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -214,9 +214,9 @@ public class ManagerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.deleteDiscountCode(commandDetails[3]);
                     return this;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
@@ -271,9 +271,9 @@ public class ManagerProfile extends Profile {
                     } else
                         commandProcessor.declineRequest(commandDetails[1]);
                     return this;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
@@ -321,7 +321,7 @@ public class ManagerProfile extends Profile {
                         throw new CustomerExceptions("category with this name doesn't exist");
                     commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
-                } else if (command.equals(commands.get(1))) {
+                } else if (command.equals(commands.get(1)) || command.equals("2")) {
                     String[] commandDetails = command.split("\\s");
                     String categoryName = getField("category name", "\\w+");
                     String parentCategoryName = getField("parent category name", "\\w+");
@@ -331,13 +331,13 @@ public class ManagerProfile extends Profile {
                         throw new CustomerExceptions("category with this name exists");
                     commandProcessor.addCategory(categoryName, parentCategoryName, specifications);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     String[] commandDetails = command.split("\\s");
                     commandProcessor.removeCategory(commandDetails[1]);
                     return this;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
@@ -368,30 +368,30 @@ public class ManagerProfile extends Profile {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             return submenus.get(4);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             return submenus.get(5);
-        } else if (command.equals(commands.get(2))) {
+        } else if (command.equals(commands.get(2)) || command.equals("3")) {
             return submenus.get(6);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             return submenus.get(7);
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             return submenus.get(8);
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             return submenus.get(9);
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return submenus.get(10);
-        } else if (command.equals(commands.get(7))) {
+        } else if (command.equals(commands.get(7)) || command.equals("8")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(8))) {
+        } else if (command.equals(commands.get(8)) || command.equals("9")) {
             return this;
-        } else if (command.equals(commands.get(9))) {
+        } else if (command.equals(commands.get(9)) || command.equals("10")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(10))) {
+        } else if (command.equals(commands.get(10)) || command.equals("11")) {
             return submenus.get(2);
-        } else if (command.equals(commands.get(11))) {
+        } else if (command.equals(commands.get(11)) || command.equals("12")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

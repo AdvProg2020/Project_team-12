@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class PurchasePage extends Menu {
     private static PurchasePage instance;
-    static PurchasePageCP commandProcessor ;
+    static PurchasePageCP commandProcessor;
 
     public PurchasePage(Menu parentMenu) {
         super("Cart", parentMenu);
@@ -26,15 +26,17 @@ public class PurchasePage extends Menu {
         }
         return instance;
     }
-    public static void setCommandProcessor(PurchasePageCP cp){
+
+    public static void setCommandProcessor(PurchasePageCP cp) {
         commandProcessor = cp;
 
     }
+
     private void setCommands() {
         commands.add("show products");
-        commands.add("view (\\d+)$");
-        commands.add("increase (\\d+)$");
-        commands.add("decrease (\\d)$");
+        commands.add("view PR_(\\S+)$");
+        commands.add("increase PR_(\\S+)$");
+        commands.add("decrease PR_(\\S+)$");
         commands.add("show total price");
         commands.add("purchase");
         commands.add("back");
@@ -120,7 +122,7 @@ public class PurchasePage extends Menu {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             System.out.println(commandProcessor.showProductsInCart());
             return this;
         } else if (command.matches(commands.get(1))) {
@@ -134,16 +136,16 @@ public class PurchasePage extends Menu {
             String[] commandDetails = command.split("\\s");
             commandProcessor.decreaseProductWithID(commandDetails[1]);
             return this;
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             System.out.println(commandProcessor.showTotalPrice());
             return this;
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return this.parentMenu;
-        } else if (command.equals(commands.get(7))) {
+        } else if (command.equals(commands.get(7)) || command.equals("8")) {
             return this;
-        } else if (command.equals(commands.get(8))) {
+        } else if (command.equals(commands.get(8)) || command.equals("9")) {
             return submenus.get(2);
         }
         throw new InvalidCommandException("invalid command");

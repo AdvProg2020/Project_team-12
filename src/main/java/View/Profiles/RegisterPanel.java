@@ -155,21 +155,21 @@ public class RegisterPanel extends Menu {
                 throw new RegisterPanelException("username doesn't exist");
             setUsername(commandDetails[1]);
             return submenus.get(2);
-        } else if (command.equals(this.commands.get(2))) {
+        } else if (command.equals(this.commands.get(2)) || command.equals("3")) {
             CommandProcessor.back();
             CommandProcessor.setLoggedInAccount(null);
             if (parentMenu instanceof CustomerProfile || parentMenu instanceof ManagerProfile || parentMenu instanceof SellerProfile)
                 return new Profile(this);
             else
                 return this.parentMenu;
-        } else if (command.equals(this.commands.get(3))) {
+        } else if (command.equals(this.commands.get(3)) || command.equals("4")) {
             CommandProcessor.back();
             if (this.parentMenu instanceof CustomerProfile || this.parentMenu instanceof SellerProfile || this.parentMenu instanceof ManagerProfile) {
                 CommandProcessor.goToSubCommandProcessor(CPS.ProfileCP.getId());
                 return new Profile(this);
             }
             return this.parentMenu;
-        } else if (command.equals(this.commands.get(4))) {
+        } else if (command.equals(this.commands.get(4)) || command.equals("5")) {
             return this;
         }
         throw new InvalidCommandException("invalid command");
