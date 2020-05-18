@@ -57,5 +57,13 @@ public class SellLog extends Log {
         this.status = status;
     }
 
-
+    @Override
+    public String toString() {
+        return "SellLog{" +
+                "receivedCredit=" + receivedCredit +
+                ", decreasedPriceAtAuction=" + decreasedPriceAtAuction +
+                ", allSoldProducts=" + allSoldProducts +
+                ", status=" + status +
+                '}';
+    }
 }

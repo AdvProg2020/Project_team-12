@@ -60,6 +60,11 @@ public class PurchaseLog extends Log {
 
     @Override
     public String toString() {
-        return "PurchaseLog{}";
+        return "PurchaseLog{" +
+                "payedCredit=" + payedCredit +
+                ", finalPrice=" + finalPrice +
+                ", allPurchasedProducts=" + allPurchasedProducts +
+                ", status=" + status +
+                '}';
     }
 }

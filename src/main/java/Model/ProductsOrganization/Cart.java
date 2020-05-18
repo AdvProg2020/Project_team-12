@@ -54,18 +54,6 @@ public class Cart {
         this.owner = owner;
     }
 
-    @Override
-    public String toString() {
-        String var1000 = "Owner Username IS:" + owner.getUsername() +
-                "your Products are:";
-        for (ProductInCart product : products) {
-            var1000 += product.getProduct().toString() + "you have selected "
-                    + product.getQuantity() + "\n";
-        }
-        var1000 += "Sum of prices is:" + getPayAmount();
-        return var1000;
-    }
-
     public Product getProductWIthID(String productId) throws Exception {
         for (ProductInCart product : products) {
             if (product.getProduct().getID().equals(productId))
@@ -152,5 +140,22 @@ public class Cart {
         public Double getPrice() {
             return quantity * product.getPrice();
         }
+
+        @Override
+        public String toString() {
+            return "ProductInCart{" +
+                    "product=" + product +
+                    ", quantity=" + quantity +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "products=" + products +
+                ", owner=" + owner +
+                ", receiverInfo='" + receiverInfo + '\'' +
+                '}';
     }
 }

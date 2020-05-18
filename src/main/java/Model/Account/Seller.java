@@ -33,18 +33,6 @@ public class Seller extends Account implements CanRequest{
 
     }
 
-
-    @Override
-    public String toString() {
-        return super.toString() + "Seller{" +
-                "companyInformation='" + companyInformation + '\'' +
-                ", sellLogs=" + sellLogs +
-                ", allProducts=" + allProducts +
-                '}';
-    }
-
-
-
     public String getCompanyInformation() {
         return companyInformation;
     }
@@ -115,6 +103,19 @@ public class Seller extends Account implements CanRequest{
 
     public void addAuctionId(String id){
         this.auctionsId.add(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Seller{" +
+                "accountTypeAccepted=" + accountTypeAccepted +
+                ", companyInformation='" + companyInformation + '\'' +
+                ", sellLogs=" + sellLogs +
+                ", allProducts=" + allProducts +
+                ", activeRequestsId=" + activeRequestsId +
+                ", solvedRequests=" + solvedRequests +
+                ", auctionsId=" + auctionsId +
+                '}';
     }
 }
 

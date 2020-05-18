@@ -45,11 +45,6 @@ public class Category {
     public void addProduct(Product product) {
     }
 
-    @Override
-    public String toString() {
-        return "";
-    }
-
     public String getName() {
         return name;
     }
@@ -96,5 +91,17 @@ public class Category {
 
     public void setFeatures(ArrayList<String> features) {
         this.features = features;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", categoryPath='" + categoryPath + '\'' +
+                ", features=" + features +
+                ", parent=" + parent +
+                ", allSubCategories=" + allSubCategories +
+                ", allProductsInside=" + allProductsInside +
+                '}';
     }
 }
