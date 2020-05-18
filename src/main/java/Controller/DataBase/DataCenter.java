@@ -61,7 +61,8 @@ public class DataCenter {
             }
         } catch (Exception exception) {
         } finally {
-            return RandomIDGenerator.generateSellID((String[]) args.toArray());
+            String[] result = {};
+            return RandomIDGenerator.generateSellID((String[]) args.toArray(result));
         }
     }
 
@@ -73,7 +74,8 @@ public class DataCenter {
             }
         } catch (Exception exception) {
         } finally {
-            return RandomIDGenerator.generateBuyID((String[]) args.toArray());
+            String[] result = {};
+            return RandomIDGenerator.generateBuyID((String[]) args.toArray(result));
         }
     }
 
@@ -633,7 +635,8 @@ public class DataCenter {
         for (Discount discount : discounts) {
             args.add(discount.getID());
         }
-        return RandomIDGenerator.discountIdGenerator((String[]) args.toArray());
+        String[] result = {};
+        return RandomIDGenerator.discountIdGenerator((String[]) args.toArray(result));
     }
 
     public String getNewProductID() {
