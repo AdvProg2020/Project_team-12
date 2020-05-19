@@ -155,7 +155,7 @@ public class ProfileCP extends CommandProcessor {
 
     public void addAuction(String startingDate, String lastDate, String percent, ArrayList<String> products) throws Exception {
         Seller seller = (Seller) getLoggedInAccount();
-        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         ArrayList<Product> auctionProducts = new ArrayList<Product>();
         for (String productId : products) {
             auctionProducts.add(dataCenter.getProductById(productId));
@@ -173,7 +173,7 @@ public class ProfileCP extends CommandProcessor {
 
     public void editAuction(String id, String startingDate, String lastDate, String percent, ArrayList<String> products) throws Exception {
         Seller seller = (Seller) getLoggedInAccount();
-        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         ArrayList<Product> auctionProducts = new ArrayList<Product>();
         for (String productId : products) {
             auctionProducts.add(dataCenter.getProductById(productId));

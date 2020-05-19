@@ -157,8 +157,8 @@ public class ManagerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
-                String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                String startingDate = getField("starting date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                 String percent = getField("percent", "(\\d+)$");
                 String code = getField("code", "\\S+");
                 String maximumAmount = getField("maximum discount amount", "(\\d+)$");
@@ -204,8 +204,8 @@ public class ManagerProfile extends Profile {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                    String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                    String startingDate = getField("starting date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                    String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
                     String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                     String numberOfUsages = getField("maximum number of usages", "(\\d+)$");

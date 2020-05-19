@@ -23,6 +23,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
@@ -207,7 +208,7 @@ public class CommandProcessor {
             if (!(usersList.get(usersList.size()-1) instanceof Customer))
                 throw new Exception("You have added none customer account.");
         }
-        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
                 dataCenter.getNewDiscountID(), code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
         dataCenter.saveDiscount(discountCode);
@@ -224,11 +225,11 @@ public class CommandProcessor {
     public void editDiscountCode(String code, String startingDate, String lastDate, String percent, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
         DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
         ArrayList<Account> usersList = new ArrayList<Account>();
-        String[] users = listOfUsers.split("\\s");
+        String[] users = listOfUsers.split("\\,");
         for (String username : users) {
             usersList.add(dataCenter.getAccountByName(username));
         }
-        DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         discountCode.setStart(format.parse(startingDate));
         discountCode.setEnd(format.parse(lastDate));
         discountCode.setPercent(Double.parseDouble(percent));

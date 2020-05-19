@@ -229,15 +229,15 @@ public class SellerProfile extends Profile {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                    String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                    String startingDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                    String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
                     ArrayList<String> products = getAuctionProducts();
                     commandProcessor.editAuction(commandDetails[1], startingDate, lastDate, percent, products);
                     return this;
                 } else if (command.equals(commands.get(2)) || command.equals("3")) {
-                    String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                    String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                    String startingDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                    String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
                     ArrayList<String> products = getAuctionProducts();
                     commandProcessor.addAuction(startingDate, lastDate, percent, products);
