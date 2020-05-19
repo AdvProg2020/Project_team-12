@@ -236,4 +236,13 @@ public class Product {
                 ", averageMark=" + averageMark +
                 '}';
     }
+
+    public void addView() {
+        views++;
+    }
+
+    public String getShortInfo() {
+       return  ". name : " +
+                "" + getName() + "\tid : " + getID()+"\tprice : "+price+"\tviews : "+views+"\tDate"+date.toString();
+    }
 }

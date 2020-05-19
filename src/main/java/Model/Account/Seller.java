@@ -111,7 +111,7 @@ public class Seller extends Account implements CanRequest{
                 "accountTypeAccepted=" + accountTypeAccepted +
                 ", companyInformation='" + companyInformation + '\'' +
                 ", sellLogs=" + sellLogs +
-                ", allProducts=" + allProducts +
+                ", allProducts="  +
                 ", activeRequestsId=" + activeRequestsId +
                 ", solvedRequests=" + solvedRequests +
                 ", auctionsId=" + auctionsId +

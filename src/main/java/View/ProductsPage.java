@@ -151,9 +151,9 @@ public class ProductsPage extends Menu {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    if (commandProcessor.canSort(commandDetails[2]))
+                    if (!commandProcessor.canSort(commandDetails[1]))
                         throw new CustomerExceptions("can't use this sort");
-                    commandProcessor.setSortType(commandDetails[2]);
+                    commandProcessor.setSortType(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     System.out.println(commandProcessor.getCurrentSort());
@@ -196,8 +196,7 @@ public class ProductsPage extends Menu {
             return submenus.get(2);
         } else if (command.equals(commands.get(3)) || command.equals("4")) {
             for (int i = 1; i <= commandProcessor.getProducts().size(); i++)
-                System.out.println(i + ". name : " +
-                        "" + commandProcessor.getProducts().get(i - 1).getName() + "\tid : " + commandProcessor.getProducts().get(i - 1).getID());
+                System.out.println(i + commandProcessor.getProducts().get(i-1).getShortInfo());
             return this;
         } else if (command.matches(commands.get(4))) {
             String[] commandDetails = command.split("\\s");

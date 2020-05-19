@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Sort {
-    private String sortType = "Most viewed";
+    private String sortType = "MostViewed";
 
     // Command: show available sorts
     public ArrayList<String> getAvailableSorts() {
         ArrayList<String> availableSorts = new ArrayList<>();
-        availableSorts.add("Most viewed");
+        availableSorts.add("MostViewed");
         availableSorts.add("Newest");
-        availableSorts.add("Best score");
-        availableSorts.add("Lowest price");
-        availableSorts.add("Highest price");
+        availableSorts.add("BestScore");
+        availableSorts.add("LowestPrice");
+        availableSorts.add("HighestPrice");
         return availableSorts;
     }
 
@@ -34,24 +34,24 @@ public class Sort {
 
     // Command: disable sort
     public void disableSort() {
-        sortType = "Most viewed";
+        sortType = "MostViewed";
     }
 
     public ArrayList<Product> getSortedProducts(ArrayList<Product> products) {
         switch(sortType) {
-            case "Most viewed":
+            case "MostViewed":
                 Collections.sort(products, new SortByView());
                 break;
             case "Newest":
                 Collections.sort(products, new SortByDate());
                 break;
-            case "Best Score":
+            case "BestScore":
                 Collections.sort(products, new SortByScore());
                 break;
-            case "Lowest Price":
+            case "LowestPrice":
                 Collections.sort(products, new SortByLowestPrice());
                 break;
-            case "Highest Price":
+            case "HighestPrice":
                 Collections.sort(products, new SortByHighestPrice());
                 break;
         }

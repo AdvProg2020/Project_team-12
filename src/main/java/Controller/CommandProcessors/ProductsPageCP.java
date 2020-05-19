@@ -118,8 +118,14 @@ public class ProductsPageCP extends CommandProcessor {
         return null;
     }
 
-    public void goToProduct(String Id) {
+    public void goToProduct(String Id) throws Exception {
         ProductPageCP.getInstance(Id).setParent(this);
+        DataCenter.getInstance().getProductById(Id).addView();
+        try {
+            DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(DataCenter.getInstance().getProductById(Id).getSeller()));
+        } catch (Exception exception) {
+            throw new Exception("can not save views.");
+        }
     }
 
     public void showProduct(String productID) {

@@ -2,6 +2,7 @@ package View;
 
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.DataBase.DataCenter;
+import View.Exceptions.CancelException;
 import View.Exceptions.CustomerExceptions;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public abstract class Menu {
             /*String command = getField("<next> or <back>", ("(next|back)"));
             //String command = scanner.nextLine();*/
             if (command.equals("back"))
-                throw new CustomerExceptions("exited successfully");
+                throw new CancelException("exited successfully");
             /*else if (!command.equals("next"))
                 System.err.println("invalid command");*/
             fieldValue = getField(fieldName, regex);
@@ -76,11 +77,11 @@ public abstract class Menu {
                 nextMenu.show();
                 nextMenu.run();
             }
-        }/* catch (NullPointerException e){
-            if (CommandProcessor.getInstance() == null){
-
-            }
-        }*/catch (Exception e) {
+        }catch (CancelException e){
+            System.out.println("You hav canceled the process successfully.");
+            this.parentMenu.show();
+            this.parentMenu.run();
+        }catch (Exception e) {
             System.err.println(e.getMessage());
             show();
             run();

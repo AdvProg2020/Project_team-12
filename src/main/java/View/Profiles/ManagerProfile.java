@@ -4,6 +4,7 @@ import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
+import Model.ProductsOrganization.Product;
 import Model.Request.Request;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
@@ -117,9 +118,9 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                ArrayList<String> allProductsInfo =  commandProcessor.getAllProducts();
+                ArrayList<Product> allProductsInfo =  commandProcessor.getAllProducts();
                 for (int i = 1; i <= allProductsInfo.size(); i++) {
-                    System.out.println(i + ". " + allProductsInfo.get(i - 1));
+                    System.out.println(i + ". " + allProductsInfo.get(i - 1).getShortInfo());
                 }
                 showCommands();
             }
@@ -156,8 +157,8 @@ public class ManagerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
-                String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                String startingDate = getField("starting date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                 String percent = getField("percent", "(\\d+)$");
                 String code = getField("code", "\\S+");
                 String maximumAmount = getField("maximum discount amount", "(\\d+)$");
@@ -203,8 +204,8 @@ public class ManagerProfile extends Profile {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    String startingDate = getField("starting date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
-                    String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
+                    String startingDate = getField("starting date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
+                    String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
                     String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                     String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
