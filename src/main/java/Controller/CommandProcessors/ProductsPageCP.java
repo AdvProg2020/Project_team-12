@@ -29,6 +29,7 @@ public class ProductsPageCP extends CommandProcessor {
     public static CommandProcessor getInstance() {
         if (Instance == null)
             Instance = new ProductsPageCP();
+        ((ProductsPageCP)Instance).setAllProducts(DataCenter.getInstance().getAllProductsObject());
         return Instance;
     }
 
@@ -63,6 +64,10 @@ public class ProductsPageCP extends CommandProcessor {
     // Command: current filters
     public ArrayList<String> getCurrentFilters() {
         return filter.getCurrentFilters();
+    }
+
+    public void setAllProducts(ArrayList<Product> allProducts) {
+        this.allProducts = allProducts;
     }
 
     // Command: disable filter [a selected filter]
