@@ -1,5 +1,6 @@
 package View;
 
+import Controller.CommandProcessors.CommandProcessor;
 import Controller.DataBase.DataCenter;
 import View.Exceptions.CustomerExceptions;
 
@@ -75,7 +76,11 @@ public abstract class Menu {
                 nextMenu.show();
                 nextMenu.run();
             }
-        } catch (Exception e) {
+        }/* catch (NullPointerException e){
+            if (CommandProcessor.getInstance() == null){
+
+            }
+        }*/catch (Exception e) {
             System.err.println(e.getMessage());
             show();
             run();

@@ -632,8 +632,10 @@ public class DataCenter {
         return var;
     }
 
-    public Set<String> getAllProducts() {
-        return productsByName.keySet();
+    public ArrayList<String> getAllProductsWithNoCondition() {
+        ArrayList<String > tmp = new ArrayList<>();
+        tmp.addAll(productsByName.keySet());
+        return tmp;
     }
 
     public String getNewDiscountID() {

@@ -194,8 +194,8 @@ public class CommandProcessor {
             throw new ProductExceptions("can't delete this product");
     }
 
-    public Set<String> getAllProducts() {
-        return dataCenter.getAllProducts();
+    public ArrayList<String> getAllProducts() {
+        return dataCenter.getAllProductsWithNoCondition();
     }
 
     public void createDiscountCode(String startingDate, String lastDate, String percent, String code, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {

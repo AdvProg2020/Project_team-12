@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
@@ -116,9 +117,9 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                String[] allProductsInfo = (String[]) commandProcessor.getAllProducts().toArray();
-                for (int i = 1; i <= allProductsInfo.length; i++) {
-                    System.out.println(i + ". " + allProductsInfo[i - 1]);
+                ArrayList<String> allProductsInfo =  commandProcessor.getAllProducts();
+                for (int i = 1; i <= allProductsInfo.size(); i++) {
+                    System.out.println(i + ". " + allProductsInfo.get(i - 1));
                 }
                 showCommands();
             }
@@ -388,10 +389,13 @@ public class ManagerProfile extends Profile {
         } else if (command.equals(commands.get(8)) || command.equals("9")) {
             return this;
         } else if (command.equals(commands.get(9)) || command.equals("10")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(1);
         } else if (command.equals(commands.get(10)) || command.equals("11")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
         } else if (command.equals(commands.get(11)) || command.equals("12")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");
