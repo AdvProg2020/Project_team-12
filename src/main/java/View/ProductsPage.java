@@ -151,9 +151,9 @@ public class ProductsPage extends Menu {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    if (commandProcessor.canSort(commandDetails[2]))
+                    if (!commandProcessor.canSort(commandDetails[1]))
                         throw new CustomerExceptions("can't use this sort");
-                    commandProcessor.setSortType(commandDetails[2]);
+                    commandProcessor.setSortType(commandDetails[1]);
                     return this;
                 } else if (command.equals(commands.get(2))) {
                     System.out.println(commandProcessor.getCurrentSort());

@@ -120,6 +120,12 @@ public class ProductsPageCP extends CommandProcessor {
 
     public void goToProduct(String Id) {
         ProductPageCP.getInstance(Id).setParent(this);
+        DataCenter.getInstance().getProductById(Id).addView();
+        try {
+            DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(DataCenter.getInstance().getProductById(Id).getSeller()));
+        } catch (Exception exception) {
+
+        }
     }
 
     public void showProduct(String productID) {

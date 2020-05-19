@@ -236,4 +236,8 @@ public class Product {
                 ", averageMark=" + averageMark +
                 '}';
     }
+
+    public void addView() {
+        views++;
+    }
 }
