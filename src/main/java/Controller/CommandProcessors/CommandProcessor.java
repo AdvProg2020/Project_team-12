@@ -209,6 +209,9 @@ public class CommandProcessor {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
                 dataCenter.getNewDiscountID(), code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
+        for (Account account : usersList) {
+            account.addDiscountCode(discountCode);
+        }
         dataCenter.saveDiscount(discountCode);
     }
 
