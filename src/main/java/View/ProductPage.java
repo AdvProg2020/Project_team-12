@@ -25,7 +25,6 @@ public class ProductPage extends Menu {
 
     public static void setCommandProcessor(ProductPageCP cp) {
         commandProcessor = cp;
-
     }
 
     public String getProductId() {
@@ -33,6 +32,7 @@ public class ProductPage extends Menu {
     }
 
     private void setCommands() {
+        setCommandProcessor((ProductPageCP) CommandProcessor.getInstance());
         commands.add("digest");
         commands.add("attributes");
         commands.add("compare PR_(\\S+)$");

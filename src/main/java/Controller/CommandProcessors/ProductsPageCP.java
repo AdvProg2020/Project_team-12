@@ -7,9 +7,7 @@ import Model.ProductsOrganization.Filter.Filter;
 import Model.ProductsOrganization.Product;
 import Model.ProductsOrganization.Sort.Sort;
 import View.Exceptions.CustomerExceptions;
-import View.ProductPage;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 public class ProductsPageCP extends CommandProcessor {
@@ -29,7 +27,8 @@ public class ProductsPageCP extends CommandProcessor {
     }
 
     public static CommandProcessor getInstance() {
-        Instance = new ProductsPageCP();
+        if (Instance == null)
+            Instance = new ProductsPageCP();
         return Instance;
     }
 
@@ -118,17 +117,17 @@ public class ProductsPageCP extends CommandProcessor {
                 return category;
         return null;
     }
-    public void goToProduct(String Id){
+
+    public void goToProduct(String Id) {
         ProductPageCP.getInstance(Id).setParent(this);
-        CommandProcessor.setInstance(ProductPageCP.getInstance());
     }
 
-    public void showProduct(String productID){
+    public void showProduct(String productID) {
         ProductPageCP.getInstance(productID).setParent(this);
         CommandProcessor.setInstance(ProductPageCP.getInstance());
     }
 
-    public boolean doesFilterExistsByName(String name){
+    public boolean doesFilterExistsByName(String name) {
         for (String availableFilter : getAvailableFilters()) {
             if (availableFilter.equals(name))
                 return true;
@@ -136,13 +135,13 @@ public class ProductsPageCP extends CommandProcessor {
         return false;
     }
 
-    public boolean checkRangeFilters(String name) throws Exception{
+    public boolean checkRangeFilters(String name) throws Exception {
         if (!doesFilterExistsByName(name))
             throw new CustomerExceptions("filter doesn't exist");
         return filter.checkRangeFilters(name);
     }
 
-    public boolean doesProductExist(String id){
+    public boolean doesProductExist(String id) {
         return dataCenter.doesProductExist(id);
     }
 }
