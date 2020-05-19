@@ -580,8 +580,12 @@ public class DataCenter {
     }
 
 
-    public Set<String> getAllAccountsInfo() {
-        return this.accountsByUsername.keySet();
+    public ArrayList<String> getAllAccountsInfo() {
+        ArrayList<String> strings = new ArrayList<>();
+        for (Account account : accountsByUsername.values()) {
+            strings.add(account.getUsername()+"\t"+account.getClass().getName());
+        }
+        return strings;
     }
 
     public boolean doesUsernameExist(String username) {

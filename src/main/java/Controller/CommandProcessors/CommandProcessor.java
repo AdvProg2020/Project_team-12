@@ -166,7 +166,7 @@ public class CommandProcessor {
         dataCenter.saveAccount(loggedInAccount);
     }
 
-    public Set<String> getAllAccountsInfo() {
+    public ArrayList<String> getAllAccountsInfo() {
         //this method is only used for manager
         return dataCenter.getAllAccountsInfo();
     }
@@ -204,6 +204,8 @@ public class CommandProcessor {
         String[] users = listOfUsers.split("\\s");
         for (String username : users) {
             usersList.add(dataCenter.getAccountByName(username));
+            if (!(usersList.get(usersList.size()-1) instanceof Customer))
+                throw new Exception("You have added none customer account.");
         }
         DateFormat format = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH);
         DiscountCode discountCode = new DiscountCode(format.parse(startingDate), format.parse(lastDate), Double.parseDouble(percent),
