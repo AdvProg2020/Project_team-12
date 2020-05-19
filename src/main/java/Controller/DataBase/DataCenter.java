@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DataCenter {
@@ -114,6 +117,8 @@ public class DataCenter {
     }
 
     private void addCategory(Category category) {
+        category.setAllProductsInside(new HashMap<>());
+        category.setAllSubCategories(new HashMap<>());
         String[] categories = category.getCategoryPath().split("/");
         Category var100 = null;
         for (int i = 0; i < categories.length - 1; i++) {
@@ -134,7 +139,9 @@ public class DataCenter {
         try {
             addCategory(reader.read(file, Category.class));
         } catch (FileNotFoundException e) {
-            addCategory(new Category(category, new ArrayList<String>(), null));
+            Category category1 = new Category(category, new ArrayList<String>(), null);
+
+            addCategory(category1);
         }
     }
 
@@ -257,6 +264,8 @@ public class DataCenter {
     }
 
     public void addProduct(Model.ProductsOrganization.Product product) {
+        if (!(product.getParentStr()!= null && product.getParentStr()!=""&&product.getParent()!=null))
+        product.setParent(categories.get(product.getParentStr()));
         if (!productsByName.containsValue(product.getName()))
             productsByName.put(product.getName(), product);
     }
@@ -300,7 +309,8 @@ public class DataCenter {
     public void saveAccount(Seller seller) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
         for (Product product : seller.getAllProducts()) {
-            product.setParentStr(product.getParent().getName());
+            if (product.getParent() != null)
+                product.setParentStr(product.getParent().getName());
         }
         writer.write(seller, generateUserFilePath(seller.getUsername(), Config.AccountsPath.SELLER.getNum(), "seller"), Account.class);
     }
@@ -551,7 +561,7 @@ public class DataCenter {
         System.gc();
         ((Seller) getAccountByName(product.getSeller())).getAllProducts().remove(product);
         saveAccount(getAccountByName(product.getSeller()));
-        productsByName.remove(product.getName(),product);
+        productsByName.remove(product.getName(), product);
         for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {
             getAuctionWithId(s).removeProduct(product);
         }
@@ -586,7 +596,7 @@ public class DataCenter {
     public ArrayList<String> getAllAccountsInfo() {
         ArrayList<String> strings = new ArrayList<>();
         for (Account account : accountsByUsername.values()) {
-            strings.add(account.getUsername()+"\t"+account.getClass().getName());
+            strings.add(account.getUsername() + "\t" + account.getClass().getName());
         }
         return strings;
     }
@@ -633,16 +643,17 @@ public class DataCenter {
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
         ArrayList<Product> var = new ArrayList<>();
         var.addAll(productsByName.values());
-        for (int i = 0; i < var.size();i++ ) {
-            if (var.get(i).getStatus().equals(Status.CONSTRUCTING)||var.get(i).getStatus().equals(Status.EDITING)){
+        for (int i = 0; i < var.size(); i++) {
+            if (var.get(i).getStatus().equals(Status.CONSTRUCTING) || var.get(i).getStatus().equals(Status.EDITING)) {
                 var.remove(var.get(i));
-            i--;}
+                i--;
+            }
         }
         return var;
     }
 
     public ArrayList<Product> getAllProductsWithNoCondition() {
-        ArrayList<Product > tmp = new ArrayList<>();
+        ArrayList<Product> tmp = new ArrayList<>();
         tmp.addAll(productsByName.values());
         return tmp;
     }

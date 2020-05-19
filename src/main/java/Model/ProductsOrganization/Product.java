@@ -226,6 +226,7 @@ public class Product {
         return "Product{" +
                 "views=" + views +
                 ", name='" + name + '\'' +
+                ", discountPercentInAuction=" + discountPercentInAuction +
                 ", seller='" + seller + '\'' +
                 ", remainingItems=" + remainingItems +
                 ", price=" + price +
@@ -233,9 +234,19 @@ public class Product {
                 ", specs=" + specs +
                 ", description='" + description + '\'' +
                 ", ID='" + ID + '\'' +
+                ", status=" + status +
                 ", averageMark=" + averageMark +
+                ", date=" + date +
+                ", parent=" + parent +
+                ", allScores=" + allScores +
+                ", allReviews=" + allReviews +
+                ", parentStr='" + parentStr + '\'' +
+                ", buyers=" + buyers +
                 '}';
     }
+
+
+
 
     public void addView() {
         views++;

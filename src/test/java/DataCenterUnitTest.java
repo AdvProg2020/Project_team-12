@@ -13,16 +13,13 @@ import Model.Status;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
-/*
+
 public class DataCenterUnitTest {
     @Test
     public void DataSaving() throws Exception {
-        DataCenter dataCenter = DataCenter.getInstance();
+        /*DataCenter dataCenter = DataCenter.getInstance();
         Account[] accounts = new Account[3];
         accounts[0] = new Seller("ali", "ali", "ali", "ali", "ali", "ali", "ali");
         ArrayList<DiscountCode> codes = new ArrayList<>();
@@ -58,19 +55,25 @@ public class DataCenterUnitTest {
         Assert.assertEquals(accounts[2], dataCenter.getAccountByName(accounts[2].getUsername()));
         dataCenter =DataCenter.getInstance();
         productDataSaving(product, dataCenter);
-        discountDataSaving(discounts, dataCenter);
+        discountDataSaving(discounts, dataCenter);*/
+        DataCenter dataCenter =  DataCenter.getInstance();
+        for (Product product : dataCenter.getAllProductsWithNoCondition()) {
+            dataCenter.getCategories().get(0).addProduct(product);
+            dataCenter.saveProduct(product);
+        }
+        dataCenter.saveCategory(dataCenter.getCategories().get(0));
     }
 
     public void productDataSaving(Product product, DataCenter dataCenter) {
-        Assert.assertEquals(product, dataCenter.getProductById(1));
+      /*  Assert.assertEquals(product, dataCenter.getProductById(1));
         Assert.assertEquals(product, dataCenter.getProductByName("ali"));
-        Assert.assertEquals(product, dataCenter.getProductById(1));
+        Assert.assertEquals(product, dataCenter.getProductById(1));*/
 
     }
 
     public void discountDataSaving(Discount[] discounts, DataCenter dataCenter) throws Exception {
-        Assert.assertEquals(discounts[0], dataCenter.getAuctionWithId(12));
-        Assert.assertEquals(discounts[1], dataCenter.getDiscountcodeWithId(13));
+       /* Assert.assertEquals(discounts[0], dataCenter.getAuctionWithId(12));
+        Assert.assertEquals(discounts[1], dataCenter.getDiscountcodeWithId(13));*/
     }
 }
-*/
+

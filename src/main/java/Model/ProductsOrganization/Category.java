@@ -43,6 +43,8 @@ public class Category {
     }
 
     public void addProduct(Product product) {
+        allProductsInside.put(product.getName(),product);
+        product.setParent(this);
     }
 
     public String getName() {

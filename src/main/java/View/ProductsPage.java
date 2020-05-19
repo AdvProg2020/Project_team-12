@@ -75,16 +75,16 @@ public class ProductsPage extends Menu {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    if (!commandProcessor.canFilter(commandDetails[2]))
+                    if (!commandProcessor.canFilter(commandDetails[1]))
                         throw new CustomerExceptions("can't use this filter");
-                    if (commandProcessor.checkRangeFilters(commandDetails[2])) {
+                    if (commandProcessor.checkRangeFilters(commandDetails[1])) {
                         String minimumValue = getField("minimum value", "(\\d+)\\.(\\d+)$");
                         String maximumValue = getField("maximum value", "(\\d+)\\.(\\d+)$");
-                        commandProcessor.filterByRange(commandDetails[2], Double.parseDouble(minimumValue), Double.parseDouble(maximumValue));
+                        commandProcessor.filterByRange(commandDetails[1], Double.parseDouble(minimumValue), Double.parseDouble(maximumValue));
                     } else {
-                        ArrayList<String> filterValues = new ArrayList<String>();
+                        ArrayList<String> filterValues = new ArrayList<>();
                         getSelectedOptions(filterValues);
-                        commandProcessor.filterBySelectedFeatures(commandDetails[2], filterValues);
+                        commandProcessor.filterBySelectedFeatures(commandDetails[1], filterValues);
                     }
                     return this;
                 } else if (command.equals(commands.get(2))) {
