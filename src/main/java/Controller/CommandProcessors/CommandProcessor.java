@@ -211,6 +211,7 @@ public class CommandProcessor {
                 dataCenter.getNewDiscountID(), code, Integer.parseInt(maximumAmount), Integer.parseInt(numberOfUsages), usersList);
         for (Account account : usersList) {
             account.addDiscountCode(discountCode);
+            dataCenter.saveAccount(account);
         }
         dataCenter.saveDiscount(discountCode);
     }
@@ -225,10 +226,16 @@ public class CommandProcessor {
 
     public void editDiscountCode(String code, String startingDate, String lastDate, String percent, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
         DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
+        for (Account account : discountCode.getAllAllowedAccounts()) {
+            account.getAllDiscountCodes().remove(discountCode);
+        }
         ArrayList<Account> usersList = new ArrayList<Account>();
         String[] users = listOfUsers.split("\\,");
+        Account account;
         for (String username : users) {
-            usersList.add(dataCenter.getAccountByName(username));
+            (account = dataCenter.getAccountByName(username)).getAllDiscountCodes().add(discountCode);
+            usersList.add(account);
+            dataCenter.saveAccount(account);
         }
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         discountCode.setStart(format.parse(startingDate));
