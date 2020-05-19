@@ -547,6 +547,8 @@ public class DataCenter {
     public boolean deleteProduct(Model.ProductsOrganization.Product product) throws Exception {
         System.gc();
         ((Seller) getAccountByName(product.getSeller())).getAllProducts().remove(product);
+        saveAccount(getAccountByName(product.getSeller()));
+        productsByName.remove(product.getName(),product);
         for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {
             getAuctionWithId(s).removeProduct(product);
         }
@@ -632,9 +634,9 @@ public class DataCenter {
         return var;
     }
 
-    public ArrayList<String> getAllProductsWithNoCondition() {
-        ArrayList<String > tmp = new ArrayList<>();
-        tmp.addAll(productsByName.keySet());
+    public ArrayList<Product> getAllProductsWithNoCondition() {
+        ArrayList<Product > tmp = new ArrayList<>();
+        tmp.addAll(productsByName.values());
         return tmp;
     }
 

@@ -8,6 +8,7 @@ import Model.Account.Manager;
 import Model.Account.Seller;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Cart;
+import Model.ProductsOrganization.Product;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.ProductExceptions;
@@ -194,7 +195,7 @@ public class CommandProcessor {
             throw new ProductExceptions("can't delete this product");
     }
 
-    public ArrayList<String> getAllProducts() {
+    public ArrayList<Product> getAllProducts() {
         return dataCenter.getAllProductsWithNoCondition();
     }
 

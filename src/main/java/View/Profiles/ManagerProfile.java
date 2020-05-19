@@ -4,6 +4,7 @@ import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Model.Discount.DiscountCode;
 import Model.ProductsOrganization.Category;
+import Model.ProductsOrganization.Product;
 import Model.Request.Request;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
@@ -117,9 +118,9 @@ public class ManagerProfile extends Profile {
             public void show() {
                 if (commands.size() == 0) setCommands();
                 System.out.println(this.getName() + "\n");
-                ArrayList<String> allProductsInfo =  commandProcessor.getAllProducts();
+                ArrayList<Product> allProductsInfo =  commandProcessor.getAllProducts();
                 for (int i = 1; i <= allProductsInfo.size(); i++) {
-                    System.out.println(i + ". " + allProductsInfo.get(i - 1));
+                    System.out.println(i + ". " + allProductsInfo.get(i - 1).getShortInfo());
                 }
                 showCommands();
             }
