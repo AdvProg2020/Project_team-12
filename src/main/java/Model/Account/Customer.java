@@ -9,8 +9,6 @@ import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 
 public class Customer extends Account implements CanRequest{
-    @Expose(serialize = false,deserialize = false)
-    private Cart cart;
     @Expose
     private ArrayList<PurchaseLog> buyLogs = new ArrayList<>();
     @Expose
@@ -72,7 +70,6 @@ public class Customer extends Account implements CanRequest{
     @Override
     public String toString() {
         return "Customer{" +
-                "cart=" + cart +
                 ", buyLogs=" + buyLogs +
                 ", activeRequestsId=" + activeRequestsId +
                 ", solvedRequests=" + solvedRequests +

@@ -235,6 +235,15 @@ public class ProfileCP extends CommandProcessor {
         Category newCategory = new Category(categoryName, specifications, parentCategory);
         dataCenter.saveCategory(newCategory);
     }
+    public void editCategory(String categoryName, String parentCategoryName, ArrayList<String> specifications) throws Exception {
+        Category category = dataCenter.getCategoryWithName(categoryName);
+        category.setParent(dataCenter.getCategoryWithName(parentCategoryName));
+        category.setFeatures(specifications);
+        for (Product value : category.getAllProductsInside().values()) {
+            dataCenter.saveProduct(value);
+        }
+        dataCenter.saveCategory(category);
+    }
 
     public boolean doesCategoryExistsWithThisName(String name) {
         for (Category category : dataCenter.getCategories()) {

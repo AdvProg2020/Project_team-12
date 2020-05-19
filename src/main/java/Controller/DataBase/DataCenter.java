@@ -299,6 +299,9 @@ public class DataCenter {
 
     public void saveAccount(Seller seller) throws IOException {
         JsonFileWriter writer = new JsonFileWriter(accountRuntimeTypeAdapter);
+        for (Product product : seller.getAllProducts()) {
+            product.setParentStr(product.getParent().getName());
+        }
         writer.write(seller, generateUserFilePath(seller.getUsername(), Config.AccountsPath.SELLER.getNum(), "seller"), Account.class);
     }
 
@@ -695,6 +698,16 @@ public class DataCenter {
     }
 
 
+    public Category getCategoryWithName(String categoryName) throws BadRequestException {
+        for (String s : categories.keySet()) {
+            if (s.equals(categoryName))
+                return categories.get(s);
+        }
+        throw new BadRequestException("there is no category with such name");
+    }
 
+    public void saveProduct(Product value) throws IOException {
+        saveAccount(accountsByUsername.get(value.getSeller()));
+    }
 }
 

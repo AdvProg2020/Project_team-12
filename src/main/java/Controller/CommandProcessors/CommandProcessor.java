@@ -224,15 +224,14 @@ public class CommandProcessor {
         return dataCenter.getDiscountcodeWithCode(code);
     }
 
-    public void editDiscountCode(String code, String startingDate, String lastDate, String percent, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
+    public void editDiscountCode(String code, String startingDate, String lastDate, String percent, String maximumAmount, String numberOfUsages, ArrayList<String> listOfUsers) throws Exception {
         DiscountCode discountCode = dataCenter.getDiscountcodeWithCode(code);
         for (Account account : discountCode.getAllAllowedAccounts()) {
             account.getAllDiscountCodes().remove(discountCode);
         }
-        ArrayList<Account> usersList = new ArrayList<Account>();
-        String[] users = listOfUsers.split("\\,");
+        ArrayList<Account> usersList = new ArrayList<>();
         Account account;
-        for (String username : users) {
+        for (String username : listOfUsers) {
             (account = dataCenter.getAccountByName(username)).getAllDiscountCodes().add(discountCode);
             usersList.add(account);
             dataCenter.saveAccount(account);

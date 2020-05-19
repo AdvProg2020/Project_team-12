@@ -169,25 +169,16 @@ public class ManagerProfile extends Profile {
                 return this.parentMenu;
             }
 
-            public ArrayList<String> getListOfUsers(ArrayList<String> users) throws Exception {
-                System.out.println("enter the username of customer that you wanna add (at least one)");
-                String username = getField("username", "(\\w+)$");
-                users.add(username);
-                System.out.println("type <back> to continue or <next> to add more products");
-                String command = getField("<next> or <back>", "(next|back)$");
-                if (command.equals("next"))
-                    getListOfUsers(users);
-                return users;
-            }
+
         };
     }
 
     public Menu getDiscountCodesMenu() {
         return new Menu("Discount Codes", this) {
             public void setCommands() {
-                commands.add("view discount code AU_(\\S+)$");
-                commands.add("edit discount code AU_(\\S+)$");
-                commands.add("remove discount code AU_(\\S+)$");
+                commands.add("view discount code (\\S+)$");
+                commands.add("edit discount code (\\S+)$");
+                commands.add("remove discount code (\\S+)$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -221,7 +212,8 @@ public class ManagerProfile extends Profile {
                     String percent = getField("percent", "(\\d+)$");
                     String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                     String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
-                    String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
+                    ArrayList<String> listOfUsers = new ArrayList<>();
+                    listOfUsers = getListOfUsers(listOfUsers);
                     commandProcessor.editDiscountCode(commandDetails[3], startingDate, lastDate, percent, maximumAmount, numberOfUsages, listOfUsers);
                     return this;
                 } else if (command.matches(commands.get(2))) {
@@ -413,4 +405,17 @@ public class ManagerProfile extends Profile {
         }
         throw new InvalidCommandException("invalid command");
     }
+    public ArrayList<String> getListOfUsers(ArrayList<String> users) throws Exception {
+        System.out.println("enter the username of customer that you wanna add (at least one)");
+        String username = getField("username", "(\\w+)$");
+        users.add(username);
+        System.out.println("type <back> to continue or <next> to add more products");
+        String command = getField("<next> or <back>", "(next|back)$");
+        if (command.equals("next"))
+            getListOfUsers(users);
+        return users;
+    }
 }
+//TODO: Category name should be unique and the category edit function has a problem.
+//TODO: Manager should be able to add product to categories.
+//TODO: Customer should be able to increase the credit.
