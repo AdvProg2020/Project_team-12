@@ -201,7 +201,7 @@ public class CommandProcessor {
 
     public void createDiscountCode(String startingDate, String lastDate, String percent, String code, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
         ArrayList<Account> usersList = new ArrayList<Account>();
-        String[] users = listOfUsers.split("\\s");
+        String[] users = listOfUsers.split("\\,");
         for (String username : users) {
             usersList.add(dataCenter.getAccountByName(username));
             if (!(usersList.get(usersList.size()-1) instanceof Customer))
