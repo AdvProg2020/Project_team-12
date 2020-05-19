@@ -184,8 +184,7 @@ public class CommandProcessor {
             throw new RegisterPanelException("username doesn't exist");
         else if (loggedInAccount.getUsername().equals(username))
             throw new RegisterPanelException("you can not delete yourself idiot.");
-        else
-        if (!dataCenter.deleteAccount(username))
+        else if (!dataCenter.deleteAccount(username))
             throw new RegisterPanelException("can't delete this account");
     }
 
@@ -200,12 +199,11 @@ public class CommandProcessor {
         return dataCenter.getAllProductsWithNoCondition();
     }
 
-    public void createDiscountCode(String startingDate, String lastDate, String percent, String code, String maximumAmount, String numberOfUsages, String listOfUsers) throws Exception {
+    public void createDiscountCode(String startingDate, String lastDate, String percent, String code, String maximumAmount, String numberOfUsages, ArrayList<String> listOfUsers) throws Exception {
         ArrayList<Account> usersList = new ArrayList<Account>();
-        String[] users = listOfUsers.split("\\,");
-        for (String username : users) {
+        for (String username : listOfUsers) {
             usersList.add(dataCenter.getAccountByName(username));
-            if (!(usersList.get(usersList.size()-1) instanceof Customer))
+            if (!(usersList.get(usersList.size() - 1) instanceof Customer))
                 throw new Exception("You have added none customer account.");
         }
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);

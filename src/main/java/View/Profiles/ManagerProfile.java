@@ -163,9 +163,21 @@ public class ManagerProfile extends Profile {
                 String code = getField("code", "\\S+");
                 String maximumAmount = getField("maximum discount amount", "(\\d+)$");
                 String numberOfUsages = getField("maximum number of usages", "(\\d+)$");
-                String listOfUsers = getField("accounts' username and separate them by comma", "(\\w+,)+");
+                ArrayList<String> users = new ArrayList<String >();
+                ArrayList<String> listOfUsers = getListOfUsers(users);
                 commandProcessor.createDiscountCode(startingDate, lastDate, percent, code, maximumAmount, numberOfUsages, listOfUsers);
                 return this.parentMenu;
+            }
+
+            public ArrayList<String> getListOfUsers(ArrayList<String> users) throws Exception {
+                System.out.println("enter the username of customer that you wanna add (at least one)");
+                String username = getField("username", "(\\w+)$");
+                users.add(username);
+                System.out.println("type <back> to continue or <next> to add more products");
+                String command = getField("<next> or <back>", "(next|back)$");
+                if (command.equals("next"))
+                    getListOfUsers(users);
+                return users;
             }
         };
     }

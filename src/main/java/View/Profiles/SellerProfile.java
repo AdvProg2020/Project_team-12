@@ -232,14 +232,16 @@ public class SellerProfile extends Profile {
                     String startingDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    ArrayList<String> products = getAuctionProducts();
+                    ArrayList<String> products = new ArrayList<String>();
+                     getAuctionProducts(products);
                     commandProcessor.editAuction(commandDetails[1], startingDate, lastDate, percent, products);
                     return this;
                 } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     String startingDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) (\\d\\d):(\\d\\d):(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    ArrayList<String> products = getAuctionProducts();
+                    ArrayList<String> products = new ArrayList<String>();
+                    products = getAuctionProducts(products);
                     commandProcessor.addAuction(startingDate, lastDate, percent, products);
                     return this;
                 } else if (command.equals(commands.get(3)) || command.equals("4")) {
@@ -251,15 +253,14 @@ public class SellerProfile extends Profile {
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getAuctionProducts() throws Exception {
-                ArrayList<String> products = new ArrayList<String>();
+            public ArrayList<String> getAuctionProducts(ArrayList<String> products) throws Exception {
                 System.out.println("enter the id of products that you wanna add to auction (at least one)");
                 String id = getField("id", "PR_(\\S+)$");
                 products.add(id);
                 System.out.println("type <back> to continue or <next> to add more products");
                 String command = getField("<next> or <back>", "(next|back)$");
                 if (command.equals("next"))
-                    getAuctionProducts();
+                    getAuctionProducts(products);
                 return products;
             }
         };
