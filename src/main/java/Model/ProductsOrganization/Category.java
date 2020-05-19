@@ -95,13 +95,15 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                ", categoryPath='" + categoryPath + '\'' +
+        String var = "Category{" +
+                "name='" + name +
                 ", features=" + features +
                 ", parent=" + parent +
-                ", allSubCategories=" + allSubCategories +
-                ", allProductsInside=" + allProductsInside +
-                '}';
+                ", allProductsInside=" + allProductsInside;
+        var += "\n" + name + "\n";
+        for (Category value : allSubCategories.values()) {
+            var += value.toString() + "\n";
+        }
+        return var;
     }
 }
