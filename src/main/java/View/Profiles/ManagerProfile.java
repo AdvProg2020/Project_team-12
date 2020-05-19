@@ -328,7 +328,7 @@ public class ManagerProfile extends Profile {
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
                     String categoryName = getField("category name", "\\w+");
-                    String parentCategoryName = getField("parent category name", "\\w+");
+                    String parentCategoryName = getField("parent category name (if this category has no parent enter \"noting\"", "\\w+");
                     ArrayList<String> specifications = new ArrayList<String>();
                     specifications = getSpecifications(specifications);
                     if (!commandProcessor.doesCategoryExistsWithThisName(commandDetails[1]))
@@ -338,7 +338,7 @@ public class ManagerProfile extends Profile {
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
                     String categoryName = getField("category name", "\\w+");
-                    String parentCategoryName = getField("parent category name", "\\w+");
+                    String parentCategoryName = getField("parent category name (if this category has no parent enter \"noting\"", "\\w+");
                     ArrayList<String> specifications = new ArrayList<String>();
                     specifications = getSpecifications(specifications);
                     if (commandProcessor.doesCategoryExistsWithThisName(commandDetails[1]))

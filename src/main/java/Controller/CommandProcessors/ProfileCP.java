@@ -55,7 +55,7 @@ public class ProfileCP extends CommandProcessor {
     }
 
     public ArrayList<Auction> getAllSellerAuctions() {
-        ArrayList<Auction> allAuctions = new ArrayList<Auction>();
+        ArrayList<Auction> allAuctions = new ArrayList<>();
         for (String auctionId : ((Seller) getLoggedInAccount()).getAuctionsId()) {
             Auction auction = null;
             try {
@@ -224,12 +224,14 @@ public class ProfileCP extends CommandProcessor {
 
     public void addCategory(String categoryName, String parentCategoryName, ArrayList<String> specifications) throws Exception {
         Category parentCategory = null;
-        for (Category category : dataCenter.getCategories()) {
-            if (category.getName().equals(parentCategoryName))
-                parentCategory = category;
-        }
+        if (!parentCategoryName.equals("nothing")){
+            for (Category category : dataCenter.getCategories()) {
+                if (category.getName().equals(parentCategoryName))
+                    parentCategory = category;
+            }
         if (parentCategory == null)
             throw new CustomerExceptions("parent category doesn't exist");
+        }
         Category newCategory = new Category(categoryName, specifications, parentCategory);
         dataCenter.saveCategory(newCategory);
     }
