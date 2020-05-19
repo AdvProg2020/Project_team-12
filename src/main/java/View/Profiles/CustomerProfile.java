@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
 import View.Exceptions.InvalidCommandException;
@@ -110,10 +111,13 @@ public class CustomerProfile extends Profile {
         } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return this;
         } else if (command.equals(commands.get(7)) || command.equals("8")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(1);
         } else if (command.equals(commands.get(8)) || command.equals("9")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
         } else if (command.equals(commands.get(9)) || command.equals("10")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

@@ -1,5 +1,6 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
 import Controller.CommandProcessors.PurchasePageCP;
@@ -129,8 +130,8 @@ public class SellerProfile extends Profile {
                     return this;
                 } else if (command.matches(commands.get(1))) {
                     String[] commandDetails = command.split("\\s");
-                    for (int i = 1; i <= commandProcessor.getProductById(commandDetails[1]).getBuyers().size(); i++)
-                        System.out.println(i + ". " + commandProcessor.getProductById(commandDetails[1]).getBuyers().get(i - 1));
+                    for (int i = 1; i <= commandProcessor.getProductById(commandDetails[2]).getBuyers().size(); i++)
+                        System.out.println(i + ". " + commandProcessor.getProductById(commandDetails[2]).getBuyers().get(i - 1));
                     return this;
                 } else if (command.matches(commands.get(2))) {
                     String[] commandDetails = command.split("\\s");
@@ -307,10 +308,13 @@ public class SellerProfile extends Profile {
         } else if (command.equals(commands.get(10)) || command.equals("11")) {
             return this;
         } else if (command.equals(commands.get(11)) || command.equals("12")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(1);
         } else if (command.equals(commands.get(12)) || command.equals("13")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
         } else if (command.equals(commands.get(13)) || command.equals("14")) {
+            CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");
