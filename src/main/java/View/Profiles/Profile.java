@@ -95,7 +95,7 @@ public class Profile extends Menu {
                 String command = scanner.nextLine();
                 if (command.matches(commands.get(0))) {
                     String[] commandDetails = command.split("\\s");
-                    String newFieldValue = getField(commandDetails[1], "\\w+");
+                    String newFieldValue = getField(commandDetails[1], "\\S+");
                     CommandProcessor.getInstance().editPersonalInfo(commandDetails[1], newFieldValue);
                     return this;
                 } else if (command.equals(commands.get(1)) || command.equals("2")) {
