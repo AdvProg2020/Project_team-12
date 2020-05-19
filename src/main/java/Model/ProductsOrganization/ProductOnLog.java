@@ -42,4 +42,14 @@ public class ProductOnLog {
     public int getQuantity() {
         return quantity;
     }
+
+    @Override
+    public String toString() {
+        return "ProductOnLog{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", sellerOrBuyer='" + sellerOrBuyer + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

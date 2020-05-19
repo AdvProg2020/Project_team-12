@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class CustomerProfile extends Profile {
     Profile profile;
-    ProfileCP commandProcessor = (ProfileCP)CommandProcessor.getInstance();
 
     public CustomerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
@@ -39,8 +38,8 @@ public class CustomerProfile extends Profile {
     private Menu getOrdersMenu() {
         return new Menu("orders", this) {
             public void setCommands() {
-                commands.add("view order (\\d+)$");
-                commands.add("rate(\\d+) ([1-5])$");
+                commands.add("view order BUY_(\\S+)$");
+                commands.add("rate PR_(\\S+) ([1-5])$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -70,9 +69,9 @@ public class CustomerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     System.out.println(commandProcessor.getOrderById(commandDetails[2]).toString());
                     return this;
-                } else if (command.equals(commands.get(2))) {
-                    return getGrandFatherMenu();
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
+                    return this.parentMenu;
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     showCommands();
                     return this;
                 }
@@ -92,29 +91,29 @@ public class CustomerProfile extends Profile {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             return submenus.get(4);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             return submenus.get(5);
-        } else if (command.equals(commands.get(2))) {
+        } else if (command.equals(commands.get(2)) || command.equals("3")) {
             return submenus.get(6);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             System.out.println(commandProcessor.getCustomerBalance());
             return this;
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             for (int i = 1; i <= commandProcessor.getCustomerDiscountCodes().size(); i++)
                 System.out.println(i + ". " + commandProcessor.getCustomerDiscountCodes().get(i - 1).toString());
             return this;
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return this;
-        } else if (command.equals(commands.get(7))) {
+        } else if (command.equals(commands.get(7)) || command.equals("8")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(8))) {
+        } else if (command.equals(commands.get(8)) || command.equals("9")) {
             return submenus.get(2);
-        } else if (command.equals(commands.get(9))) {
+        } else if (command.equals(commands.get(9)) || command.equals("10")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

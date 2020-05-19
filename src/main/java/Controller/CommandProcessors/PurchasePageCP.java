@@ -8,15 +8,14 @@ import Model.Log.SellLog;
 import Model.ProductsOrganization.Cart;
 import Model.ProductsOrganization.ProductOnLog;
 import View.Exceptions.CustomerExceptions;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PurchasePageCP extends CommandProcessor {
-    private final int MINIMUM_PAYMENT_TO_GET_REWARD = 100000;
-    private final int PERCENTAGE_OF_REWARD = 5;
     private static CommandProcessor Instance;
+    private final int MINIMUM_PAYMENT_TO_GET_REWARD = 1000000;
+    private final int PERCENTAGE_OF_REWARD = 5;
 
     protected PurchasePageCP() {
         super(MainMenuCP.getInstance());
@@ -28,8 +27,8 @@ public class PurchasePageCP extends CommandProcessor {
         return Instance;
     }
 
-    public void showProductsInCart() {
-        System.out.println(CommandProcessor.getCart().toString());
+    public String showProductsInCart() {
+        return CommandProcessor.getCart().toString();
     }
 
     public void increaseProduct(String productID) throws Exception {
@@ -50,11 +49,11 @@ public class PurchasePageCP extends CommandProcessor {
 
     }
 
-    public void showTotalPrice() {
-        System.out.println(CommandProcessor.getCart().getPayAmount());
+    public Double showTotalPrice() {
+        return CommandProcessor.getCart().getPayAmount();
     }
 
-    public void buy(String discountCodeId) throws CustomerExceptions, BadRequestException {
+    public void buy(String discountCodeId) throws Exception {
         if (discountCodeId == null || discountCodeId.equals("") || Cart.getInstance().getOwner().hasDiscountCode(discountCodeId))
             if (Cart.getInstance().getOwner().getCredit() >= DataCenter.getInstance().getDiscountcodeWithId(discountCodeId).calculatePrice(Cart.getInstance().getPayAmount()))
                 buyWithoutDiscountCode();
@@ -67,7 +66,7 @@ public class PurchasePageCP extends CommandProcessor {
 
     }
 
-    private void buyWithoutDiscountCode() {
+    private void buyWithoutDiscountCode() throws Exception {
         calculateSellersLog();
         double finalPrice = Cart.getInstance().getPayAmount();
         HashMap<Cart.ProductInCart, Seller> sellers = getTraders();
@@ -78,12 +77,12 @@ public class PurchasePageCP extends CommandProcessor {
         if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
             finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
         }
-        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
+        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), getCart().getOwner(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
         Cart.getInstance().getOwner().getBuyLogs().add(purchaseLog);
     }
 
-    private void buyWithDiscountCode(String discountCodeID) {
+    private void buyWithDiscountCode(String discountCodeID) throws Exception {
         calculateSellersLog();
         double finalPrice;
         try {
@@ -102,12 +101,12 @@ public class PurchasePageCP extends CommandProcessor {
         if (finalPrice > MINIMUM_PAYMENT_TO_GET_REWARD) {
             finalPrice *= ((double) (100 - PERCENTAGE_OF_REWARD) / 100);
         }
-        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), finalPrice, finalPrice, productOnLogs);
+        PurchaseLog purchaseLog = new PurchaseLog(DataCenter.getInstance().getDate(), getCart().getOwner(), finalPrice, finalPrice, productOnLogs);
         Cart.getInstance().getOwner().setCredit(Cart.getInstance().getOwner().getCredit() - finalPrice);
         Cart.getInstance().getOwner().getBuyLogs().add(purchaseLog);
     }
 
-    private void calculateSellersLog() {
+    private void calculateSellersLog() throws Exception {
         HashMap<Cart.ProductInCart, Seller> sellers = getTraders();
         Cart.ProductInCart[] productsInCart = (Cart.ProductInCart[]) sellers.keySet().toArray();
         for (int i = 0; i < sellers.size(); ) {
@@ -123,12 +122,12 @@ public class PurchasePageCP extends CommandProcessor {
                     sellers.remove(productsInCart[j]);
                 }
             productsInCart = (Cart.ProductInCart[]) sellers.keySet().toArray();
-            seller.getSellLogs().add(new SellLog(DataCenter.getInstance().getDate(), receivedPrice, decreasedPrice, productsOnLog));
+            seller.getSellLogs().add(new SellLog(DataCenter.getInstance().getDate(), seller, receivedPrice, decreasedPrice, productsOnLog));
             seller.setCredit(seller.getCredit() + receivedPrice);
         }
     }
 
-    public HashMap<Cart.ProductInCart, Seller> getTraders() {
+    public HashMap<Cart.ProductInCart, Seller> getTraders() throws Exception {
         HashMap<Cart.ProductInCart, Seller> sellers = new HashMap<>();
         for (Cart.ProductInCart product : Cart.getInstance().getProducts()) {
             sellers.put(product, (Seller) DataCenter.getInstance().getAccountByName(product.getProduct().getSeller()));

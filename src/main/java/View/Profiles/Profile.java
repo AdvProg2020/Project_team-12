@@ -2,6 +2,8 @@ package View.Profiles;
 
 import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
+import Model.Account.Customer;
 import View.AuctionsPage;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
@@ -10,6 +12,12 @@ import View.ProductsPage;
 import java.util.HashMap;
 
 public class Profile extends Menu {
+    static ProfileCP commandProcessor;
+
+    public static void setCommandProcessor(ProfileCP cp) {
+        commandProcessor = cp;
+
+    }
 
     public Profile(Menu parentMenu) {
         super("Profile", parentMenu);
@@ -39,19 +47,19 @@ public class Profile extends Menu {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             CommandProcessor.goToSubCommandProcessor(CPS.ProductsPageCP.getId());
             return submenus.get(2);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             CommandProcessor.goToSubCommandProcessor(CPS.AuctionPageCP.getId());
             return submenus.get(3);
-        } else if (command.equals(commands.get(2))) {
+        } else if (command.equals(commands.get(2)) || command.equals("3")) {
             CommandProcessor.goToSubCommandProcessor(CPS.RegisterPanelCP.getId());
             return submenus.get(1);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             return this;
         }
         throw new InvalidCommandException("invalid command");
@@ -64,7 +72,7 @@ public class Profile extends Menu {
     protected Menu getPersonalInfoMenu() {
         return new Menu("Personal Info", this) {
             public void setCommands() {
-                commands.add("edit (password|first name|last name|email address|phone number)$");
+                commands.add("edit (password|firstName|lastName|emailAddress|phoneNumber)$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -90,9 +98,9 @@ public class Profile extends Menu {
                     String newFieldValue = getField(commandDetails[1], "\\w+");
                     CommandProcessor.getInstance().editPersonalInfo(commandDetails[1], newFieldValue);
                     return this;
-                } else if (command.equals(commands.get(1))) {
+                } else if (command.equals(commands.get(1)) || command.equals("2")) {
                     return this.parentMenu;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     showCommands();
                     return this;
                 }

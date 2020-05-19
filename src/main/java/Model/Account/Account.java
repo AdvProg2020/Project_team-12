@@ -131,8 +131,9 @@ public abstract class Account {
     }
 
     public String getPersonalInfo() {
-        String personalInfo = "first name : " + getFirstName() + "\nlast name : " + getLastName() + "\nphone number : "
+        /*String personalInfo = "first name : " + getFirstName() + "\nlast name : " + getLastName() + "\nphone number : "
                 + getPhoneNumber() + "\nemail address : " + getEmailAddress() + "\n";
-        return personalInfo;
+        return personalInfo*/;
+        return this.toString();
     }
 }

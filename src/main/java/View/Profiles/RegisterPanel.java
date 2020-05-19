@@ -1,7 +1,12 @@
 package View.Profiles;
 
+import Controller.CommandProcessors.CPS;
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProfileCP;
 import Controller.CommandProcessors.RegisterPanelCP;
+import Model.Account.Customer;
+import Model.Account.Manager;
+import Model.Account.Seller;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 import View.Menu;
@@ -13,7 +18,12 @@ import java.util.regex.Pattern;
 public class RegisterPanel extends Menu {
     private String username = null;
     private String AccountType = null;
-    RegisterPanelCP commandProcessor = (RegisterPanelCP) CommandProcessor.getInstance();
+    static RegisterPanelCP commandProcessor;
+
+    public static void setCommandProcessor(RegisterPanelCP cp) {
+        commandProcessor = cp;
+
+    }
 
     public RegisterPanel(Menu parentMenu) {
         super("Register Panel", parentMenu);
@@ -33,9 +43,9 @@ public class RegisterPanel extends Menu {
     }
 
     public void show() {
-        for (int i = 1; i <= commands.size(); i++) {
+        /*for (int i = 1; i <= commands.size(); i++) {
             System.out.println(i + ". " + commands.get(i - 1));
-        }
+        }*/
         System.out.println("commands\n1. create account [type] [username]\n2. login [username]\n3. logout\n4. back\n5. help");
     }
 
@@ -59,6 +69,11 @@ public class RegisterPanel extends Menu {
         return this.parentMenu;
     }
 
+    public void setGrandFatherMenu(Menu menu) {
+        if (this.parentMenu instanceof Profile)
+            this.parentMenu = menu;
+    }
+
     private Menu getRegisterMenu() {
         return new Menu("Register Page", this) {
             @Override
@@ -77,12 +92,14 @@ public class RegisterPanel extends Menu {
                 String role = getAccountType();
                 if (role.equals("seller")) {
                     String companyInfo = getCompanyInformation();
+                    commandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, companyInfo);
+                    return getGrandFatherMenu();
                 }
                 commandProcessor.createAccount(username, role, password, firstName, lastName, phoneNumber, emailAddress, null);
                 return getGrandFatherMenu();
             }
 
-            public String getCompanyInformation() {
+            public String getCompanyInformation() throws Exception {
                 String companyName = getField("company name", "(\\w+)$");
                 String companyAddress = getField("company address (just separate by comma)", "\\S+");
                 String companyPhoneNumber = getField("company phone number", "(\\d+)$");
@@ -103,7 +120,18 @@ public class RegisterPanel extends Menu {
             public Menu getCommand() throws Exception {
                 String password = getField("password", "\\S+");
                 String username = getUsername();
-                commandProcessor.login(username, password);
+                try {
+                    commandProcessor.login(username, password);
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return this.parentMenu;
+                }
+                if (CommandProcessor.getLoggedInAccount() instanceof Customer)
+                    setGrandFatherMenu(new CustomerProfile(new Profile(this), this));
+                else if (CommandProcessor.getLoggedInAccount() instanceof Seller)
+                    setGrandFatherMenu(new SellerProfile(new Profile(this), this));
+                else if (CommandProcessor.getLoggedInAccount() instanceof Manager)
+                    setGrandFatherMenu(new ManagerProfile(new Profile(this), this));
                 return getGrandFatherMenu();
             }
         };
@@ -123,17 +151,25 @@ public class RegisterPanel extends Menu {
             return submenus.get(1);
         } else if (command.matches(this.commands.get(1))) {
             String[] commandDetails = command.split("\\s");
-            if (!commandProcessor.doesUsernameExists(commandDetails[3]))
+            if (!commandProcessor.doesUsernameExists(commandDetails[1]))
                 throw new RegisterPanelException("username doesn't exist");
-            setUsername(commandDetails[3]);
+            setUsername(commandDetails[1]);
             return submenus.get(2);
-        } else if (command.equals(this.commands.get(2))) {
+        } else if (command.equals(this.commands.get(2)) || command.equals("3")) {
             CommandProcessor.back();
-            return this.parentMenu;
-        } else if (command.equals(this.commands.get(3))) {
+            CommandProcessor.setLoggedInAccount(null);
+            if (parentMenu instanceof CustomerProfile || parentMenu instanceof ManagerProfile || parentMenu instanceof SellerProfile)
+                return new Profile(this);
+            else
+                return this.parentMenu;
+        } else if (command.equals(this.commands.get(3)) || command.equals("4")) {
             CommandProcessor.back();
+            if (this.parentMenu instanceof CustomerProfile || this.parentMenu instanceof SellerProfile || this.parentMenu instanceof ManagerProfile) {
+                CommandProcessor.goToSubCommandProcessor(CPS.ProfileCP.getId());
+                return new Profile(this);
+            }
             return this.parentMenu;
-        } else if (command.equals(this.commands.get(4))) {
+        } else if (command.equals(this.commands.get(4)) || command.equals("5")) {
             return this;
         }
         throw new InvalidCommandException("invalid command");

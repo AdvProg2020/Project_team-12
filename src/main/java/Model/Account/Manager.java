@@ -9,4 +9,5 @@ public class Manager extends Account{
     public void writeInfoInFile() {
 
     }
+
 }

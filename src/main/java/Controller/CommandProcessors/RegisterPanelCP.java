@@ -1,8 +1,8 @@
 package Controller.CommandProcessors;
 
 import Model.Account.Account;
+import Model.Account.CanRequest;
 import Model.Account.Customer;
-import Model.Account.Manager;
 import Model.Account.Seller;
 import Model.Request.Request;
 import Model.Request.SellerRequest;
@@ -26,30 +26,33 @@ public class RegisterPanelCP extends CommandProcessor {
         if (role.equals("customer")) {
             newAccount = new Customer(username, name, lastName, emailAddress, phoneNumber, password);
             dataCenter.saveAccount((Customer) newAccount);
+            dataCenter.addAccount(newAccount);
         } else if (role.equals("seller")) {
             newAccount = new Seller(username, name, lastName, emailAddress, phoneNumber, password, companyInfo);
             dataCenter.addAccount(newAccount);
-            Request request = new SellerRequest(dataCenter.getAllUnsolvedRequests().size() + 1, false, getLoggedInAccount().getUsername());
-            //TODO:id generator
+            Request request = new SellerRequest(dataCenter.requestIDGenerator((CanRequest) newAccount), false, newAccount.getUsername());
             dataCenter.addRequest(request);
             dataCenter.saveRequest(request);
             dataCenter.saveAccount(newAccount);
-            //TODO:inspect this method
         }
     }
 
-    public void createManagerAccount(String username, String password, String name, String lastName, String phoneNumber, String emailAddress) throws Exception {
-        Manager manager = new Manager(username, name, lastName, emailAddress, phoneNumber, password);
-        dataCenter.saveAccount(manager);
-    }
 
     public void login(String username, String password) throws Exception {
+        if (getLoggedInAccount() != null)
+            throw new RegisterPanelException("already logged in!!");
         setLoggedInAccount(dataCenter.getAccountByName(username));
         if (!checkPassword(password)) {
             setLoggedInAccount(null);
             throw new RegisterPanelException("incorrect password");
+        }else if ((dataCenter.getAccountByName(username) instanceof Seller &&
+                !((Seller) dataCenter.getAccountByName(username)).isAccountTypeAccepted())){
+            setLoggedInAccount(null);
+            throw new RegisterPanelException("your account is being checked by manager.");
         }
+
     }
+
 
     public boolean doesUsernameExists(String username) {
         return dataCenter.userExistWithUsername(username);

@@ -1,7 +1,12 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.DataBase.DataCenter;
+import Model.Account.Account;
+import Model.Account.Manager;
+import Model.ProductsOrganization.Filter.Filter;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class SetupPage {
@@ -25,15 +30,16 @@ public class SetupPage {
             Scanner scanner = InputUtility.getInstance();
             String command = scanner.nextLine();
             if (command.equals("1") | command.equals("setup")) {
-                //TODO:Register first manager, it need a method which has not been created yet
-                /*File file = new File("D:\\Codes(java)\\Project\\src\\main\\resources\\accounts");
-                if (file.mkdir()) {
-                    //register first manager
-                } else {
-                    System.out.println("something went wrong please try later");
-                }*/
+                String username = getField("username", "\\S+");
+                String password = getField("password", "\\S+");
+                String firstName = getField("first name", "\\w+");
+                String lastName = getField("last name", "\\w+");
+                String emailAddress = getField("email address", "(\\w+)@(\\w+)\\.(\\w+)$");
+                String phoneNumber = getField("phone number", "(\\d+)$");
+                Account manager = new Manager(username, firstName, lastName, emailAddress, phoneNumber, password);
+                DataCenter.getInstance().saveAccount(manager);
             } else if (command.equals("2") | command.equals("exit")) {
-                return;
+                System.exit(0);
             } else {
                 throw new Exception("invalid command");
             }
@@ -41,5 +47,16 @@ public class SetupPage {
             System.err.println(e.getMessage());
             run();
         }
+    }
+
+    public static String getField(String fieldName, String regex) {
+        System.out.println("Enter " + fieldName);
+        Scanner scanner = InputUtility.getInstance();
+        String fieldValue = scanner.nextLine();
+        if (!fieldValue.matches(regex)) {
+            System.err.println("wrong patten");
+            getField(fieldName, regex);
+        }
+        return fieldValue;
     }
 }

@@ -1,14 +1,14 @@
 package Model.Request;
 
+import Controller.DataBase.Config;
 import Controller.DataBase.DataCenter;
 import Model.Account.Seller;
 
-import java.io.IOException;
 import java.util.Objects;
 
-public class SellerRequest extends Request {
+public class SellerRequest extends Request implements NoCauseDecline {
 
-    public SellerRequest(int id, boolean active, String sellerUserName) {
+    public SellerRequest(String id, boolean active, String sellerUserName) {
         super(sellerUserName, id, active);
     }
 
@@ -25,11 +25,12 @@ public class SellerRequest extends Request {
     }
 
     @Override
-    public void deleteRequest() throws IOException {
+    public void deleteRequest() throws Exception {
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).deleteRequestWithId(this.getId());
         ((Seller) DataCenter.getInstance().getAccountByName(senderUserName)).getSolvedRequests().add(this.toString());
         DataCenter.getInstance().saveAccount(DataCenter.getInstance().getAccountByName(senderUserName));
         DataCenter.getInstance().deleteRequestWithId(id);
+        Config.getInstance().removeRequestId(getId());
     }
 
     @Override
@@ -47,11 +48,24 @@ public class SellerRequest extends Request {
     }
 
     @Override
-    public String toString() {
+    public String showDetails() throws Exception {
         return String.format("Request with id:" + id
                 + "related to acceptance of seller" +
-                " profile for further actions has been %s", ((Seller) DataCenter
+                " profile for further actions." + ((Seller) DataCenter
                 .getInstance().getAccountByName(senderUserName))
-                .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+                .toString());
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return String.format("Request with id:" + id
+                    + "related to acceptance of seller" +
+                    " profile for further actions has been %s", ((Seller) DataCenter
+                    .getInstance().getAccountByName(senderUserName))
+                    .isAccountTypeAccepted() ? "accepted" : "notAccepted");
+        } catch (Exception exception) {
+            return "";
+        }
     }
 }

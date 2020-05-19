@@ -1,7 +1,9 @@
 package View;
 
 import Controller.CommandProcessors.CommandProcessor;
+import Controller.CommandProcessors.ProductPageCP;
 import Controller.CommandProcessors.ProductsPageCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.CustomerExceptions;
 import View.Exceptions.InvalidCommandException;
 import View.Profiles.RegisterPanel;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductsPage extends Menu {
-    ProductsPageCP commandProcessor = (ProductsPageCP) (CommandProcessor.getInstance());
+    static ProductsPageCP commandProcessor;
 
     public ProductsPage(Menu parentMenu) {
         super("Product Page", parentMenu);
@@ -19,6 +21,11 @@ public class ProductsPage extends Menu {
         submenus.put(2, getSortingMenu());
         submenus.put(3, new RegisterPanel(this));
         setCommands();
+    }
+
+    public static void setCommandProcessor(ProductsPageCP cp) {
+        commandProcessor = cp;
+
     }
 
     protected Menu getGrandFatherMenu() {
@@ -30,7 +37,7 @@ public class ProductsPage extends Menu {
         commands.add("filtering");
         commands.add("sorting");
         commands.add("show products");
-        commands.add("show product (\\d+)$");
+        commands.add("show product PR_(\\S+)$");
         commands.add("back");
         commands.add("help");
         commands.add("go to register panel");
@@ -91,7 +98,7 @@ public class ProductsPage extends Menu {
                     commandProcessor.disableFilter(commandDetails[2]);
                     return this;
                 } else if (command.equals(commands.get(4))) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(5))) {
                     showCommands();
                     return this;
@@ -99,7 +106,7 @@ public class ProductsPage extends Menu {
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) {
+            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) throws Exception {
                 System.out.println("add specification to filter (at least one)");
                 String value = getField("value", "\\S+");
                 filterValues.add(value);
@@ -155,7 +162,7 @@ public class ProductsPage extends Menu {
                     commandProcessor.disableSort();
                     return this;
                 } else if (command.equals(commands.get(4))) {
-                    return getGrandFatherMenu();
+                    return this.parentMenu;
                 } else if (command.equals(commands.get(5))) {
                     showCommands();
                     return this;
@@ -179,29 +186,31 @@ public class ProductsPage extends Menu {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             for (int i = 1; i <= commandProcessor.getAllCategories().size(); i++)
                 System.out.println(i + ". " + commandProcessor.getAllCategories().get(i - 1));
             return this;
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(2))) {
+        } else if (command.equals(commands.get(2)) || command.equals("3")) {
             return submenus.get(2);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             for (int i = 1; i <= commandProcessor.getProducts().size(); i++)
-                System.out.println(i + ". " + commandProcessor.getProducts().get(i - 1));
+                System.out.println(i + ". name : " +
+                        "" + commandProcessor.getProducts().get(i - 1).getName() + "\tid : " + commandProcessor.getProducts().get(i - 1).getID());
             return this;
         } else if (command.matches(commands.get(4))) {
             String[] commandDetails = command.split("\\s");
             if (!commandProcessor.doesProductExist(commandDetails[2]))
                 throw new CustomerExceptions("product with this id doesn't exist");
+            commandProcessor.goToProduct(commandDetails[2]);
             return new ProductPage(this, commandDetails[2]);
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return this;
-        } else if (command.equals(commands.get(7))) {
+        } else if (command.equals(commands.get(7)) || command.equals("8")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

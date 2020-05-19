@@ -3,6 +3,7 @@ package View;
 import Controller.CommandProcessors.AuctionsPageCP;
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProductsPageCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import Model.Discount.Auction;
 import Model.ProductsOrganization.Product;
 import View.Exceptions.CustomerExceptions;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AuctionsPage extends Menu {
-    AuctionsPageCP commandProcessor = (AuctionsPageCP) (CommandProcessor.getInstance());
+    static AuctionsPageCP commandProcessor;
 
     public AuctionsPage(Menu parentMenu) {
         super("Auctions Page", parentMenu);
@@ -25,6 +26,11 @@ public class AuctionsPage extends Menu {
         setCommands();
     }
 
+    public static void setCommandProcessor(AuctionsPageCP cp) {
+        commandProcessor = cp;
+
+    }
+
     protected Menu getGrandFatherMenu() {
         return this.parentMenu;
     }
@@ -32,7 +38,7 @@ public class AuctionsPage extends Menu {
     private void setCommands() {
         commands.add("filtering");
         commands.add("sorting");
-        commands.add("show product (\\d+)$");
+        commands.add("show product PR_(\\S+)$");
         commands.add("back");
         commands.add("help");
         commands.add("go to register panel");
@@ -64,7 +70,7 @@ public class AuctionsPage extends Menu {
             public Menu getCommand() throws Exception {
                 System.out.println("what do you want to do?\n");
                 String command = scanner.nextLine();
-                if (command.equals(commands.get(0))) {
+                if (command.equals(commands.get(0)) || command.equals("1")) {
                     for (int i = 1; i <= commandProcessor.getAvailableFilters().size(); i++)
                         System.out.println(i + ". " + commandProcessor.getAvailableFilters().get(i - 1));
                     return this;
@@ -83,7 +89,7 @@ public class AuctionsPage extends Menu {
                     }
 
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     for (int i = 1; i <= commandProcessor.getCurrentFilters().size(); i++)
                         System.out.println(i + ". " + commandProcessor.getCurrentFilters().get(i - 1));
                     return this;
@@ -93,16 +99,16 @@ public class AuctionsPage extends Menu {
                         throw new CustomerExceptions("can't disable this filter");
                     commandProcessor.disableFilter(commandDetails[2]);
                     return this;
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(5))) {
+                } else if (command.equals(commands.get(5)) || command.equals("6")) {
                     showCommands();
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) {
+            public ArrayList<String> getSelectedOptions(ArrayList<String> filterValues) throws Exception {
                 System.out.println("add specification to filter (at least one)");
                 String value = getField("value", "\\S+");
                 filterValues.add(value);
@@ -141,7 +147,7 @@ public class AuctionsPage extends Menu {
             public Menu getCommand() throws Exception {
                 System.out.println("what do you want to do?\n");
                 String command = scanner.nextLine();
-                if (command.equals(commands.get(0))) {
+                if (command.equals(commands.get(0)) || command.equals("1")) {
                     for (int i = 1; i <= commandProcessor.getAvailableSorts().size(); i++)
                         System.out.println(i + ". " + commandProcessor.getAvailableSorts().get(i - 1));
                     return this;
@@ -151,15 +157,15 @@ public class AuctionsPage extends Menu {
                         throw new CustomerExceptions("can't use this sort");
                     commandProcessor.setSortType(commandDetails[2]);
                     return this;
-                } else if (command.equals(commands.get(2))) {
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     System.out.println(commandProcessor.getCurrentSort());
                     return this;
-                } else if (command.equals(commands.get(3))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
                     commandProcessor.disableSort();
                     return this;
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     return getGrandFatherMenu();
-                } else if (command.equals(commands.get(5))) {
+                } else if (command.equals(commands.get(5)) || command.equals("6")) {
                     showCommands();
                     return this;
                 }
@@ -178,12 +184,14 @@ public class AuctionsPage extends Menu {
             else
                 System.out.println(i + ". " + commands.get(i - 1));
         }
-        for (int i = 1; i <= commandProcessor.getProductsInAuction().size(); i++) {
-            Auction[] auctions = (Auction[]) commandProcessor.getProductsInAuction().values().toArray();
-            System.out.println(auctions[i - 1].toString());
+        for (int i = 1; commandProcessor.getProductsInAuction() != null && i <= commandProcessor.getProductsInAuction().size(); i++) {
+            //Auction[] auctions = (Auction[]) commandProcessor.getProductsInAuction().values().toArray();
+            ArrayList<Auction> auctions = new ArrayList<Auction>();
+            auctions.addAll(commandProcessor.getProductsInAuction().values());
+            System.out.println(auctions.get(i - 1).toString());
             System.out.println("<<products>>");
-            for (int j = 1; j <= auctions[i - 1].getAllProducts().size(); j++) {
-                System.out.println(auctions[i - 1].getAllProducts().get(j - 1).toString());
+            for (int j = 1; j <= auctions.get(i - 1).getAllProducts().size(); j++) {
+                System.out.println(auctions.get(i - 1).getAllProducts().get(j - 1).toString());
             }
         }
     }
@@ -191,21 +199,21 @@ public class AuctionsPage extends Menu {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             return submenus.get(2);
         } else if (command.matches(commands.get(2))) {
             String[] commandDetails = command.split("\\s");
             if (!commandProcessor.doesProductExist(commandDetails[2]))
                 throw new CustomerExceptions("product with this id doesn't exist");
             return new ProductPage(this, commandDetails[2]);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             return this;
-        } else if (command.equals(commands.get(5))) {
+        } else if (command.equals(commands.get(5)) || command.equals("6")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

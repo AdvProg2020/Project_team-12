@@ -54,4 +54,17 @@ public class Auction extends Discount {
     public double calculatePrice(Double amount) {
         return amount - (amount*percent/100);
     }
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "allProducts=" + allProducts +
+                ", status=" + status +
+                ", seller='" + seller + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", percent=" + percent +
+                ", ID='" + ID + '\'' +
+                '}';
+    }
 }

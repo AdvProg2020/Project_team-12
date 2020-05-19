@@ -71,4 +71,18 @@ public class DiscountCode extends Discount {
     public void useCode() {
         maxUsageNumber--;
     }
+
+    @Override
+    public String toString() {
+        return "DiscountCode{" +
+                "code='" + code + '\'' +
+                ", maximumDiscount=" + maximumDiscount +
+                ", maxUsageNumber=" + maxUsageNumber +
+                ", allAllowedAccounts=" + allAllowedAccounts +
+                ", start=" + start +
+                ", end=" + end +
+                ", percent=" + percent +
+                ", ID='" + ID + '\'' +
+                '}';
+    }
 }

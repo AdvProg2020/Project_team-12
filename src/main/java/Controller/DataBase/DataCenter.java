@@ -2,17 +2,16 @@ package Controller.DataBase;
 
 import Controller.DataBase.Json.JsonFileReader;
 import Controller.DataBase.Json.JsonFileWriter;
-
-import Model.Account.Account;
-import Model.Account.Customer;
-import Model.Account.Manager;
-import Model.Account.Seller;
+import Model.Account.*;
 import Model.Discount.Auction;
 import Model.Discount.Discount;
 import Model.Discount.DiscountCode;
+import Model.Log.PurchaseLog;
+import Model.Log.SellLog;
 import Model.ProductsOrganization.Category;
 import Model.ProductsOrganization.Product;
 import Model.Request.*;
+import Model.Status;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
@@ -21,6 +20,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,12 +54,38 @@ public class DataCenter {
         initRequests();
     }
 
-    public static String getNewSellID() {
-        return "1";
+    public static String getNewSellID(String sellerUserName) {
+        ArrayList<String> args = new ArrayList<>();
+        try {
+            for (SellLog log : ((Seller) getInstance().getAccountByName(sellerUserName)).getSellLogs()) {
+                args.add(log.getId());
+            }
+        } catch (Exception exception) {
+        } finally {
+            String[] result = {};
+            return RandomIDGenerator.generateSellID((String[]) args.toArray(result));
+        }
     }
 
-    public static String getNewPurchaseID() {
-        return "1";
+    public static String getNewPurchaseID(String customerUsername) {
+        ArrayList<String> args = new ArrayList<>();
+        try {
+            for (PurchaseLog log : ((Customer) getInstance().getAccountByName(customerUsername)).getBuyLogs()) {
+                args.add(log.getId());
+            }
+        } catch (Exception exception) {
+        } finally {
+            String[] result = {};
+            return RandomIDGenerator.generateBuyID((String[]) args.toArray(result));
+        }
+    }
+
+    public static DataCenter getInstance() {
+        if (Instance == null) {
+            Instance = new DataCenter();
+        }
+        System.gc();
+        return Instance;
     }
 
     private void initProducts() {
@@ -69,14 +96,6 @@ public class DataCenter {
         }
     }
 
-
-    public static DataCenter getInstance() {
-        if (Instance == null) {
-            Instance = new DataCenter();
-        }
-        return Instance;
-    }
-
     private void initCategories() {
         categories = new HashMap<>();
         JsonFileReader reader = new JsonFileReader();
@@ -84,16 +103,17 @@ public class DataCenter {
         if (!file.exists())
             file.mkdir();
         File[] files = file.listFiles();
-        Arrays.stream(files).map((file1) -> {
-            try {
-                return reader.read(file1, Category.class);
-            } catch (FileNotFoundException e) {
-                return null;
-            }
-        }).forEach(this::addCategory);
+        if (files != null)
+            Arrays.stream(files).map((file1) -> {
+                try {
+                    return reader.read(file1, Category.class);
+                } catch (FileNotFoundException e) {
+                    return null;
+                }
+            }).forEach(this::addCategory);
     }
 
-    private void addCategory(Category category)  {
+    private void addCategory(Category category) {
         String[] categories = category.getCategoryPath().split("/");
         Category var100 = null;
         for (int i = 0; i < categories.length - 1; i++) {
@@ -108,13 +128,13 @@ public class DataCenter {
         this.categories.put(category.getName(), category);
     }
 
-    private void initCategory(String category)  {
+    private void initCategory(String category) {
         File file = new File(generateCategoryFilePath(category));
         JsonFileReader reader = new JsonFileReader();
         try {
             addCategory(reader.read(file, Category.class));
         } catch (FileNotFoundException e) {
-            addCategory(new Category(category,new ArrayList<String>(),null));
+            addCategory(new Category(category, new ArrayList<String>(), null));
         }
     }
 
@@ -140,16 +160,17 @@ public class DataCenter {
             requests.add(request);
     }
 
-    public void deleteRequestWithId(int id) {
+    public void deleteRequestWithId(String id) {
+        System.gc();
         for (Request request : requests) {
-            if (request.getId() == id) {
+            if (request.getId().equals(id)) {
                 requests.remove(request);
                 File file = new File(generateRequestsFilePath(id));
                 file.delete();
+                return;
             }
         }
     }
-
 
     private void initAccounts() {
         accountsByUsername = new HashMap<>();
@@ -175,30 +196,6 @@ public class DataCenter {
             }).forEach(this::addAccount);
         }
     }
-
-    {/*private void initProducts() {
-        productsByName = new HashMap<>();
-        JsonFileReader reader = new JsonFileReader();
-        File productsDirectory = new File(Config.getInstance().getProductsPath());
-        if (!productsDirectory.exists())
-            productsDirectory.mkdir();
-        File[] productsFiles = productsDirectory.listFiles();
-        if (productsFiles != null) {
-            Arrays.stream(productsFiles).map((file) -> {
-                try {
-                    Product temp = reader.read(file, Product.class);
-                    String var100 = temp.getCategoryName();
-                    if (var100 != null && var100 != "") {
-                        temp.setParent(categories.get(var100));
-                        categories.get(var100).getAllProductsInside().put(temp.getName(), temp);
-                    }
-                    return temp;
-                } catch (FileNotFoundException var4) {
-                    return null;
-                }
-            }).forEach(this::addProduct);
-        }
-    }*/}
 
     private void initDiscounts() {
         discounts = new ArrayList<>();
@@ -227,7 +224,6 @@ public class DataCenter {
             }).forEach(this::addDiscount);
         }
     }
-
 
     private void initDiscount(DiscountCode discount) throws Exception {
         JsonFileReader reader = new JsonFileReader();
@@ -311,21 +307,13 @@ public class DataCenter {
         writer.write(manager, generateUserFilePath(manager.getUsername(), Config.AccountsPath.MANAGER.getNum(), "manager"), Account.class);
     }
 
-
-    {  /*public void saveProduct(Product product) throws IOException {
-        JsonFileWriter writer = new JsonFileWriter();
-        product.setCategoryName(product.getParent().getName());
-        writer.write(product, generateProductFilePath(product.getID()));
-        if (!productsByName.containsValue(product))
-            productsByName.put(product.getName(), product);
-    }*/}
-
     public void saveDiscount(Discount discount) throws IOException {
         if (discount instanceof Auction) {
             saveDiscount((Auction) discount);
         } else {
             saveDiscount((DiscountCode) discount);
         }
+        addDiscount(discount);
     }
 
     public void saveDiscount(Auction auction) throws IOException {
@@ -363,6 +351,7 @@ public class DataCenter {
         JsonFileWriter writer = new JsonFileWriter();
         category.setCategoryPath(category.createCategoryStringPath(category));
         writer.write(category, generateCategoryFilePath(category.getName()));
+        addCategory(category);
     }
 
     private void addSavedAccount(Account account) {
@@ -375,11 +364,6 @@ public class DataCenter {
         return var10000 + "." + type + ".json";
     }
 
-    {/* private String generateProductFilePath(int id) {
-        String var10000 = Config.getInstance().getProductsPath() + "/" + id;
-        return var10000 + ".product.json";
-    }
-*/}
     private String generateAuctionFilePath(String id) {
         String var10000 = Config.getInstance().getDiscountsPath()[Config.DiscountsPath.AUCTION.getNum()] + "/" + id;
         return var10000 + ".auction.json";
@@ -400,7 +384,7 @@ public class DataCenter {
         return var10000 + ".discountcode.accounts.json";
     }
 
-    private String generateRequestsFilePath(int id) {
+    private String generateRequestsFilePath(String id) {
         String var10000 = Config.getInstance().getRequestsPath() + "/" + id;
         return var10000 + ".request.json";
     }
@@ -410,8 +394,11 @@ public class DataCenter {
         return var10000 + ".category.json";
     }
 
-    public Account getAccountByName(String name) {
-        return accountsByUsername.get(name);
+    public Account getAccountByName(String name) throws Exception {
+        if (accountsByUsername.get(name) != null)
+            return accountsByUsername.get(name);
+        else
+            throw new Exception("this user doesnt exists.");
     }
 
     public boolean userExistWithUsername(String username) {
@@ -489,6 +476,7 @@ public class DataCenter {
     }
 
     public boolean deleteAccount(String username) throws BadRequestException, IOException {
+        System.gc();
         Account account = accountsByUsername.get(username);
         for (DiscountCode discountCode : account.getAllDiscountCodes()) {
             deleteAccountFromDiscountCode(discountCode, account.getUsername());
@@ -505,17 +493,21 @@ public class DataCenter {
     }
 
     private void deleteAccountFromDiscountCode(DiscountCode discountCode, String username) {
+        System.gc();
         discountCode.getAllAllowedAccounts().remove(username);
     }
 
-    private boolean deleteAccount(Customer customer) {
-        File file = new File(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "Customer"));
+    private boolean deleteAccount(Customer customer) throws IOException {
+        System.gc();
+        Files.delete(Paths.get(generateUserFilePath(customer.getUsername(), Config.AccountsPath.CUSTOMER.getNum(), "customer")));
         customer.getActiveRequestsId().forEach(this::deleteRequestWithId);
-        return file.delete() && accountsByUsername.remove(customer.getUsername(), customer);
+        System.gc();
+        return accountsByUsername.remove(customer.getUsername(), customer);
     }
 
     private boolean deleteAccount(Seller seller) throws IOException, BadRequestException {
-        File file = new File(generateUserFilePath(seller.getUsername(), Config.AccountsPath.MANAGER.getNum(), "Manager"));
+        System.gc();
+        Files.delete(Paths.get(generateUserFilePath(seller.getUsername(), Config.AccountsPath.SELLER.getNum(), "seller")));
         seller.getActiveRequestsId().forEach(this::deleteRequestWithId);
         for (Model.ProductsOrganization.Product product : seller.getAllProducts()) {
             productsByName.remove(product.getName());
@@ -523,11 +515,18 @@ public class DataCenter {
         for (String s : seller.getAuctionsId()) {
             deleteAuctionWithId(s);
         }
+        for (String integer : seller.getActiveRequestsId()) {
+            try {
+                getRequestWithId(integer.toString()).deleteRequest();
+            } catch (Exception exception) {
+            }
+        }
         seller.getAuctionsId().forEach(this::deleteAuctionWithId);
-        return file.delete() && accountsByUsername.remove(seller.getUsername(), seller);
+        return accountsByUsername.remove(seller.getUsername(), seller);
     }
 
     public void deleteAuctionWithId(String id) {
+        System.gc();
         try {
             discounts.remove(getAuctionWithId(id));
             File file = new File(generateAuctionFilePath(id));
@@ -539,14 +538,15 @@ public class DataCenter {
     }
 
 
-
-    private boolean deleteAccount(Manager manager) {
-        File file = new File(generateUserFilePath(manager.getUsername(), Config.AccountsPath.SELLER.getNum(), "Seller"));
-        return file.delete() && accountsByUsername.remove(manager.getUsername(), manager);
+    private boolean deleteAccount(Manager manager) throws IOException {
+        System.gc();
+        Files.delete(Paths.get(generateUserFilePath(manager.getUsername(), Config.AccountsPath.MANAGER.getNum(), "manager")));
+        return accountsByUsername.remove(manager.getUsername(), manager);
     }
 
-    public boolean deleteProduct(Model.ProductsOrganization.Product product) throws IOException, BadRequestException {
-        ((Seller)getAccountByName(product.getSeller())).getAllProducts().remove(product);
+    public boolean deleteProduct(Model.ProductsOrganization.Product product) throws Exception {
+        System.gc();
+        ((Seller) getAccountByName(product.getSeller())).getAllProducts().remove(product);
         for (String s : ((Seller) getAccountByName(product.getSeller())).getAuctionsId()) {
             getAuctionWithId(s).removeProduct(product);
         }
@@ -555,6 +555,7 @@ public class DataCenter {
 
 
     public boolean deleteDiscountCode(DiscountCode discountCode) throws IOException {
+        System.gc();
         for (Account account : discountCode.getAllAllowedAccounts()) {
             account.getAllDiscountCodes().remove(discountCode);
             saveAccount(account);
@@ -564,6 +565,7 @@ public class DataCenter {
     }
 
     public boolean deleteCategory(Category category) throws IOException {
+        System.gc();
         for (Model.ProductsOrganization.Product product : category.getAllProductsInside().values()) {
             product.setParent(category.getParent());
         }
@@ -620,27 +622,52 @@ public class DataCenter {
     }
 
     public ArrayList<Model.ProductsOrganization.Product> getAllProductsObject() {
-        return (ArrayList<Model.ProductsOrganization.Product>) productsByName.values();
+        ArrayList<Product> var = new ArrayList<>();
+        var.addAll(productsByName.values());
+        for (int i = 0; i < var.size();i++ ) {
+            if (var.get(i).getStatus().equals(Status.CONSTRUCTING)||var.get(i).getStatus().equals(Status.EDITING)){
+                var.remove(var.get(i));
+            i--;}
+        }
+        return var;
     }
-    public Set<String> getAllProducts() {
-        return  productsByName.keySet();
+
+    public ArrayList<String> getAllProductsWithNoCondition() {
+        ArrayList<String > tmp = new ArrayList<>();
+        tmp.addAll(productsByName.keySet());
+        return tmp;
     }
 
     public String getNewDiscountID() {
-        //TODO: should be written
-        return null;
+        ArrayList<String> args = new ArrayList<>();
+        for (Discount discount : discounts) {
+            args.add(discount.getID());
+        }
+        String[] result = {};
+        return RandomIDGenerator.discountIdGenerator((String[]) args.toArray(result));
+    }
+
+    public String getNewProductID() {
+        ArrayList<String> args = new ArrayList<>();
+        for (Product product : productsByName.values()) {
+            args.add(product.getID());
+        }
+        String[] result = {};
+        return RandomIDGenerator.generateProductID((String[]) args.toArray(result));
     }
 
     public ArrayList<Category> getCategories() {
-        return (ArrayList<Category>) categories.values();
+        ArrayList<Category> var = new ArrayList<>();
+        var.addAll(categories.values());
+        return var;
     }
 
     public Date getDate() {
         TimeInfo timeInfo = null;
-         final String TIME_SERVER = "time-a.nist.gov";
+        final String TIME_SERVER = "time-a.nist.gov";
         try {
-        NTPUDPClient timeClient = new NTPUDPClient();
-        InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+            NTPUDPClient timeClient = new NTPUDPClient();
+            InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
             timeInfo = timeClient.getTime(inetAddress);
         } catch (IOException e) {
             e.printStackTrace();
@@ -648,5 +675,20 @@ public class DataCenter {
         long returnTime = timeInfo.getReturnTime();
         return new Date(returnTime);
     }
+
+    public Request getRequestWithId(String commandDetail) throws Exception {
+        for (Request request : getAllUnsolvedRequests()) {
+            if (request.getId().equals(commandDetail))
+                return request;
+        }
+        throw new Exception("Request not found");
+    }
+
+    public String requestIDGenerator(CanRequest account) {
+        return RandomIDGenerator.generateRequestID();
+    }
+
+
+
 }
 

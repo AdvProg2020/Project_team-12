@@ -2,6 +2,7 @@ package View.Profiles;
 
 import Controller.CommandProcessors.CommandProcessor;
 import Controller.CommandProcessors.ProfileCP;
+import Controller.CommandProcessors.PurchasePageCP;
 import View.Exceptions.InvalidCommandException;
 import View.Menu;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
 
 public class SellerProfile extends Profile {
     Profile profile;
-    ProfileCP commandProcessor = (ProfileCP) (CommandProcessor.getInstance());
+
 
     public SellerProfile(Profile profile, Menu parentMenu) {
         super(parentMenu);
@@ -33,7 +34,7 @@ public class SellerProfile extends Profile {
         commands.add("view sales history");
         commands.add("manage products");
         commands.add("add product");
-        commands.add("remove product (\\d+)$");
+        commands.add("remove product PR_(\\S+)$");
         commands.add("show categories");
         commands.add("view offs");
         commands.add("view balance");
@@ -44,13 +45,13 @@ public class SellerProfile extends Profile {
         commands.add("offs");
     }
 
-    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) {
+    public HashMap<String, String> getSpecifications(HashMap<String, String> specifications) throws Exception {
         System.out.println("add specifications to your product (at least one)");
         String specificationTitle = getField("new specification title", "\\S+");
         String specificationValue = getField("specification value", "\\S+");
         specifications.put(specificationTitle, specificationValue);
         System.out.println("type <back> to continue or <next> to add more specifications");
-        String command = getField("<next> or <back>", "(next|back)$");
+        String command = getAdditionalCommand();
         if (command.equals("next"))
             getSpecifications(specifications);
         return specifications;
@@ -98,9 +99,9 @@ public class SellerProfile extends Profile {
     private Menu getProductsMenu() {
         return new Menu("Products", this) {
             public void setCommands() {
-                commands.add("view (\\d+)$");
-                commands.add("view buyers (\\d+)$");
-                commands.add("edit (\\d+)$");
+                commands.add("view PR_(\\S+)$");
+                commands.add("view buyers PR_(\\S+)$");
+                commands.add("edit PR_(\\S+)$");
                 commands.add("back");
                 commands.add("help");
             }
@@ -135,16 +136,16 @@ public class SellerProfile extends Profile {
                     String[] commandDetails = command.split("\\s");
                     String name = getField("name", "(\\w+)$");
                     String brand = getField("brand", "(\\w+)$");
-                    String price = getField("price", "(\\d+)\\.(\\d+)$");
+                    String price = getField("price", "(\\d+\\.\\d+)$");
                     String remainingItems = getField("remaining items", "(\\d+)$");
                     String description = getField("description", "\\S+");
                     HashMap<String, String> specifications = new HashMap<String, String>();
                     getSpecifications(specifications);
-                    commandProcessor.addProduct(name, brand, price, remainingItems, description, specifications);
+                    commandProcessor.editProduct(commandDetails[1], name, brand, price, remainingItems, description, specifications);
                     return this;
-                } else if (command.equals(commands.get(3))) {
-                    return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
+                    return this.parentMenu;
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
@@ -162,10 +163,9 @@ public class SellerProfile extends Profile {
 
             @Override
             public Menu getCommand() throws Exception {
-                String id = getField("id", "(\\d+)$");
                 String name = getField("name", "(\\w+)$");
                 String brand = getField("brand", "(\\w+)$");
-                String price = getField("price", "(\\d+)\\.(\\d+)$");
+                String price = getField("price", "(\\d+\\.\\d+)$");
                 String remainingItems = getField("remaining items", "(\\d+)$");
                 String description = getField("description", "\\S+");
                 HashMap<String, String> specifications = new HashMap<String, String>();
@@ -199,8 +199,8 @@ public class SellerProfile extends Profile {
     private Menu getOffsMenu() {
         return new Menu("offs", this) {
             public void setCommands() {
-                commands.add("view (\\d+)$");
-                commands.add("edit (\\d+)$");
+                commands.add("view AU_(\\S+)$");
+                commands.add("edit AU_(\\S+)$");
                 commands.add("add off");
                 commands.add("back");
                 commands.add("help");
@@ -232,35 +232,29 @@ public class SellerProfile extends Profile {
                     String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    String id = getField("auction id", "(\\d+)$");
-                    //String listOfUsers = getField("products' id and separate them by comma", "(\\w+,)+");
                     ArrayList<String> products = getAuctionProducts();
-                    commandProcessor.addAuction(startingDate, lastDate, percent, id, products);
+                    commandProcessor.editAuction(commandDetails[1], startingDate, lastDate, percent, products);
                     return this;
-                } else if (command.matches(commands.get(2))) {
-                    String[] commandDetails = command.split("\\s");
+                } else if (command.equals(commands.get(2)) || command.equals("3")) {
                     String startingDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String lastDate = getField("last date", "(\\d\\d)/(\\d\\d)/(\\d\\d)$");
                     String percent = getField("percent", "(\\d+)$");
-                    String id = getField("auction id", "(\\d+)$");
-                    //String listOfProducts = getField("products' id and separate them by comma", "(\\w+,)+");
                     ArrayList<String> products = getAuctionProducts();
-                    commandProcessor.addAuction(startingDate, lastDate, percent, id, products);
+                    commandProcessor.addAuction(startingDate, lastDate, percent, products);
                     return this;
-                } else if (command.equals(commands.get(3))) {
-                    return getGrandFatherMenu();
-                } else if (command.equals(commands.get(4))) {
+                } else if (command.equals(commands.get(3)) || command.equals("4")) {
+                    return this.parentMenu;
+                } else if (command.equals(commands.get(4)) || command.equals("5")) {
                     showCommands();
                     return this;
                 }
                 throw new InvalidCommandException("invalid command");
             }
 
-            public ArrayList<String> getAuctionProducts() {
+            public ArrayList<String> getAuctionProducts() throws Exception {
                 ArrayList<String> products = new ArrayList<String>();
                 System.out.println("enter the id of products that you wanna add to auction (at least one)");
-                String id = getField("id", "\\S+");
-                //TODO: give me the regex of id generator
+                String id = getField("id", "PR_(\\S+)$");
                 products.add(id);
                 System.out.println("type <back> to continue or <next> to add more products");
                 String command = getField("<next> or <back>", "(next|back)$");
@@ -285,37 +279,37 @@ public class SellerProfile extends Profile {
     @Override
     public Menu getCommand() throws Exception {
         String command = scanner.nextLine();
-        if (command.equals(commands.get(0))) {
+        if (command.equals(commands.get(0)) || command.equals("1")) {
             return submenus.get(4);
-        } else if (command.equals(commands.get(1))) {
+        } else if (command.equals(commands.get(1)) || command.equals("2")) {
             return submenus.get(5);
-        } else if (command.equals(commands.get(2))) {
+        } else if (command.equals(commands.get(2)) || command.equals("3")) {
             return submenus.get(6);
-        } else if (command.equals(commands.get(3))) {
+        } else if (command.equals(commands.get(3)) || command.equals("4")) {
             return submenus.get(7);
-        } else if (command.equals(commands.get(4))) {
+        } else if (command.equals(commands.get(4)) || command.equals("5")) {
             return submenus.get(8);
         } else if (command.matches(commands.get(5))) {
             String[] commandDetails = command.split("\\s");
             commandProcessor.removeProductWithId(commandDetails[2]);
             return this;
-        } else if (command.equals(commands.get(6))) {
+        } else if (command.equals(commands.get(6)) || command.equals("7")) {
             return submenus.get(9);
-        } else if (command.equals(commands.get(7))) {
+        } else if (command.equals(commands.get(7)) || command.equals("8")) {
             return submenus.get(10);
-        } else if (command.equals(commands.get(8))) {
+        } else if (command.equals(commands.get(8)) || command.equals("9")) {
             commandProcessor.getSellerBalance();
             return this;
-        } else if (command.equals(commands.get(9))) {
+        } else if (command.equals(commands.get(9)) || command.equals("10")) {
             CommandProcessor.back();
             return this.parentMenu;
-        } else if (command.equals(commands.get(10))) {
+        } else if (command.equals(commands.get(10)) || command.equals("11")) {
             return this;
-        } else if (command.equals(commands.get(11))) {
+        } else if (command.equals(commands.get(11)) || command.equals("12")) {
             return submenus.get(1);
-        } else if (command.equals(commands.get(12))) {
+        } else if (command.equals(commands.get(12)) || command.equals("13")) {
             return submenus.get(2);
-        } else if (command.equals(commands.get(13))) {
+        } else if (command.equals(commands.get(13)) || command.equals("14")) {
             return submenus.get(3);
         }
         throw new InvalidCommandException("invalid command");

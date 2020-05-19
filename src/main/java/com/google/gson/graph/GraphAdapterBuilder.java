@@ -39,7 +39,7 @@ import java.util.Queue;
 /**
  * Writes a graph of objects as a list of named nodes.
  */
-// TODO: proper documentation
+
 @SuppressWarnings("rawtypes")
 public final class GraphAdapterBuilder {
   private final Map<Type, InstanceCreator<?>> instanceCreators;

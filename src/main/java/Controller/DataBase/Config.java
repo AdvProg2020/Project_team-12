@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Config {
     @Expose
@@ -22,7 +23,8 @@ public class Config {
     private final String requestsPath;
     @Expose
     private final String categoriesPath;
-
+    @Expose
+    private ArrayList<String> requestsId= new ArrayList<>();
 
     public Config() {
         accountsPath = new String[]{"Resources/Accounts/Customers", "Resources/Accounts/Sellers", "Resources/Accounts/Managers"};
@@ -30,7 +32,6 @@ public class Config {
         discountsPath = new String[]{"Resources/Discounts/CodedDiscounts", "Resources/Discounts/Auctions"};
         requestsPath = "Resources/Requests";
         categoriesPath = "Resources/Categories";
-
     }
 
     public static Config getInstance() {
@@ -78,6 +79,8 @@ public class Config {
         return categoriesPath;
     }
 
+
+
     public enum AccountsPath {
         CUSTOMER(0), SELLER(1), MANAGER(2);
         private int num;
@@ -104,5 +107,25 @@ public class Config {
         }
     }
 
+    public ArrayList<String> getRequestsId() {
+        return requestsId;
+    }
 
+    public void addRequestId(String s) {
+        this.requestsId.add(s);
+        saveConfig();
+    }
+    public void removeRequestId(String s) {
+        this.requestsId.remove(s);
+        saveConfig();
+    }
+
+    private void saveConfig() {
+        JsonFileWriter writer = new JsonFileWriter();
+        try {
+            writer.write(Config.getInstance(),Config.configPath,Config.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

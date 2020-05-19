@@ -27,11 +27,9 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
     }
     public AuctionsPageCP() {
         super(MainMenuCP.getInstance());
-        /* TODO: get these from data center:*/
+
         this.allCategories = DataCenter.getInstance().getCategories();
         this.allProducts = new ArrayList<>();
-        for (Auction auction : allAuctions)
-            allProducts.addAll(auction.getAllProducts());
         this.allFilters = new ArrayList<>();
         this.filter = new Filter(null);
         this.sort = new Sort();
@@ -120,7 +118,7 @@ public class AuctionsPageCP extends Controller.CommandProcessors.CommandProcesso
         return null;
     }
 
-    public ArrayList<Filter> getAllFilters() {
+    public ArrayList<Filter > getAllFilters() {
         return allFilters;
     }
 
