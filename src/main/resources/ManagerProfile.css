@@ -1,0 +1,19 @@
+Button {
+    -fx-background-color:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    -fx-border-radius:22px;
+    -fx-background-radius: 22px;
+    -fx-border-color: #dcdcdc;
+    -fx-content-display:inline-block;
+    -fx-cursor:pointer;
+    -fx-font-family:Arial;
+   -fx-pref-width: 170px;
+    -fx-pref-height: 25;
+}
+Button:hover {
+    -fx-background-color:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+    -fx-cursor: hand;
+}
+Button:pressed {
+    -fx-background-color:linear-gradient(to bottom, rgba(17, 40, 123, 0.64) 10%, #2193c7 100%);
+    -fx-font-weight: bolder;
+}

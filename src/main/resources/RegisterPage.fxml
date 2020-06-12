@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="529.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SignUpController">
+   <children>
+      <ImageView fitHeight="555.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <HBox prefHeight="519.0" prefWidth="720.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <StackPane prefHeight="520.0" prefWidth="468.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="448.0" prefWidth="465.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="447.0" prefWidth="219.0" spacing="20.0">
+                                 <children>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/manager_100px.png" />
+                                       </image>
+                                    </ImageView>
+                                    <TextField fx:id="usernameField1" prefHeight="25.0" prefWidth="65.0" promptText="username" />
+                                    <PasswordField fx:id="passwordField1" prefHeight="25.0" prefWidth="68.0" promptText="password" />
+                                    <Button mnemonicParsing="false" onAction="#signIn" prefHeight="25.0" prefWidth="74.0" text="Sign in">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane disable="true" opacity="0.0" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="449.0" prefWidth="465.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <Label fx:id="statusLabel" prefHeight="39.0" prefWidth="224.0" text="Label" />
+                                    <TextField fx:id="usernameField" promptText="username" />
+                                    <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="234.0" promptText="password" />
+                                    <TextField fx:id="firstNameField" promptText="first name" />
+                                    <TextField fx:id="lastNameField" promptText="last name" />
+                                    <TextField fx:id="emailAddressField" promptText="email address" />
+                                    <TextField fx:id="phoneNumberField" promptText="phone number" />
+                                    <TextField fx:id="companyNameField" promptText="company name" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <Region prefHeight="449.0" prefWidth="130.0" />
+                              <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fx:id="imageView" fitHeight="141.0" fitWidth="132.0" onMouseClicked="#chooseImage" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/manager_100px.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Button mnemonicParsing="false" onAction="#resetImageToDefault" text="Reset to default" />
+                                    <Button mnemonicParsing="false" onAction="#signUp" text="Create account" />
+                                    <RadioButton fx:id="sellerButton" mnemonicParsing="false" onAction="#updateAccountProperties" text="Seller" textFill="WHITE">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="AccountTypes" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="buyerButton" mnemonicParsing="false" onAction="#updateAccountProperties" text="Buyer" textFill="WHITE" toggleGroup="$AccountTypes" />
+                                    <Button mnemonicParsing="false" onAction="#changeToPrevScene" text="back" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+            <StackPane prefHeight="520.0" prefWidth="258.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                     <children>
+                        <Label text="Label">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Region prefHeight="232.0" prefWidth="255.0" />
+                        <Button mnemonicParsing="false" text="Button">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

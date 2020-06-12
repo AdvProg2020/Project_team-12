@@ -2,10 +2,12 @@ package View;
 
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.ScrollPane;
@@ -15,7 +17,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -38,14 +39,21 @@ public class ProductsPage1 implements Initializable {
     @FXML
     private AnchorPane mainPane;
     @FXML
-    private HBox goToRegisterPanel;
+    private Label optionLabel;
     @FXML
-    private HBox categories;
+    private ImageView registerImg;
+    @FXML
+    private Label registerLabel;
+    @FXML
+    private ImageView showCatImg;
+    @FXML
+    private Label showCatLabel;
+    @FXML
     private boolean menuIsOpen = false;
 
     @FXML
     private void showOptions() {
-        if (menu.getOpacity()==0) {
+        if (menu.getOpacity() == 0) {
             openMenu();
         }
     }
@@ -59,12 +67,14 @@ public class ProductsPage1 implements Initializable {
         menu.setBackground(new Background(new BackgroundFill(Color.GHOSTWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         menuIsOpen = !menuIsOpen;
     }
+
     private void closeMenu() {
         animation.setRate(animation.getRate() * (-1));
         animation.play();
         disableFields(false);
         showMenu(1);
         menuIsOpen = !menuIsOpen;
+        menu.toBack();
     }
 
     private void disableFields(boolean b) {
@@ -90,13 +100,19 @@ public class ProductsPage1 implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         animation = new HamburgerSlideCloseTransition(hamburgerBox);
         animation.setRate(-1);
+
     }
 
     @FXML
     public void update(MouseEvent mouseEvent) {
-        if (!mouseEvent.getTarget().equals(goToRegisterPanel) && !mouseEvent.getSource().equals(categories))
+        try {
+            if (!mouseEvent.getTarget().equals(showCatImg) && !((LabeledText) mouseEvent.getTarget()).getText().equals(showCatLabel.getText()) && !mouseEvent.getTarget().equals(registerImg) && !((LabeledText) mouseEvent.getTarget()).getText().equals(registerLabel.getText()))
+                if (menu.getOpacity() == 1)
+                    closeMenu();
+        } catch (ClassCastException ignored) {
             if (menu.getOpacity() == 1)
                 closeMenu();
+        }
     }
 
 

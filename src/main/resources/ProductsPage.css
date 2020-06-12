@@ -6,3 +6,18 @@ AnchorPane{
 Pagination{
     -fx-background-color: black;
 }
+ImageView:hover{
+    -fx-cursor: hand;
+}
+Label:hover{
+    -fx-cursor: hand;
+}
+JFXHamburger:hover{
+    -fx-cursor: hand;
+}
+#adPane:hover{
+    -fx-cursor: hand;
+}
+#sortMenu:hover{
+    -fx-cursor: hand;
+}

@@ -22,7 +22,7 @@
          <padding>
             <Insets bottom="2.0" />
          </padding></JFXHamburger>
-      <Label fx:id="optionLabel" layoutX="47.0" layoutY="14.0" text="Options" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="13.0">
+      <Label  onMouseClicked="#showOptions" fx:id="optionLabel" layoutX="47.0" layoutY="14.0" text="Options" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="13.0">
          <font>
             <Font size="13.0" />
          </font>
@@ -37,7 +37,7 @@
                <children>
                   <HBox fx:id="goToRegisterPanel" prefHeight="20.0" prefWidth="153.0">
                      <children>
-                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="registerImg" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/registerPanel_100px.png" />
                            </image>
@@ -45,7 +45,7 @@
                               <Insets top="2.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label prefHeight="29.0" prefWidth="140.0" text="go to register panel">
+                        <Label fx:id="registerLabel" prefHeight="29.0" prefWidth="140.0" text="go to register panel">
                            <HBox.margin>
                               <Insets left="2.0" />
                            </HBox.margin>
@@ -54,12 +54,12 @@
                   </HBox>
                   <HBox fx:id="categories" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="153.0">
                      <children>
-                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="showCatImg" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/category.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="29.0" prefWidth="140.0" text="Show Categories">
+                        <Label fx:id="showCatLabel" prefHeight="29.0" prefWidth="140.0" text="Show Categories">
                            <HBox.margin>
                               <Insets left="2.0" top="2.0" />
                            </HBox.margin>
