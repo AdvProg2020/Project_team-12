@@ -31,7 +31,7 @@
          </padding>
       </Label>
       <Pagination fx:id="productsPages" layoutX="15.0" layoutY="32.0" maxPageIndicatorCount="5" prefHeight="351.0" prefWidth="405.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="38.0" />
-      <StackPane fx:id="menu" layoutX="14.0" layoutY="35.0" opacity="0.0" prefHeight="79.0" prefWidth="153.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="38.0">
+      <StackPane disable="true" fx:id="menu" layoutX="14.0" layoutY="35.0" opacity="0.0" prefHeight="79.0" prefWidth="153.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="38.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
