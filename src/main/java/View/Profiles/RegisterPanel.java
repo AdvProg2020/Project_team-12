@@ -10,6 +10,8 @@ import Model.Account.Seller;
 import View.Exceptions.InvalidCommandException;
 import View.Exceptions.RegisterPanelException;
 import View.Menu;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -108,6 +110,7 @@ public class RegisterPanel extends Menu {
             }
         };
     }
+    MenuItem menuItem = new MenuItem();
 
     private Menu getLoginMenu() {
         return new Menu("Login Page", this) {

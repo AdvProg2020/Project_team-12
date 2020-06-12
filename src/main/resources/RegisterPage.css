@@ -1,0 +1,16 @@
+MenuItem:focused{
+    -fx-background-color: #dfdfdf;
+}.context-menu:focused {
+     -fx-background-color:white;
+     -fx-focus-color:white;
+ }
+
+.menu-item:focused {
+    -fx-background-color:white;
+    -fx-focus-color:white;
+}
+
+.menu:focused {
+    -fx-background-color:white;
+    -fx-focus-color:white;
+}
