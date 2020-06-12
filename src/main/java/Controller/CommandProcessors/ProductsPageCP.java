@@ -148,7 +148,7 @@ public class ProductsPageCP extends CommandProcessor {
 
     public boolean checkRangeFilters(String name) throws Exception {
         if (!doesFilterExistsByName(name))
-            throw new CustomerExceptions("filter doesn't exist");
+            throw new CustomerExceptions("filter doesn't exist.");
         return filter.checkRangeFilters(name);
     }
 

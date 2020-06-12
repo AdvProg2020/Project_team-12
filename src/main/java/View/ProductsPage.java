@@ -36,8 +36,8 @@ public class ProductsPage extends Menu {
         commands.add("view categories");
         commands.add("filtering");
         commands.add("sorting");
-        commands.add("show products");
-        commands.add("show product PR_(\\S+)$");
+        commands.add("show products");//
+        commands.add("show product PR_(\\S+)$");//
         commands.add("back");
         commands.add("help");
         commands.add("go to register panel");

@@ -35,10 +35,10 @@ public class MainMenu extends Menu {
     }
 
     private void setCommands() {
-        commands.add("go to profile");
+        commands.add("go to profile");//
         commands.add("products");
-        commands.add("offs");
-        commands.add("go to cart");
+        commands.add("offs");//
+        commands.add("go to cart");//
         commands.add("go to register panel");
         commands.add("help");
         commands.add("exit");

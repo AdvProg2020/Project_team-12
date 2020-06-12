@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainPane" minHeight="404.0" minWidth="603.0" onMouseClicked="#update" prefHeight="404.0" prefWidth="603.0" stylesheets="ProductsPage.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ProductsPage1">
+   <children>
+      <JFXHamburger fx:id="hamburgerBox" layoutX="14.0" layoutY="14.0" onMouseClicked="#showOptions" prefHeight="20.0" prefWidth="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <padding>
+            <Insets bottom="2.0" />
+         </padding></JFXHamburger>
+      <Label fx:id="optionLabel" layoutX="47.0" layoutY="14.0" text="Options" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="13.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" />
+         </padding>
+      </Label>
+      <Pagination fx:id="productsPages" layoutX="15.0" layoutY="32.0" maxPageIndicatorCount="5" prefHeight="351.0" prefWidth="405.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="38.0" />
+      <StackPane fx:id="menu" layoutX="14.0" layoutY="35.0" opacity="0.0" prefHeight="79.0" prefWidth="153.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="38.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox fx:id="goToRegisterPanel" prefHeight="20.0" prefWidth="153.0">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/registerPanel_100px.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="2.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label prefHeight="29.0" prefWidth="140.0" text="go to register panel">
+                           <HBox.margin>
+                              <Insets left="2.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="categories" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="153.0">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/category.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="29.0" prefWidth="140.0" text="Show Categories">
+                           <HBox.margin>
+                              <Insets left="2.0" top="2.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children></StackPane>
+      <AnchorPane fx:id="adPane" layoutX="438.0" layoutY="20.0" prefHeight="101.0" prefWidth="153.0" AnchorPane.bottomAnchor="268.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="35.0" />
+      <ImageView fx:id="backButton" fitHeight="21.0" fitWidth="25.0" layoutX="564.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="8.0">
+         <image>
+            <Image url="@images/undo_100px.png" />
+         </image>
+      </ImageView>
+      <MenuButton fx:id="sortMenu" layoutX="119.0" layoutY="11.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="115.0" style="-fx-background-color: ghostwhite; -fx-border-color: black;" text="Sort By">
+         <font>
+            <Font size="10.0" />
+         </font>
+         <items>
+            <MenuItem mnemonicParsing="false" text="Price">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/long_arrow_up_100px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Price">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/arrow_pointing_down_100px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Date">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/calendar_100px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="View">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/eye_100px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Score">
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/rating_100px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </MenuItem>
+         </items>
+      </MenuButton>
+      <ScrollPane fx:id="filteringPane" layoutX="435.0" layoutY="144.0" prefHeight="242.0" prefWidth="153.0" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="144.0" />
+   </children>
+</AnchorPane>
