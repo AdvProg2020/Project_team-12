@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="884.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.ProductsManagementController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="697.0" prefWidth="658.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TableView fx:id="productsTable" prefHeight="573.0" prefWidth="809.0">
+              <columns>
+                <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
+                  <TableColumn fx:id="categoryColumn" prefWidth="101.0" text="Category" />
+                  <TableColumn fx:id="brandColumn" prefWidth="78.0" text="Brand" />
+                  <TableColumn fx:id="sellerColumn" prefWidth="69.0" text="Seller" />
+                  <TableColumn fx:id="dateColumn" prefWidth="78.0" text="Date" />
+                  <TableColumn fx:id="priceColumn" prefWidth="86.0" text="Price" />
+                <TableColumn fx:id="viewsColumn" prefWidth="89.0" text="Views" />
+                  <TableColumn fx:id="scoreColumn" prefWidth="115.0" text="Score" />
+                  <TableColumn fx:id="statusColumn" prefWidth="97.0" text="Status" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="183.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <TextArea fx:id="descriptionArea" prefHeight="179.0" prefWidth="419.0" promptText="Description" />
+                  <TableView fx:id="specsTable" editable="true" prefHeight="183.0" prefWidth="405.0">
+                    <columns>
+                      <TableColumn fx:id="specsColumn" editable="false" prefWidth="200.0" text="Specs" />
+                      <TableColumn fx:id="infoColumn" prefWidth="192.0" text="Info" />
+                    </columns>
+                  </TableView>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="69.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="150.0" prefWidth="263.0" spacing="6.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#editSpecs" prefHeight="39.0" prefWidth="225.0" text="Edit specs">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <TextField fx:id="specsField" prefHeight="39.0" prefWidth="210.0" promptText="specs">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="150.0" prefWidth="300.0" spacing="6.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#changeCategory" prefHeight="39.0" prefWidth="291.0" text="Change category">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <TextField fx:id="parentField" prefHeight="39.0" prefWidth="254.0" promptText="category">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" layoutX="60.0" layoutY="10.0" prefHeight="150.0" prefWidth="279.0" spacing="6.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#deleteProduct" prefHeight="39.0" prefWidth="280.0" text="Delete">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label fx:id="statusLabel" prefHeight="39.0" prefWidth="268.0">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

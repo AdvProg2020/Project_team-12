@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="accountInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.AccountInfoController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@accountInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.AccountInfoController">
    <children>
       <HBox prefHeight="600.0" prefWidth="600.0">
          <children>
@@ -82,10 +83,13 @@
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <Button mnemonicParsing="false" onAction="#update" text="update">
+                  <Button mnemonicParsing="false" onAction="#update" prefHeight="29.0" prefWidth="88.0" text="update">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </Button>
                </children>
             </VBox>

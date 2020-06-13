@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="652.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.CategoriesManagementController">
+   <children>
+      <HBox prefHeight="652.0" prefWidth="665.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="652.0" prefWidth="432.0" spacing="10.0">
+               <children>
+                  <TreeView fx:id="categoriesTable" prefHeight="494.0" prefWidth="263.0" />
+                  <HBox alignment="CENTER" prefHeight="39.0" prefWidth="254.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#createOrEditCategory" prefHeight="39.0" prefWidth="140.0" text="Create / Edit" />
+                        <Button mnemonicParsing="false" onAction="#deleteCategory" prefHeight="39.0" prefWidth="98.0" text="Delete" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="statusLabel" prefHeight="42.0" prefWidth="243.0" />
+               </children>
+               <padding>
+                  <Insets left="20.0" right="10.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="600.0" prefWidth="440.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="nameField" prefHeight="39.0" prefWidth="243.0" promptText="name">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField fx:id="parentField" prefHeight="39.0" prefWidth="306.0" promptText="parent" />
+                  <Button mnemonicParsing="false" onAction="#deleteProduct" prefHeight="39.0" prefWidth="243.0" text="Delete product" />
+                  <Label prefHeight="27.0" prefWidth="328.0" text="Products List:" />
+                  <ListView fx:id="productsList" prefHeight="203.0" prefWidth="317.0" />
+                  <Label prefHeight="27.0" prefWidth="368.0" text="Features List:" />
+                  <ListView fx:id="featuresList" prefHeight="177.0" prefWidth="317.0" />
+                  <TextField fx:id="featureField" prefHeight="39.0" prefWidth="243.0" promptText="feature to add or delete" />
+                  <HBox alignment="CENTER" prefHeight="33.0" prefWidth="351.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#deleteFeature" prefHeight="39.0" prefWidth="99.0" text="Delete " />
+                        <Button mnemonicParsing="false" onAction="#addFeature" prefHeight="39.0" prefWidth="110.0" text="Add" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

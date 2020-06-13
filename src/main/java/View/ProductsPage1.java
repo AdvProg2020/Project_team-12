@@ -84,6 +84,7 @@ public class ProductsPage1 implements Initializable {
         backButton.setDisable(b);
         sortMenu.setDisable(b);
         filteringPane.setDisable(b);
+        menu.setDisable(!b);
     }
 
     private void showMenu(int start) {
@@ -100,6 +101,7 @@ public class ProductsPage1 implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         animation = new HamburgerSlideCloseTransition(hamburgerBox);
         animation.setRate(-1);
+        disableFields(false);
 
     }
 

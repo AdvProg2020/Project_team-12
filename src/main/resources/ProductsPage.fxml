@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -16,13 +23,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" minHeight="404.0" minWidth="603.0" onMouseClicked="#update" prefHeight="404.0" prefWidth="603.0" stylesheets="ProductsPage.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ProductsPage1">
+<AnchorPane fx:id="mainPane" minHeight="404.0" minWidth="603.0" onMouseClicked="#update" prefHeight="561.0" prefWidth="736.0" stylesheets="ProductsPage.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ProductsPage1">
    <children>
       <JFXHamburger fx:id="hamburgerBox" layoutX="14.0" layoutY="14.0" onMouseClicked="#showOptions" prefHeight="20.0" prefWidth="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
          <padding>
             <Insets bottom="2.0" />
          </padding></JFXHamburger>
-      <Label  onMouseClicked="#showOptions" fx:id="optionLabel" layoutX="47.0" layoutY="14.0" text="Options" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="13.0">
+      <Label fx:id="optionLabel" layoutX="47.0" layoutY="14.0" onMouseClicked="#showOptions" text="Options" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="13.0">
          <font>
             <Font size="13.0" />
          </font>
@@ -31,7 +38,7 @@
          </padding>
       </Label>
       <Pagination fx:id="productsPages" layoutX="15.0" layoutY="32.0" maxPageIndicatorCount="5" prefHeight="351.0" prefWidth="405.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="38.0" />
-      <StackPane disable="true" fx:id="menu" layoutX="14.0" layoutY="35.0" opacity="0.0" prefHeight="79.0" prefWidth="153.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="38.0">
+      <StackPane fx:id="menu" disable="true" layoutX="14.0" layoutY="35.0" opacity="0.0" prefHeight="79.0" prefWidth="153.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="38.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -132,5 +139,10 @@
          </items>
       </MenuButton>
       <ScrollPane fx:id="filteringPane" layoutX="435.0" layoutY="144.0" prefHeight="242.0" prefWidth="153.0" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="144.0" />
+      <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="652.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="4.0">
+         <image>
+            <Image url="@images/exit_100px.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
