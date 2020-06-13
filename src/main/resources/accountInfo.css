@@ -1,0 +1,13 @@
+Button{
+    -fx-background-color: rgba(223, 223, 223, 0);
+    -fx-border-radius: 20%;
+    -fx-border-color: black;
+    -fx-pref-height: 8px;
+}
+Button:hover{
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-background-color: #2976ea;
+    -fx-background-radius: 20 20 20 20;
+}

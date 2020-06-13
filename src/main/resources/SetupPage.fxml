@@ -62,7 +62,7 @@
                      </VBox.margin>
                   </TextField>
                   <TextField prefHeight="10.0" prefWidth="158.0" promptText="Phone number" />
-                  <TextField prefHeight="10.0" prefWidth="158.0" promptText="E-mail Addres" VBox.vgrow="NEVER">
+                  <TextField prefHeight="10.0" prefWidth="158.0" promptText="E-mail Address" VBox.vgrow="NEVER">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
