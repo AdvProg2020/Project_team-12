@@ -21,7 +21,7 @@
             <Label layoutX="361.0" layoutY="53.0" prefHeight="27.0" prefWidth="79.0" />
             <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/trashCan.png" />
+                  <Image url="@../../images/trashCan.png" />
                </image>
                <HBox.margin>
                   <Insets />
@@ -34,7 +34,7 @@
             </Label>
             <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="491.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/plus_52px.png" />
+                  <Image url="@../../images/plus_52px.png" />
                </image>
                <HBox.margin>
                   <Insets />

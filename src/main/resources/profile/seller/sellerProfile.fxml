@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SellerProfileController">
     <left>
-        <VBox alignment="CENTER" prefHeight="600.0" prefWidth="243.0" spacing="10.0" stylesheets="@ManagerProfile.css" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" prefHeight="600.0" prefWidth="243.0" spacing="10.0" stylesheets="@../manager/ManagerProfile.css" BorderPane.alignment="CENTER">
             <children>
             <Label text="Seller Profile" textFill="#ef394e">
                <font>

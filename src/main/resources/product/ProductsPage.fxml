@@ -46,7 +46,7 @@
                      <children>
                         <ImageView fx:id="registerImg" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/registerPanel_100px.png" />
+                              <Image url="@../images/registerPanel_100px.png" />
                            </image>
                            <HBox.margin>
                               <Insets top="2.0" />
@@ -63,7 +63,7 @@
                      <children>
                         <ImageView fx:id="showCatImg" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/category.png" />
+                              <Image url="@../images/category.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="showCatLabel" prefHeight="29.0" prefWidth="140.0" text="Show Categories">
@@ -79,7 +79,7 @@
       <AnchorPane fx:id="adPane" layoutX="438.0" layoutY="20.0" prefHeight="101.0" prefWidth="153.0" AnchorPane.bottomAnchor="268.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="35.0" />
       <ImageView fx:id="backButton" fitHeight="21.0" fitWidth="25.0" layoutX="564.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="8.0">
          <image>
-            <Image url="@images/undo_100px.png" />
+            <Image url="@../images/undo_100px.png" />
          </image>
       </ImageView>
       <MenuButton fx:id="sortMenu" layoutX="119.0" layoutY="11.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="115.0" style="-fx-background-color: ghostwhite; -fx-border-color: black;" text="Sort By">
@@ -91,7 +91,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/long_arrow_up_100px.png" />
+                        <Image url="@../images/long_arrow_up_100px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -101,7 +101,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/arrow_pointing_down_100px.png" />
+                        <Image url="@../images/arrow_pointing_down_100px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -111,7 +111,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/calendar_100px.png" />
+                        <Image url="@../images/calendar_100px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -121,7 +121,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/eye_100px.png" />
+                        <Image url="@../images/eye_100px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -131,7 +131,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/rating_100px.png" />
+                        <Image url="@../images/rating_100px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -141,7 +141,7 @@
       <ScrollPane fx:id="filteringPane" layoutX="435.0" layoutY="144.0" prefHeight="242.0" prefWidth="153.0" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="144.0" />
       <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="652.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="4.0">
          <image>
-            <Image url="@images/exit_100px.png" />
+            <Image url="@../images/exit_100px.png" />
          </image>
       </ImageView>
    </children>

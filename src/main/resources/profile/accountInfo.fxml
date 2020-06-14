@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@accountInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.AccountInfoController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@../../../../accountInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.AccountInfoController">
    <children>
       <HBox prefHeight="600.0" prefWidth="600.0">
          <children>
@@ -18,7 +18,7 @@
                <children>
                   <ImageView fx:id="imageView" fitHeight="144.0" fitWidth="151.0" onMouseClicked="#chooseImage" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/person_100px.png" />
+                        <Image url="@../../../../images/person_100px.png" />
                      </image>
                   </ImageView>
                   <Button mnemonicParsing="false" onAction="#resetImageToDefault" text="Reset Profile Image">
