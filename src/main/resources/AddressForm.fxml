@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="550.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddressForm">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="365.0" layoutY="57.0" prefHeight="387.0" prefWidth="185.0" spacing="10.0">
+         <children>
+            <JFXTextField labelFloat="true" promptText="Address" />
+            <JFXTextField layoutX="10.0" layoutY="10.0" promptText="Postal Code" />
+            <JFXTextField layoutX="10.0" layoutY="49.0" promptText="City" />
+            <JFXTextField layoutX="10.0" layoutY="88.0" promptText="Phone" />
+            <ComboBox prefWidth="150.0" promptText="State" />
+         </children>
+      </VBox>
+      <ImageView fitHeight="165.0" fitWidth="200.0" layoutX="110.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../placeholder.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

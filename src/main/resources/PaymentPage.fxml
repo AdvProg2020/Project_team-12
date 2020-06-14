@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="899.0" prefWidth="1261.0" stylesheets="@PaymentPage.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaymentPage">
+   <children>
+      <HBox layoutX="330.0" layoutY="128.0" prefHeight="50.0" prefWidth="668.0" AnchorPane.leftAnchor="295.0" AnchorPane.rightAnchor="295.0" AnchorPane.topAnchor="128.0">
+         <children>
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="114.0" styleClass="optionButton" text="Review Cart" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="114.0" styleClass="optionButton" text="Address" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="152.0" styleClass="optionButton" text="Increase Credit" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="149.0" styleClass="optionButton" text="Payment Page" />
+         </children>
+      </HBox>
+      <AnchorPane layoutX="43.0" layoutY="179.0" prefHeight="686.0" prefWidth="1184.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="179.0" />
+      <Label layoutX="70.0" layoutY="83.0" prefHeight="34.0" prefWidth="1130.0" text="Make sure you chose the right options because you cant change them after your purchase has been finished" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="83.0">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" layoutX="514.0" prefHeight="100.0" prefWidth="242.0" AnchorPane.leftAnchor="514.0" AnchorPane.rightAnchor="514.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" text="Purchase" textFill="#ff3864">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" text="Page" textFill="#148ee3">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ImageView fitHeight="47.0" fitWidth="35.0" layoutX="1226.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/undo_100px.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
