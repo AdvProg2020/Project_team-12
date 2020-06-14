@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.RequestsViewController">
+    <children>
+      <HBox alignment="CENTER" prefHeight="610.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXTextArea fx:id="descriptionArea" editable="false" labelFloat="true" prefHeight="560.0" prefWidth="234.0" promptText="Description" HBox.hgrow="ALWAYS" />
+              <TableView fx:id="requestsTable" prefHeight="550.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                  <columns>
+                      <TableColumn fx:id="requestIDColumn" editable="false" prefWidth="117.0" text="RequestID" />
+                      <TableColumn fx:id="subjectColumn" editable="false" prefWidth="100.0" text="Subject" />
+                  <TableColumn fx:id="statusColumn" editable="false" prefWidth="112.0" text="Status" />
+                  </columns>
+              </TableView>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+    </children>
+</AnchorPane>
