@@ -21,7 +21,7 @@
       </HBox>
       <AnchorPane layoutX="43.0" layoutY="179.0" prefHeight="686.0" prefWidth="1184.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="179.0">
          <children>
-            <VBox disable="true" layoutX="439.0" layoutY="214.0" opacity="0.0" prefHeight="258.0" prefWidth="306.0" spacing="10.0">
+            <VBox disable="true" layoutX="439.0" layoutY="214.0" prefHeight="258.0" prefWidth="306.0" spacing="10.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="267.0">
                      <children>
