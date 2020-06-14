@@ -99,7 +99,7 @@
             </Label>
          </children>
       </HBox>
-      <ImageView fitHeight="47.0" fitWidth="35.0" layoutX="1226.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="47.0" fitWidth="35.0" layoutX="1226.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" styleClass="backButton">
          <image>
             <Image url="@images/undo_100px.png" />
          </image>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SellerProfileController">
+    <left>
+        <VBox alignment="CENTER" prefHeight="600.0" prefWidth="243.0" spacing="10.0" stylesheets="@ManagerProfile.css" BorderPane.alignment="CENTER">
+            <children>
+            <Label text="Seller Profile" textFill="#ef394e">
+               <font>
+                  <Font name="GSI Oil and Gas" size="26.0" />
+               </font>
+            </Label>
+            <Region prefHeight="100.0" prefWidth="201.0" />
+                <Button mnemonicParsing="false" onAction="#openAccountInfoSection" text="Your profile" />
+                <Button mnemonicParsing="false" onAction="#openProductsManagementSection" text="Manage products" />
+            <Button mnemonicParsing="false" onAction="#openAuctionsManagementSection" text="Manage auctions" />
+            <Button mnemonicParsing="false" onAction="#openRequestsViewSection" text="View requests" />
+            <Button mnemonicParsing="false" onAction="#openSellerSaleHistorySection" text="View Sale History" />
+            <Button mnemonicParsing="false" onAction="#openCartSection" text="View cart" />
+                <Button mnemonicParsing="false" onAction="#signOut" text="Sign out" />
+                <Button mnemonicParsing="false" onAction="#changeToMainMenu" text="back to main menu" />
+            </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+        </VBox>
+    </left>
+</BorderPane>

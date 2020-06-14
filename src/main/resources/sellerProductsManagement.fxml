@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -8,23 +9,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SellerProductsManagementController">
+<AnchorPane prefHeight="748.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SellerProductsManagementController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="748.0" prefWidth="798.0" spacing="15.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="686.0" prefWidth="206.0" spacing="8.0">
                <children>
-                  <TreeView fx:id="categoriesTree" prefHeight="200.0" prefWidth="200.0" />
-                  <ListView fx:id="productsList" prefHeight="200.0" prefWidth="200.0" />
-                  <ListView fx:id="buyersList" prefHeight="200.0" prefWidth="200.0" />
+                  <Label prefHeight="27.0" prefWidth="113.0" text="Categories:" />
+                  <TreeView fx:id="categoriesTree" prefHeight="268.0" prefWidth="196.0" />
+                  <Label prefHeight="27.0" prefWidth="114.0" text="Products List" />
+                  <ListView fx:id="productsList" prefHeight="263.0" prefWidth="196.0" />
+                  <Label text="Buyers List" />
+                  <ListView fx:id="buyersList" prefHeight="232.0" prefWidth="196.0" />
                </children>
+               <HBox.margin>
+                  <Insets left="7.0" />
+               </HBox.margin>
             </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="734.0" prefWidth="295.0" spacing="8.0">
                <children>
-                  <TableView fx:id="specsTable" prefHeight="320.0" prefWidth="200.0">
+                  <TableView fx:id="specsTable" prefHeight="385.0" prefWidth="295.0">
                     <columns>
-                      <TableColumn fx:id="specsColumn" prefWidth="103.0" text="Specs" />
-                      <TableColumn fx:id="infoColumn" prefWidth="96.0" text="Info" />
+                      <TableColumn fx:id="specsColumn" prefWidth="146.0" text="Specs" />
+                      <TableColumn fx:id="infoColumn" prefWidth="148.0" text="Info" />
                     </columns>
                   </TableView>
                   <TextField fx:id="nameField" prefHeight="40.0" prefWidth="200.0" promptText="name" />
@@ -32,20 +39,29 @@
                   <TextField fx:id="priceField" prefHeight="40.0" prefWidth="200.0" promptText="price" />
                   <TextField fx:id="remainingField" prefHeight="40.0" prefWidth="200.0" promptText="number of items" />
                   <TextField fx:id="infoField" prefHeight="40.0" prefWidth="200.0" promptText="info" />
-                  <Button mnemonicParsing="false" onAction="#changeInfo" prefHeight="40.0" prefWidth="200.0" text="Change info" />
                   <TextField fx:id="categoryField" editable="false" prefHeight="40.0" prefWidth="200.0" promptText="category" />
+                  <Button mnemonicParsing="false" onAction="#changeInfo" prefHeight="40.0" prefWidth="297.0" text="Change info" />
                </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </HBox.margin>
             </VBox>
-            <VBox layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+            <VBox layoutX="110.0" layoutY="10.0" prefHeight="696.0" prefWidth="250.0" spacing="8.0">
                <children>
-                  <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" promptText="description" />
-                  <ImageView fx:id="imageView" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#chooseImage" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#requestAddProduct" prefHeight="40.0" prefWidth="200.0" text="Request add" />
-                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#requestEditProduct" prefHeight="40.0" prefWidth="200.0" text="Request edit" />
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#requestDeleteProduct" prefHeight="40.0" prefWidth="200.0" text="Request delete" />
-                  <Label fx:id="statusLabel" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" text="Status" />
-                  <Button mnemonicParsing="false" onAction="#resetImageToDefault" prefHeight="40.0" prefWidth="200.0" text="Reset to default" />
+                  <Label fx:id="statusLabel" alignment="CENTER" prefHeight="40.0" prefWidth="267.0" text="Status" />
+                  <ImageView fx:id="imageView" fitHeight="200.0" fitWidth="242.0" onMouseClicked="#chooseImage" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#requestAddProduct" prefHeight="40.0" prefWidth="289.0" text="Add Request " />
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#requestEditProduct" prefHeight="40.0" prefWidth="303.0" text="Edit Request " />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#requestDeleteProduct" prefHeight="40.0" prefWidth="315.0" text="Delete Request " />
+                  <Button mnemonicParsing="false" onAction="#resetImageToDefault" prefHeight="40.0" prefWidth="367.0" text="Reset to default" />
+                  <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="300.0" prefWidth="276.0" promptText="Description" />
                </children>
+               <padding>
+                  <Insets bottom="8.0" top="8.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets right="7.0" />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
