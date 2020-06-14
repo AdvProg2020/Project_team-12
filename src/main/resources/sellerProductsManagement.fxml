@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.SellerProductsManagementController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <TreeView fx:id="categoriesTree" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="productsList" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="buyersList" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <TableView fx:id="specsTable" prefHeight="320.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="specsColumn" prefWidth="103.0" text="Specs" />
+                      <TableColumn fx:id="infoColumn" prefWidth="96.0" text="Info" />
+                    </columns>
+                  </TableView>
+                  <TextField fx:id="nameField" prefHeight="40.0" prefWidth="200.0" promptText="name" />
+                  <TextField fx:id="brandField" prefHeight="40.0" prefWidth="200.0" promptText="brand" />
+                  <TextField fx:id="priceField" prefHeight="40.0" prefWidth="200.0" promptText="price" />
+                  <TextField fx:id="remainingField" prefHeight="40.0" prefWidth="200.0" promptText="number of items" />
+                  <TextField fx:id="infoField" prefHeight="40.0" prefWidth="200.0" promptText="info" />
+                  <Button mnemonicParsing="false" onAction="#changeInfo" prefHeight="40.0" prefWidth="200.0" text="Change info" />
+                  <TextField fx:id="categoryField" editable="false" prefHeight="40.0" prefWidth="200.0" promptText="category" />
+               </children>
+            </VBox>
+            <VBox layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" promptText="description" />
+                  <ImageView fx:id="imageView" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#chooseImage" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#requestAddProduct" prefHeight="40.0" prefWidth="200.0" text="Request add" />
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#requestEditProduct" prefHeight="40.0" prefWidth="200.0" text="Request edit" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#requestDeleteProduct" prefHeight="40.0" prefWidth="200.0" text="Request delete" />
+                  <Label fx:id="statusLabel" alignment="CENTER" prefHeight="40.0" prefWidth="200.0" text="Status" />
+                  <Button mnemonicParsing="false" onAction="#resetImageToDefault" prefHeight="40.0" prefWidth="200.0" text="Reset to default" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

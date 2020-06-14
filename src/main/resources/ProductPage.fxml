@@ -171,5 +171,15 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <ImageView fitHeight="70.0" fitWidth="83.0" layoutX="398.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../trustedSeller.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="487.0" layoutY="187.0" prefHeight="30.0" prefWidth="187.0" text="Trusted Seller Badge">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

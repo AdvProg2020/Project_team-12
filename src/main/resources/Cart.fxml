@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="899.0" prefWidth="1261.0" stylesheets="@PaymentPage.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaymentPage">
+   <children>
+      <HBox layoutX="330.0" layoutY="128.0" prefHeight="50.0" prefWidth="668.0" AnchorPane.leftAnchor="295.0" AnchorPane.rightAnchor="295.0" AnchorPane.topAnchor="128.0">
+         <children>
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="114.0" styleClass="optionButton" text="Review Cart" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="114.0" styleClass="optionButton" text="Address" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="152.0" styleClass="optionButton" text="Increase Credit" />
+            <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="149.0" styleClass="optionButton" text="Payment Page" />
+         </children>
+      </HBox>
+      <AnchorPane layoutX="43.0" layoutY="179.0" prefHeight="686.0" prefWidth="1184.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="43.0" AnchorPane.topAnchor="179.0">
+         <children>
+            <VBox disable="true" layoutX="439.0" layoutY="214.0" opacity="0.0" prefHeight="258.0" prefWidth="306.0" spacing="10.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="267.0">
+                     <children>
+                        <Label alignment="CENTER" text="Products Price:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="156.0" />
+                        <Label text="\$" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="20.0" prefHeight="37.0" prefWidth="303.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="83.0" text="Off price:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="203.0" />
+                        <Label text="\$" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="67.0" prefHeight="37.0" prefWidth="303.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="105.0" text="Total price:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="191.0" />
+                        <Label text="\$" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="114.0" prefHeight="37.0" prefWidth="303.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="121.0" text=" Price to Pay:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="179.0" />
+                        <Label text="\$" />
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="309.0" styleClass="selectButton" text="Buy" />
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children></AnchorPane>
+      <Label layoutX="70.0" layoutY="83.0" prefHeight="34.0" prefWidth="1130.0" text="Make sure you chose the right options because you cant change them after your purchase has been finished" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="83.0">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" layoutX="514.0" prefHeight="100.0" prefWidth="242.0" AnchorPane.leftAnchor="514.0" AnchorPane.rightAnchor="514.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" text="Purchase" textFill="#ff3864">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" text="Page" textFill="#148ee3">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ImageView fitHeight="47.0" fitWidth="35.0" layoutX="1226.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/undo_100px.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
