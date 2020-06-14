@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ghostWhite;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.BuyerProfileController">
+    <left>
+        <VBox alignment="CENTER" prefHeight="600.0" prefWidth="223.0" spacing="15.0" stylesheets="@ManagerProfile.css" BorderPane.alignment="CENTER">
+            <children>
+            <Label text="Customer Profile" textFill="#35d74d">
+               <font>
+                  <Font name="Calibri Light Italic" size="30.0" />
+               </font>
+            </Label>
+            <Region prefHeight="94.0" prefWidth="180.0" />
+                <Button mnemonicParsing="false" onAction="#openAccountInfoSection" text="Your profile" />
+                <Button mnemonicParsing="false" onAction="#openBuyerSaleHistorySection" text="View Sale History" />
+            <Button mnemonicParsing="false" onAction="#openDiscountCodeViewSection" text="View discount codes" />
+                <Button mnemonicParsing="false" onAction="#openCartSection" text="View cart" />
+                <Button mnemonicParsing="false" onAction="#signOut" text="Sign out" />
+                <Button mnemonicParsing="false" onAction="#changeToMainMenu" text="back to main menu" />
+            </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+        </VBox>
+    </left>
+</BorderPane>

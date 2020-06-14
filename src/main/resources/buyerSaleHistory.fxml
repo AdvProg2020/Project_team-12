@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="657.0" prefWidth="669.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaProject.Controller.BuyerSaleHistoryController">
+    <children>
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+              <TableView fx:id="logsTable" prefHeight="300.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
+                  <columns>
+                      <TableColumn fx:id="logIDColumn" prefWidth="200.0" text="LogID" />
+                      <TableColumn fx:id="dateColumn" prefWidth="150.0" text="Date" />
+                      <TableColumn fx:id="moneyColumn" prefWidth="100.0" text="Money" />
+                      <TableColumn fx:id="discountColumn" prefWidth="198.0" text="Discount" />
+                  </columns>
+              </TableView>
+              <TableView fx:id="productsTable" prefHeight="250.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
+                  <columns>
+                      <TableColumn fx:id="productColumn" prefWidth="140.0" text="Product" />
+                      <TableColumn fx:id="quantityColumn" text="Quantity" />
+                  <TableColumn fx:id="sellerColumn" prefWidth="75.0" text="Seller" />
+                      <TableColumn fx:id="productMoneyColumn" prefWidth="100.0" text="Money" />
+                      <TableColumn fx:id="productDiscountColumn" prefWidth="100.0" text="Discount" />
+                      <TableColumn fx:id="auctionIDColumn" prefWidth="153.0" text="AuctionID" />
+                  </columns>
+              </TableView>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+    </children>
+</AnchorPane>
