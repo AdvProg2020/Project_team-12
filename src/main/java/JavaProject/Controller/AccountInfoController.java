@@ -6,7 +6,6 @@ import JavaProject.Model.Account.Buyer;
 import JavaProject.Model.Account.Manager;
 import JavaProject.Model.Account.Seller;
 import JavaProject.Model.Database.Database;
-import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,9 +48,9 @@ public class AccountInfoController implements Initializable {
     TextField companyNameField;
     @FXML
     ImageView imageView;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        String ali;
         Account account = App.getSignedInAccount();
         imageView.setImage(new Image(account.getImagePath()));
         usernameField.setEditable(false);
