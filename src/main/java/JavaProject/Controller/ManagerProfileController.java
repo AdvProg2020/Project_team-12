@@ -66,7 +66,7 @@ public class ManagerProfileController implements Initializable{
     private void signOut(ActionEvent event) throws IOException {
         App.setSignedInAccount(null);
         // TODO: App.setRoot(main);
-        App.setRoot("signIn");
+        App.setRoot("registerPage");
     }
 
     @FXML

@@ -25,10 +25,8 @@ public class CartController implements Initializable {
 
     @FXML
     HBox hBox;
-
     @FXML
     Label totalPrice;
-
     @FXML
     Button purchaseButton;
 
@@ -53,7 +51,7 @@ public class CartController implements Initializable {
 
     @FXML
     private void openPurchaseSection(ActionEvent event) throws IOException {
-        App.setRoot("purchase");
+        App.setRoot("receiverInfo");
     }
 
     public static void updatePrice() {

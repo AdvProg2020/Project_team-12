@@ -17,7 +17,9 @@ import JavaProject.Model.TripleString;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Database {
 
@@ -460,5 +462,21 @@ public class Database {
         if (category.getName().equals(desired.getName()))
             return true;
         return canChangeParentCategory(getCategoryByName(category.getParentName()), desired);
+    }
+
+    public Auction getCurrentAuction(Product product) {
+        try {
+            Auction auction = getAuctionByID(product.getAuctionID());
+            Date nowDate = new Date();
+            Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(auction.getStartDate());
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(auction.getEndDate());
+            boolean afterStart = nowDate.compareTo(startDate) > 0;
+            boolean beforeEnd = nowDate.compareTo(endDate) < 0;
+            if (afterStart && beforeEnd) {
+                return auction;
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
